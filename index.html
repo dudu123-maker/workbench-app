@@ -15,6 +15,7 @@
   <link rel="icon" type="image/svg+xml" href="icon.svg" />
   <title>我的个人工作台 APP</title>
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="questions.js"></script>
   <style>
     :root {
       --bg: #f4f1ff;
@@ -2712,7 +2713,7 @@
       renderOverview();
     }
 
-    function renderStudents() {    function renderStudents() {
+    function renderStudents() {
       const keyword = document.getElementById("globalSearch").value.trim();
       const filtered = state.students.filter(s => !keyword || [s.name, s.issue, s.status, s.phone].join(" ").includes(keyword));
 
@@ -3383,14 +3384,17 @@
           <div class="empty">为了保证都是真题，这里不再自动生成虚构题。请把云南省联考/云南省考真题按下面格式导入；导入后才会进入每日题库和错题本。</div>
           <div class="true-question-import">
             <textarea class="note-box" id="trueQuestionInput" placeholder="每行一题，用 | 分隔：年份|来源|模块|考点|题干|A选项|B选项|C选项|D选项|答案|详细解析|易错点\n例：2023|云南省联考|判断推理|定义判断|题干...|A...|B...|C...|D...|B|第一步看定义关键词...|容易只看生活常识"></textarea>
-            <button class="primary-btn" id="importTrueQuestions">导入真题</button>
+            <div style="display:flex;gap:12px;flex-wrap:wrap;">
+              <button class="primary-btn" id="importTrueQuestions">导入真题</button>
+              <button class="primary-btn" id="loadBuiltInQuestions" style="background:var(--green);">📋 一键加载近10年真题（2016-2025）</button>
+            </div>
           </div>
         </div>
         ${questions.length ? questions.map(questionTemplate).join("") : `<div class="card" style="grid-column:1/-1;"><div class="empty">还没有导入真题。导入后这里会显示题目、答案和通俗详细解析。</div></div>`}
       `;
     }
 
-    function questionTemplate(question) {    function questionTemplate(question) {
+    function questionTemplate(question) {
       const answerRecord = state.examAnswers[question.id];
       const letters = ["A", "B", "C", "D"];
       return `
@@ -4199,6 +4203,21 @@
         }
       }
 
+      if (event.target.id === "importTrueQuestions") {
+        const text = document.getElementById("trueQuestionInput").value.trim();
+        if (!text) {
+          alert("请先粘贴真题数据，或点击「加载内置真题」按钮。");
+          return;
+        }
+        importTrueQuestionsFromText(text);
+        return;
+      }
+
+      if (event.target.id === "loadBuiltInQuestions") {
+        loadBuiltInQuestions();
+        return;
+      }
+
       if (event.target.id === "importStudents") {
         const text = document.getElementById("studentImportText").value.trim();
         if (!text) {
@@ -4311,6 +4330,70 @@
       }
     }, true);
 
+    // ============ 真题导入/加载功能 ============
+    function loadBuiltInQuestions() {
+      if (!window.builtInQuestions || !window.builtInQuestions.length) {
+        alert("内置题库未加载，请检查网络后刷新页面。");
+        return;
+      }
+      // 与现有题目合并（去重：按 stem 去重）
+      const existingStems = new Set(state.trueQuestions.map(q => q.stem));
+      const newQuestions = window.builtInQuestions.filter(q => !existingStems.has(q.stem));
+      if (newQuestions.length === 0) {
+        alert("内置题库的题目已经全部导入过了。");
+        return;
+      }
+      state.trueQuestions = [...state.trueQuestions, ...newQuestions];
+      saveExamPractice();
+      renderExam();
+      alert(`成功加载 ${newQuestions.length} 道真题！题库现有 ${state.trueQuestions.length} 道题。`);
+    }
+
+    function importTrueQuestionsFromText(text) {
+      const lines = text.split("\n").filter(line => line.trim());
+      const newQuestions = [];
+      let importedCount = 0;
+      const existingStems = new Set(state.trueQuestions.map(q => q.stem));
+
+      for (const line of lines) {
+        const parts = line.split("|");
+        if (parts.length < 11) continue;
+        const [year, source, module, point, stem, optA, optB, optC, optD, answer, explanation, trap] = parts.map(s => s.trim());
+        if (!stem || !answer) continue;
+        if (existingStems.has(stem)) continue;
+
+        const id = "q" + Date.now() + "_" + Math.random().toString(36).slice(2, 8);
+        newQuestions.push({
+          id,
+          module: module || "综合",
+          point: point || "综合",
+          no: state.trueQuestions.length + newQuestions.length + 1,
+          stem,
+          year: year || "",
+          source: source || "云南省考",
+          options: [optA || "A", optB || "B", optC || "C", optD || "D"],
+          answer: answer.toUpperCase(),
+          explanation: explanation || "暂无解析",
+          method: "仔细审题，逐项排除，找到最符合题意的选项。",
+          trap: trap || "暂无",
+          tip: "遇到类似题目，先确定考点，再按固定步骤作答。",
+          errorType: "概念混淆"
+        });
+        importedCount++;
+      }
+
+      if (importedCount === 0) {
+        alert("未识别到有效题目，请检查格式：年份|来源|模块|考点|题干|A|B|C|D|答案|解析|易错点");
+        return;
+      }
+
+      state.trueQuestions = [...state.trueQuestions, ...newQuestions];
+      saveExamPractice();
+      document.getElementById("trueQuestionInput").value = "";
+      renderExam();
+      alert(`成功导入 ${importedCount} 道真题！题库现有 ${state.trueQuestions.length} 道题。`);
+    }
+
     renderAll();
 
     // 稳定版：清理旧的离线缓存，避免手机 Safari 一直打开旧版本或白屏
@@ -4324,8 +4407,6 @@
       caches.keys()
         .then((keys) => keys.forEach((key) => caches.delete(key)))
         .catch(() => {});
-    }
-    }
     }
   </script>
 </body>
