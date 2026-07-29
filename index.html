@@ -1581,7 +1581,7 @@
           <div class="card metric">
             <span class="label">学员总费用</span>
             <span class="num" id="totalFee">¥0</span>
-            <span class="hint">来自学员管理费用合计</span>
+            <span class="hint">来源于已收费用汇总</span>
           </div>
           <div class="card metric">
             <span class="label">已收费用</span>
@@ -1591,7 +1591,7 @@
           <div class="card metric">
             <span class="label">待收费用</span>
             <span class="num" id="unpaidFee">¥0</span>
-            <span class="hint">总费用 - 已收费用</span>
+            <span class="hint">应收费用 - 已收费用</span>
           </div>
           <div class="card metric">
             <span class="label">今日学习内容</span>
@@ -2508,6 +2508,7 @@
       { key: "issue", label: "颈椎问题/主诉", required: false, aliases: ["问题", "症状", "主诉", "颈椎问题", "疼痛", "不适"] },
       { key: "status", label: "状态", required: false, aliases: ["状态", "进度", "阶段", "学员状态"] },
       { key: "totalFee", label: "总费用", required: false, aliases: ["费用", "金额", "学费", "课程费", "课程费用", "总费用", "总价", "应收"] },
+      { key: "paidFee", label: "已收费用", required: false, aliases: ["已收", "已收费用", "已付款", "已付", "实收", "收款", "已收金额"] },
       { key: "body", label: "体态情况", required: false, aliases: ["体态", "体态情况", "姿态", "评估", "体态评估"] },
       { key: "film", label: "片子/检查", required: false, aliases: ["片子", "影像", "检查", "报告", "检查报告"] },
       { key: "plan", label: "康复方案", required: false, aliases: ["方案", "康复方案", "训练计划", "康复计划"] },
@@ -2515,7 +2516,7 @@
       { key: "remark", label: "备注", required: false, aliases: ["备注", "补充", "说明", "注意事项"] }
     ];
 
-    const STUDENT_NUMERIC_FIELDS = ["age", "totalFee"];
+    const STUDENT_NUMERIC_FIELDS = ["age", "totalFee", "paidFee"];
 
     function normalizeStudentRecord(record = {}) {
       const normalized = { ...record };
@@ -2526,6 +2527,7 @@
       normalized.issue = String(normalized.issue || "待评估").trim();
       normalized.status = STUDENT_STATUS_OPTIONS.includes(normalized.status) ? normalized.status : (normalized.status || "新学员");
       normalized.totalFee = Math.max(0, Number(normalized.totalFee || 0));
+      if ("paidFee" in normalized) normalized.paidFee = Math.max(0, Number(normalized.paidFee || 0));
       normalized.body = String(normalized.body || "待补充体态评估").trim();
       normalized.film = String(normalized.film || "待上传片子/报告").trim();
       normalized.plan = String(normalized.plan || "待制定康复方案").trim();
@@ -2554,7 +2556,7 @@
         return;
       }
       const headers = EXCEL_STD_FIELDS.map(f => f.label);
-      const sample = ["张三", "28", "13800000000", "办公室久坐", "颈椎酸痛、圆肩", "康复中", "3800", "头前引、右肩略高", "颈椎曲度变直", "胸椎伸展+深颈屈肌激活", "已完成2次评估课", "每周复查疼痛评分"];
+      const sample = ["张三", "28", "13800000000", "办公室久坐", "颈椎酸痛、圆肩", "康复中", "3800", "1200", "头前引、右肩略高", "颈椎曲度变直", "胸椎伸展+深颈屈肌激活", "已完成2次评估课", "每周复查疼痛评分"];
       const ws = XLSX.utils.aoa_to_sheet([headers, sample]);
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, ws, "学员信息");
@@ -2569,6 +2571,7 @@
       const headers = EXCEL_STD_FIELDS.map(f => f.label);
       const rows = state.students.map(s => EXCEL_STD_FIELDS.map(f => {
         const key = f.key;
+        if (key === "paidFee") return calculatePaidFee(s);
         if (STUDENT_NUMERIC_FIELDS.includes(key)) return Number(s[key] || 0);
         return s[key] || "";
       }));
@@ -2698,31 +2701,35 @@
               images: existing.images || {},
               followUps: existing.followUps || []
             });
+            if ("paidFee" in providedRecord) setStudentPaidFee(newStudents[dupIdx], providedRecord.paidFee);
             results.overwritten++;
             results.errors.push(`第 ${rowNum} 行：学员 ${normalizedRecord.name} 已存在，已覆盖更新`);
             return;
           }
 
           Object.entries(providedRecord).forEach(([k, v]) => {
-            if (["id", "payments", "images", "followUps"].includes(k)) return;
+            if (["id", "payments", "images", "followUps", "paidFee"].includes(k)) return;
             if (v !== "" && v != null) {
               existing[k] = STUDENT_NUMERIC_FIELDS.includes(k) ? Number(v) || 0 : v;
             }
           });
           newStudents[dupIdx] = normalizeStudentRecord(existing);
+          if ("paidFee" in providedRecord) setStudentPaidFee(newStudents[dupIdx], providedRecord.paidFee);
           results.errors.push(`第 ${rowNum} 行：学员 ${normalizedRecord.name} 已存在，已合并更新信息`);
           return;
         }
 
         const id = "s" + Date.now() + "_" + Math.random().toString(36).slice(2, 6);
-        newStudents.push(normalizeStudentRecord({
+        const newStudent = normalizeStudentRecord({
           id,
           ...normalizedRecord,
           status: normalizedRecord.status || "新学员",
           payments: [],
           images: {},
           followUps: []
-        }));
+        });
+        if ("paidFee" in providedRecord) setStudentPaidFee(newStudent, providedRecord.paidFee);
+        newStudents.push(newStudent);
         results.success++;
       });
 
@@ -2813,13 +2820,43 @@
       document.querySelectorAll(".nav button").forEach(btn => btn.classList.toggle("active", btn.dataset.view === viewId));
     }
 
+    function calculatePaidFee(student) {
+      return (student?.payments || []).reduce((sum, p) => sum + Number(p.amount || 0), 0);
+    }
+
+    function setStudentPaidFee(student, targetAmount) {
+      if (!student) return;
+      student.payments = Array.isArray(student.payments) ? student.payments : [];
+      const target = Math.max(0, Number(targetAmount || 0));
+      const adjustmentIndex = student.payments.findIndex(p => p.item === "已收费用调整" && p.method === "手动调整");
+      const otherTotal = student.payments.reduce((sum, p, index) => {
+        if (index === adjustmentIndex) return sum;
+        return sum + Number(p.amount || 0);
+      }, 0);
+      const diff = target - otherTotal;
+      if (Math.abs(diff) < 0.01) {
+        if (adjustmentIndex >= 0) student.payments.splice(adjustmentIndex, 1);
+      } else if (adjustmentIndex >= 0) {
+        student.payments[adjustmentIndex].amount = diff;
+        student.payments[adjustmentIndex].date = new Date().toISOString().slice(0, 10);
+      } else {
+        student.payments.push({
+          date: new Date().toISOString().slice(0, 10),
+          item: "已收费用调整",
+          amount: diff,
+          method: "手动调整"
+        });
+      }
+      delete student.paidFee;
+    }
+
     function renderOverview() {
-      const total = state.students.reduce((sum, s) => sum + s.totalFee, 0);
-      const paid = state.students.reduce((sum, s) => sum + s.payments.reduce((a, p) => a + Number(p.amount || 0), 0), 0);
-      const unpaid = total - paid;
+      const receivable = state.students.reduce((sum, s) => sum + Number(s.totalFee || 0), 0);
+      const paid = state.students.reduce((sum, s) => sum + calculatePaidFee(s), 0);
+      const unpaid = Math.max(0, receivable - paid);
       const done = state.planTasks.filter(t => t.done).length;
 
-      document.getElementById("totalFee").textContent = money(total);
+      document.getElementById("totalFee").textContent = money(paid);
       document.getElementById("paidFee").textContent = money(paid);
       document.getElementById("unpaidFee").textContent = money(unpaid);
       document.getElementById("overviewScore").textContent = `今日完成 ${done} / ${state.planTasks.length}`;
@@ -2868,7 +2905,7 @@
     }
 
     function studentEditableValue(student, key, value, extraClass = "") {
-      const display = key === "totalFee" ? money(value) : safeText(value || "点击填写");
+      const display = key === "totalFee" || key === "paidFee" ? money(value) : safeText(value || "点击填写");
       return `<span class="editable-value ${extraClass}" data-edit-student="${student.id}" data-edit-field="${key}" title="点击编辑">${display}</span>`;
     }
 
@@ -2877,7 +2914,7 @@
       const filtered = state.students.filter(s => !keyword || [s.name, s.issue, s.status, s.phone, s.job, s.body, s.film, s.plan, s.remark].join(" ").includes(keyword));
 
       document.getElementById("studentList").innerHTML = filtered.map(s => {
-        const paid = s.payments.reduce((sum, p) => sum + Number(p.amount || 0), 0);
+        const paid = calculatePaidFee(s);
         return `
           <div class="student-row ${state.selectedStudent === s.id ? "active" : ""}" data-student="${s.id}">
             <button class="student-delete-btn" data-student-delete="${s.id}">删除</button>
@@ -2898,7 +2935,7 @@
               </div>
               <div class="row-main">
                 <span class="row-sub">总费用 ${studentEditableValue(s, "totalFee", s.totalFee)}</span>
-                <span class="coin">已收 ${money(paid)}</span>
+                <span class="coin">已收 ${studentEditableValue(s, "paidFee", paid)}</span>
               </div>
             </div>
           </div>
@@ -2913,8 +2950,8 @@
       state.selectedStudent = student.id;
       localStorage.setItem("workbench_selected_student", student.id);
 
-      const paid = student.payments.reduce((sum, p) => sum + Number(p.amount || 0), 0);
-      const unpaid = student.totalFee - paid;
+      const paid = calculatePaidFee(student);
+      const unpaid = Math.max(0, student.totalFee - paid);
       const tableRows = student.payments.map((p, index) => `
         <tr>
           <td>${p.date}</td>
@@ -2983,7 +3020,7 @@
           </div>
           <div class="fee-summary">
             <div class="fee-box"><span>应收总费用</span><strong>${money(student.totalFee)}</strong></div>
-            <div class="fee-box"><span>已收费用</span><strong>${money(paid)}</strong></div>
+            <div class="fee-box"><span>已收费用</span><strong>${studentEditableValue(student, "paidFee", paid)}</strong></div>
             <div class="fee-box"><span>待收费用</span><strong>${money(unpaid)}</strong></div>
           </div>
 
@@ -4053,7 +4090,7 @@
       if (!student || !field) return;
 
       target.dataset.editing = "1";
-      const oldValue = student[field] ?? "";
+      const oldValue = field === "paidFee" ? calculatePaidFee(student) : (student[field] ?? "");
       const control = field === "status"
         ? document.createElement("select")
         : document.createElement("input");
@@ -4070,7 +4107,7 @@
         });
       } else {
         control.type = STUDENT_NUMERIC_FIELDS.includes(field) ? "number" : "text";
-        if (field === "totalFee" || field === "age") control.min = "0";
+        if (field === "totalFee" || field === "age" || field === "paidFee") control.min = "0";
         control.value = oldValue;
       }
 
@@ -4089,8 +4126,12 @@
         } else {
           value = String(value || "").trim();
         }
-        student[field] = value;
-        Object.assign(student, normalizeStudentRecord(student));
+        if (field === "paidFee") {
+          setStudentPaidFee(student, value);
+        } else {
+          student[field] = value;
+          Object.assign(student, normalizeStudentRecord(student));
+        }
         saveStudents();
         renderStudents();
         renderOverview();
@@ -4602,35 +4643,59 @@
       }
     }, true);
 
-    let studentSwipe = { row: null, startX: 0, startY: 0 };
+    const STUDENT_SWIPE_OPEN_DISTANCE = 70;
+    const STUDENT_SWIPE_CLOSE_DISTANCE = 45;
+    const STUDENT_SWIPE_VERTICAL_TOLERANCE = 26;
+    let studentSwipe = { row: null, startX: 0, startY: 0, lastX: 0, lastY: 0, moved: false };
     document.body.addEventListener("touchstart", (event) => {
       const row = event.target.closest(".student-row");
       if (!row) return;
+      if (event.target.closest(".student-delete-btn, .editable-value, button, input, select, textarea")) return;
+      document.querySelectorAll(".student-row.swiped").forEach(openRow => {
+        if (openRow !== row) openRow.classList.remove("swiped");
+      });
       studentSwipe = {
         row,
         startX: event.touches[0].clientX,
-        startY: event.touches[0].clientY
+        startY: event.touches[0].clientY,
+        lastX: event.touches[0].clientX,
+        lastY: event.touches[0].clientY,
+        moved: false
       };
     }, { passive: true });
 
     document.body.addEventListener("touchmove", (event) => {
       if (!studentSwipe.row) return;
-      const dx = event.touches[0].clientX - studentSwipe.startX;
-      const dy = event.touches[0].clientY - studentSwipe.startY;
-      if (Math.abs(dy) > Math.abs(dx)) return;
-      if (dx < -42) {
+      studentSwipe.lastX = event.touches[0].clientX;
+      studentSwipe.lastY = event.touches[0].clientY;
+      const dx = studentSwipe.lastX - studentSwipe.startX;
+      const dy = studentSwipe.lastY - studentSwipe.startY;
+      studentSwipe.moved = Math.abs(dx) > 8 || Math.abs(dy) > 8;
+    }, { passive: true });
+
+    document.body.addEventListener("touchend", () => {
+      if (!studentSwipe.row) {
+        studentSwipe = { row: null, startX: 0, startY: 0, lastX: 0, lastY: 0, moved: false };
+        return;
+      }
+      const dx = studentSwipe.lastX - studentSwipe.startX;
+      const dy = studentSwipe.lastY - studentSwipe.startY;
+      const isClearLeftSwipe = dx <= -STUDENT_SWIPE_OPEN_DISTANCE
+        && Math.abs(dx) >= Math.abs(dy) * 1.8
+        && Math.abs(dy) <= STUDENT_SWIPE_VERTICAL_TOLERANCE;
+      const isRightSwipe = dx >= STUDENT_SWIPE_CLOSE_DISTANCE
+        && Math.abs(dx) >= Math.abs(dy) * 1.5;
+
+      if (isClearLeftSwipe) {
         document.querySelectorAll(".student-row.swiped").forEach(row => {
           if (row !== studentSwipe.row) row.classList.remove("swiped");
         });
         studentSwipe.row.classList.add("swiped");
       }
-      if (dx > 36) {
+      if (isRightSwipe) {
         studentSwipe.row.classList.remove("swiped");
       }
-    }, { passive: true });
-
-    document.body.addEventListener("touchend", () => {
-      studentSwipe = { row: null, startX: 0, startY: 0 };
+      studentSwipe = { row: null, startX: 0, startY: 0, lastX: 0, lastY: 0, moved: false };
     }, { passive: true });
 
     // ============ 真题导入/加载功能 ============
