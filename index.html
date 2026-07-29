@@ -349,6 +349,86 @@
       border-color: rgba(82, 200, 137, 0.58);
     }
 
+    .student-row {
+      position: relative;
+      overflow: hidden;
+      touch-action: pan-y;
+    }
+
+    .student-row-content {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      gap: 7px;
+      background: inherit;
+      transition: transform 0.18s ease;
+    }
+
+    .student-row.swiped .student-row-content {
+      transform: translateX(-86px);
+    }
+
+    .student-delete-btn {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 72px;
+      height: calc(100% - 20px);
+      border: 0;
+      border-radius: 14px;
+      background: var(--red);
+      color: #fff;
+      font-weight: 800;
+      cursor: pointer;
+      opacity: 0;
+      pointer-events: none;
+      transition: 0.16s ease;
+      z-index: 3;
+    }
+
+    .student-row:hover .student-delete-btn,
+    .student-row.swiped .student-delete-btn {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .student-row:hover .student-delete-btn {
+      transform: translateY(-50%) scale(1);
+    }
+
+    .editable-value {
+      border: 1px dashed transparent;
+      border-radius: 9px;
+      padding: 2px 5px;
+      cursor: text;
+      transition: 0.16s ease;
+    }
+
+    .editable-value:hover {
+      border-color: rgba(138, 98, 230, 0.35);
+      background: rgba(255,255,255,0.72);
+    }
+
+    .inline-edit-control {
+      width: 100%;
+      min-width: 90px;
+      border: 1px solid rgba(138, 98, 230, 0.42);
+      border-radius: 10px;
+      padding: 6px 8px;
+      font-size: 13px;
+      background: #fff;
+      color: var(--text);
+    }
+
+    .student-mini-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 5px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
     .row-main {
       display: flex;
       align-items: center;
@@ -1572,7 +1652,7 @@
               <button class="ghost-btn" id="btnImportLog">📜 导入日志</button>
             </div>
           </div>
-          <p style="font-size:13px;color:var(--muted);margin:6px 0 0;">支持 .xlsx / .xls 文件，只识别学员姓名和费用，适合快速导入学员名单。</p>
+          <p style="font-size:13px;color:var(--muted);margin:6px 0 0;">支持 .xlsx / .xls 文件，可智能匹配姓名、年龄、电话、职业、主诉、状态、费用、体态、片子、方案、记录和备注等完整字段。</p>
           <input type="file" id="excelFileInput" accept=".xlsx,.xls" style="display:none;" />
         </div>
 
@@ -2418,10 +2498,44 @@
     const saveChatMatches = () => localStorage.setItem("workbench_chat_matches", JSON.stringify(state.chatMatches));
     const saveImportLogs = () => localStorage.setItem("workbench_import_logs", JSON.stringify(state.importLogs));
 
+    const STUDENT_STATUS_OPTIONS = ["新学员", "康复中", "待复查", "已结课", "暂停", "新导入"];
+
     const EXCEL_STD_FIELDS = [
       { key: "name", label: "学员姓名", required: true, aliases: ["姓名", "名字", "学员姓名", "学员", "客户", "称呼"] },
-      { key: "totalFee", label: "费用", required: false, aliases: ["费用", "金额", "学费", "课程费", "课程费用", "总费用", "总价", "应收"] }
+      { key: "age", label: "年龄", required: false, aliases: ["年龄", "岁数"] },
+      { key: "phone", label: "电话", required: false, aliases: ["电话", "手机号", "手机", "联系方式", "联系电话"] },
+      { key: "job", label: "职业/身份", required: false, aliases: ["职业", "工作", "身份", "岗位"] },
+      { key: "issue", label: "颈椎问题/主诉", required: false, aliases: ["问题", "症状", "主诉", "颈椎问题", "疼痛", "不适"] },
+      { key: "status", label: "状态", required: false, aliases: ["状态", "进度", "阶段", "学员状态"] },
+      { key: "totalFee", label: "总费用", required: false, aliases: ["费用", "金额", "学费", "课程费", "课程费用", "总费用", "总价", "应收"] },
+      { key: "body", label: "体态情况", required: false, aliases: ["体态", "体态情况", "姿态", "评估", "体态评估"] },
+      { key: "film", label: "片子/检查", required: false, aliases: ["片子", "影像", "检查", "报告", "检查报告"] },
+      { key: "plan", label: "康复方案", required: false, aliases: ["方案", "康复方案", "训练计划", "康复计划"] },
+      { key: "classRecord", label: "上课/训练记录", required: false, aliases: ["上课记录", "训练记录", "课程记录", "课次"] },
+      { key: "remark", label: "备注", required: false, aliases: ["备注", "补充", "说明", "注意事项"] }
     ];
+
+    const STUDENT_NUMERIC_FIELDS = ["age", "totalFee"];
+
+    function normalizeStudentRecord(record = {}) {
+      const normalized = { ...record };
+      normalized.name = String(normalized.name || "").trim().replace(/[^\u4e00-\u9fa5a-zA-Z0-9·.\s]/g, "").slice(0, 30);
+      normalized.age = normalized.age === "" || normalized.age == null ? "" : Number(normalized.age) || "";
+      normalized.phone = String(normalized.phone || "").trim();
+      normalized.job = String(normalized.job || "待补充").trim();
+      normalized.issue = String(normalized.issue || "待评估").trim();
+      normalized.status = STUDENT_STATUS_OPTIONS.includes(normalized.status) ? normalized.status : (normalized.status || "新学员");
+      normalized.totalFee = Math.max(0, Number(normalized.totalFee || 0));
+      normalized.body = String(normalized.body || "待补充体态评估").trim();
+      normalized.film = String(normalized.film || "待上传片子/报告").trim();
+      normalized.plan = String(normalized.plan || "待制定康复方案").trim();
+      normalized.classRecord = String(normalized.classRecord || "").trim().slice(0, 1000);
+      normalized.remark = String(normalized.remark || "").trim().slice(0, 1000);
+      normalized.payments = Array.isArray(normalized.payments) ? normalized.payments : [];
+      normalized.images = normalized.images || {};
+      normalized.followUps = Array.isArray(normalized.followUps) ? normalized.followUps : [];
+      return normalized;
+    }
     function autoMatchHeader(headerName) {
       const h = String(headerName || "").trim();
       if (!h) return "";
@@ -2440,7 +2554,7 @@
         return;
       }
       const headers = EXCEL_STD_FIELDS.map(f => f.label);
-      const sample = ["张三", "3800"];
+      const sample = ["张三", "28", "13800000000", "办公室久坐", "颈椎酸痛、圆肩", "康复中", "3800", "头前引、右肩略高", "颈椎曲度变直", "胸椎伸展+深颈屈肌激活", "已完成2次评估课", "每周复查疼痛评分"];
       const ws = XLSX.utils.aoa_to_sheet([headers, sample]);
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, ws, "学员信息");
@@ -2455,7 +2569,7 @@
       const headers = EXCEL_STD_FIELDS.map(f => f.label);
       const rows = state.students.map(s => EXCEL_STD_FIELDS.map(f => {
         const key = f.key;
-        if (key === "totalFee") return s.totalFee || 0;
+        if (STUDENT_NUMERIC_FIELDS.includes(key)) return Number(s[key] || 0);
         return s[key] || "";
       }));
       const ws = XLSX.utils.aoa_to_sheet([headers, ...rows]);
@@ -2500,7 +2614,19 @@
 
     function showExcelMatchModal() {
       const body = document.getElementById("excelMatchBody");
-      body.innerHTML = state._excelHeaders.map(h => {
+      body.innerHTML = `
+        <div class="match-row" style="grid-template-columns:1fr 1fr;">
+          <div>
+            <strong>重复学员处理</strong>
+            <div class="row-sub">按学员姓名判断重复</div>
+          </div>
+          <select id="excelDuplicateMode">
+            <option value="merge" selected>合并：只更新表格里有内容的字段</option>
+            <option value="overwrite">覆盖：用表格整行覆盖原资料</option>
+            <option value="skip">跳过：保留原学员不动</option>
+          </select>
+        </div>
+      ` + state._excelHeaders.map(h => {
         const mapped = state._excelMapping[h];
         const options = ['<option value="">不导入</option>']
           .concat(EXCEL_STD_FIELDS.map(f => `<option value="${f.key}" ${mapped === f.key ? "selected" : ""}>${f.label}${f.required ? " *" : ""}</option>`))
@@ -2528,7 +2654,8 @@
         return;
       }
 
-      const results = { success: 0, duplicate: 0, failed: 0, errors: [] };
+      const duplicateMode = document.getElementById("excelDuplicateMode")?.value || "merge";
+      const results = { success: 0, duplicate: 0, skipped: 0, overwritten: 0, failed: 0, errors: [] };
       const newStudents = [...state.students];
 
       state._excelData.forEach((row, idx) => {
@@ -2546,41 +2673,56 @@
           return;
         }
 
-        record.name = (record.name || "").replace(/[^\u4e00-\u9fa5a-zA-Z0-9]/g, "").slice(0, 20);
-                if (record.remark && record.remark.length > 500) record.remark = record.remark.slice(0, 500);
+        const normalizedRecord = normalizeStudentRecord(record);
+        const providedRecord = {};
+        Object.entries(record).forEach(([k, v]) => {
+          if (v !== "" && v != null) providedRecord[k] = normalizedRecord[k];
+        });
 
-        const dupIdx = newStudents.findIndex(s => s.name === record.name);
+        const dupIdx = newStudents.findIndex(s => s.name === normalizedRecord.name);
         if (dupIdx >= 0) {
           results.duplicate++;
-          const existing = newStudents[dupIdx];
-          Object.entries(record).forEach(([k, v]) => {
-            if (v && existing[k] !== v) {
-              if (k === "totalFee") existing[k] = Number(v) || existing[k] || 0;
-              else existing[k] = v;
+          if (duplicateMode === "skip") {
+            results.skipped++;
+            results.errors.push(`第 ${rowNum} 行：学员 ${normalizedRecord.name} 已存在，已跳过`);
+            return;
+          }
+
+          const existing = normalizeStudentRecord(newStudents[dupIdx]);
+          if (duplicateMode === "overwrite") {
+            newStudents[dupIdx] = normalizeStudentRecord({
+              ...existing,
+              ...providedRecord,
+              id: existing.id,
+              payments: existing.payments || [],
+              images: existing.images || {},
+              followUps: existing.followUps || []
+            });
+            results.overwritten++;
+            results.errors.push(`第 ${rowNum} 行：学员 ${normalizedRecord.name} 已存在，已覆盖更新`);
+            return;
+          }
+
+          Object.entries(providedRecord).forEach(([k, v]) => {
+            if (["id", "payments", "images", "followUps"].includes(k)) return;
+            if (v !== "" && v != null) {
+              existing[k] = STUDENT_NUMERIC_FIELDS.includes(k) ? Number(v) || 0 : v;
             }
           });
-          results.errors.push(`第 ${rowNum} 行：学员 ${record.name} 已存在，已合并更新信息`);
+          newStudents[dupIdx] = normalizeStudentRecord(existing);
+          results.errors.push(`第 ${rowNum} 行：学员 ${normalizedRecord.name} 已存在，已合并更新信息`);
           return;
         }
 
         const id = "s" + Date.now() + "_" + Math.random().toString(36).slice(2, 6);
-        newStudents.push({
+        newStudents.push(normalizeStudentRecord({
           id,
-          name: record.name || "",
-          phone: "",
-          age: record.age || "",
-          classRecord: record.classRecord || "",
-          remark: record.remark || "",
-          issue: record.issue || "待评估",
-          status: "新学员",
-          totalFee: Number(record.totalFee) || 0,
+          ...normalizedRecord,
+          status: normalizedRecord.status || "新学员",
           payments: [],
           images: {},
-          body: record.body || "待补充体态评估",
-          film: record.film || "待上传片子/报告",
-          plan: record.plan || "待制定康复方案",
           followUps: []
-        });
+        }));
         results.success++;
       });
 
@@ -2592,6 +2734,8 @@
         total: state._excelData.length,
         success: results.success,
         duplicate: results.duplicate,
+        overwritten: results.overwritten,
+        skipped: results.skipped,
         failed: results.failed,
         errors: results.errors
       };
@@ -2615,13 +2759,14 @@
           </div>
           <div class="result-stat">
             <div class="num">${results.duplicate}</div>
-            <div class="label">重复/合并</div>
+            <div class="label">重复处理</div>
           </div>
           <div class="result-stat">
             <div class="num">${results.failed}</div>
             <div class="label">失败</div>
           </div>
         </div>
+        <p style="font-size:13px;color:var(--muted);margin:6px 0;">覆盖 ${results.overwritten || 0} 条 · 跳过 ${results.skipped || 0} 条 · 其余重复按合并处理</p>
         ${results.errors.length ? `
           <p style="font-size:13px;color:var(--muted);margin:6px 0;">错误/提示明细：</p>
           <div class="error-list">
@@ -2656,7 +2801,7 @@
         body.innerHTML = state.importLogs.map(log => `
           <div class="log-item">
             <div class="log-title">${log.time}</div>
-            <div class="log-meta">共 ${log.total} 条 · 成功 ${log.success} · 重复/合并 ${log.duplicate} · 失败 ${log.failed}</div>
+            <div class="log-meta">共 ${log.total} 条 · 成功 ${log.success} · 重复 ${log.duplicate || 0} · 覆盖 ${log.overwritten || 0} · 跳过 ${log.skipped || 0} · 失败 ${log.failed}</div>
           </div>
         `).join("");
       }
@@ -2713,29 +2858,58 @@
       renderOverview();
     }
 
+    function safeText(value) {
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function studentEditableValue(student, key, value, extraClass = "") {
+      const display = key === "totalFee" ? money(value) : safeText(value || "点击填写");
+      return `<span class="editable-value ${extraClass}" data-edit-student="${student.id}" data-edit-field="${key}" title="点击编辑">${display}</span>`;
+    }
+
     function renderStudents() {
       const keyword = document.getElementById("globalSearch").value.trim();
-      const filtered = state.students.filter(s => !keyword || [s.name, s.issue, s.status, s.phone].join(" ").includes(keyword));
+      const filtered = state.students.filter(s => !keyword || [s.name, s.issue, s.status, s.phone, s.job, s.body, s.film, s.plan, s.remark].join(" ").includes(keyword));
 
       document.getElementById("studentList").innerHTML = filtered.map(s => {
         const paid = s.payments.reduce((sum, p) => sum + Number(p.amount || 0), 0);
         return `
           <div class="student-row ${state.selectedStudent === s.id ? "active" : ""}" data-student="${s.id}">
-            <div class="row-main">
-              <strong>${s.name}</strong>
-              <span class="status">${s.status}</span>
-            </div>
-            <div class="row-sub">${s.issue}</div>
-            <div class="row-main">
-              <span class="row-sub">总费用 ${money(s.totalFee)}</span>
-              <span class="coin">已收 ${money(paid)}</span>
+            <button class="student-delete-btn" data-student-delete="${s.id}">删除</button>
+            <div class="student-row-content">
+              <div class="row-main">
+                <strong>${studentEditableValue(s, "name", s.name)}</strong>
+                ${studentEditableValue(s, "status", s.status, "status")}
+              </div>
+              <div class="row-sub">主诉：${studentEditableValue(s, "issue", s.issue)}</div>
+              <div class="student-mini-grid">
+                <span>电话：${studentEditableValue(s, "phone", s.phone)}</span>
+                <span>年龄：${studentEditableValue(s, "age", s.age || "")} · 职业：${studentEditableValue(s, "job", s.job || "")}</span>
+                <span>体态：${studentEditableValue(s, "body", s.body || "")}</span>
+                <span>片子：${studentEditableValue(s, "film", s.film || "")}</span>
+                <span>方案：${studentEditableValue(s, "plan", s.plan || "")}</span>
+                <span>记录：${studentEditableValue(s, "classRecord", s.classRecord || "")}</span>
+                <span>备注：${studentEditableValue(s, "remark", s.remark || "")}</span>
+              </div>
+              <div class="row-main">
+                <span class="row-sub">总费用 ${studentEditableValue(s, "totalFee", s.totalFee)}</span>
+                <span class="coin">已收 ${money(paid)}</span>
+              </div>
             </div>
           </div>
         `;
       }).join("") || `<div class="empty">没有找到匹配的学员。</div>`;
 
       const student = state.students.find(s => s.id === state.selectedStudent) || state.students[0];
-      if (!student) return;
+      if (!student) {
+        document.getElementById("studentDetail").innerHTML = `<div class="card"><div class="empty">暂无学员。可以先导入 Excel 或恢复示例数据。</div></div>`;
+        return;
+      }
       state.selectedStudent = student.id;
       localStorage.setItem("workbench_selected_student", student.id);
 
@@ -2762,10 +2936,12 @@
           </div>
 
           <div class="field-grid">
-            <div class="field"><span>颈椎问题</span><strong>${student.issue}</strong></div>
-            <div class="field"><span>体态情况</span><strong>${student.body}</strong></div>
-            <div class="field"><span>片子/检查</span><strong>${student.film}</strong></div>
-            <div class="field"><span>康复方案</span><strong>${student.plan}</strong></div>
+            <div class="field"><span>颈椎问题</span><strong>${studentEditableValue(student, "issue", student.issue)}</strong></div>
+            <div class="field"><span>体态情况</span><strong>${studentEditableValue(student, "body", student.body)}</strong></div>
+            <div class="field"><span>片子/检查</span><strong>${studentEditableValue(student, "film", student.film)}</strong></div>
+            <div class="field"><span>康复方案</span><strong>${studentEditableValue(student, "plan", student.plan)}</strong></div>
+            <div class="field"><span>课堂记录</span><strong>${studentEditableValue(student, "classRecord", student.classRecord)}</strong></div>
+            <div class="field"><span>备注</span><strong>${studentEditableValue(student, "remark", student.remark)}</strong></div>
           </div>
 
           <div class="section-title">
@@ -3869,7 +4045,102 @@
       URL.revokeObjectURL(link.href);
     }
 
+    function startStudentInlineEdit(target) {
+      if (!target || target.dataset.editing === "1") return;
+      const studentId = target.dataset.editStudent;
+      const field = target.dataset.editField;
+      const student = state.students.find(s => s.id === studentId);
+      if (!student || !field) return;
+
+      target.dataset.editing = "1";
+      const oldValue = student[field] ?? "";
+      const control = field === "status"
+        ? document.createElement("select")
+        : document.createElement("input");
+      control.className = "inline-edit-control";
+      control.dataset.inlineEdit = "1";
+
+      if (field === "status") {
+        STUDENT_STATUS_OPTIONS.forEach(status => {
+          const option = document.createElement("option");
+          option.value = status;
+          option.textContent = status;
+          option.selected = status === oldValue;
+          control.appendChild(option);
+        });
+      } else {
+        control.type = STUDENT_NUMERIC_FIELDS.includes(field) ? "number" : "text";
+        if (field === "totalFee" || field === "age") control.min = "0";
+        control.value = oldValue;
+      }
+
+      target.innerHTML = "";
+      target.appendChild(control);
+      control.focus();
+      if (control.select) control.select();
+
+      let saved = false;
+      const saveInlineValue = () => {
+        if (saved) return;
+        saved = true;
+        let value = control.value;
+        if (STUDENT_NUMERIC_FIELDS.includes(field)) {
+          value = Math.max(0, Number(value || 0));
+        } else {
+          value = String(value || "").trim();
+        }
+        student[field] = value;
+        Object.assign(student, normalizeStudentRecord(student));
+        saveStudents();
+        renderStudents();
+        renderOverview();
+      };
+
+      control.addEventListener("blur", saveInlineValue);
+      control.addEventListener("change", () => {
+        if (field === "status") saveInlineValue();
+      });
+      control.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          control.blur();
+        }
+        if (e.key === "Escape") {
+          e.preventDefault();
+          renderStudents();
+        }
+      });
+    }
+
+    function deleteStudent(studentId) {
+      const student = state.students.find(s => s.id === studentId);
+      if (!student) return;
+      if (!confirm(`确定删除学员「${student.name}」吗？删除后该学员资料和费用记录都会移除。`)) return;
+      state.students = state.students.filter(s => s.id !== studentId);
+      if (state.selectedStudent === studentId) {
+        state.selectedStudent = state.students[0] ? state.students[0].id : "";
+        localStorage.setItem("workbench_selected_student", state.selectedStudent);
+      }
+      saveStudents();
+      renderStudents();
+      renderOverview();
+    }
+
     document.body.addEventListener("click", (event) => {
+      const editTarget = event.target.closest("[data-edit-student][data-edit-field]");
+      if (editTarget) {
+        event.stopPropagation();
+        startStudentInlineEdit(editTarget);
+        return;
+      }
+
+      const studentDelete = event.target.closest("[data-student-delete]");
+      if (studentDelete) {
+        event.stopPropagation();
+        deleteStudent(studentDelete.dataset.studentDelete);
+        return;
+      }
+
       const task = event.target.closest("[data-task]");
       if (task) {
         const id = task.dataset.task;
@@ -3883,6 +4154,7 @@
 
       const student = event.target.closest("[data-student]");
       if (student) {
+        if (event.target.closest("[data-inline-edit]")) return;
         state.selectedStudent = student.dataset.student;
         renderStudents();
         renderOverview();
@@ -4329,6 +4601,37 @@
         saveShenlunState();
       }
     }, true);
+
+    let studentSwipe = { row: null, startX: 0, startY: 0 };
+    document.body.addEventListener("touchstart", (event) => {
+      const row = event.target.closest(".student-row");
+      if (!row) return;
+      studentSwipe = {
+        row,
+        startX: event.touches[0].clientX,
+        startY: event.touches[0].clientY
+      };
+    }, { passive: true });
+
+    document.body.addEventListener("touchmove", (event) => {
+      if (!studentSwipe.row) return;
+      const dx = event.touches[0].clientX - studentSwipe.startX;
+      const dy = event.touches[0].clientY - studentSwipe.startY;
+      if (Math.abs(dy) > Math.abs(dx)) return;
+      if (dx < -42) {
+        document.querySelectorAll(".student-row.swiped").forEach(row => {
+          if (row !== studentSwipe.row) row.classList.remove("swiped");
+        });
+        studentSwipe.row.classList.add("swiped");
+      }
+      if (dx > 36) {
+        studentSwipe.row.classList.remove("swiped");
+      }
+    }, { passive: true });
+
+    document.body.addEventListener("touchend", () => {
+      studentSwipe = { row: null, startX: 0, startY: 0 };
+    }, { passive: true });
 
     // ============ 真题导入/加载功能 ============
     function loadBuiltInQuestions() {
