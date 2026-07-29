@@ -562,6 +562,11 @@
       padding: 12px;
     }
 
+    .field.with-images {
+      display: grid;
+      gap: 8px;
+    }
+
     .field span {
       display: block;
       font-size: 12px;
@@ -571,6 +576,75 @@
 
     .field strong {
       font-size: 14px;
+    }
+
+    .field-image-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .image-upload-btn {
+      display: inline-flex;
+      align-items: center;
+      border: 1px dashed rgba(138, 98, 230, 0.5);
+      border-radius: 999px;
+      background: #fff;
+      color: var(--purple);
+      font-size: 12px;
+      font-weight: 800;
+      padding: 6px 10px;
+      cursor: pointer;
+    }
+
+    .image-upload-btn:hover {
+      background: var(--purple-soft);
+    }
+
+    .student-image-file-input {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .field-image-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(74px, 1fr));
+      gap: 8px;
+    }
+
+    .field-image-thumb {
+      position: relative;
+      overflow: hidden;
+      min-height: 74px;
+      border-radius: 12px;
+      background: #fff;
+      border: 1px solid rgba(138, 98, 230, 0.18);
+    }
+
+    .field-image-thumb img {
+      width: 100%;
+      height: 82px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .field-image-thumb button {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      border: 0;
+      border-radius: 999px;
+      background: rgba(255, 80, 80, 0.92);
+      color: #fff;
+      font-size: 12px;
+      line-height: 1;
+      width: 22px;
+      height: 22px;
+      cursor: pointer;
     }
 
     .image-slots {
@@ -2951,6 +3025,29 @@
       return `<span class="editable-value ${extraClass}" data-edit-student="${student.id}" data-edit-field="${key}" title="点击编辑">${display}</span>`;
     }
 
+    function studentImageField(student, key, label) {
+      const imageList = Array.isArray(student.images?.[key]) ? student.images[key] : [];
+      const inputId = `student-image-${student.id}-${key}`;
+      const thumbs = imageList.map((src, index) => `
+        <div class="field-image-thumb">
+          <img src="${src}" alt="${safeText(label)}图片${index + 1}" />
+          <button type="button" data-delete-student-image="${student.id}" data-image-field="${key}" data-image-index="${index}" title="删除图片">×</button>
+        </div>
+      `).join("");
+      return `
+        <div class="field with-images">
+          <span>${label}</span>
+          <strong>${studentEditableValue(student, key, student[key])}</strong>
+          <div class="field-image-actions">
+            <label class="image-upload-btn" for="${inputId}">上传图片</label>
+            <input id="${inputId}" class="student-image-file-input" type="file" accept="image/*" multiple data-student-image-file="${student.id}" data-image-field="${key}" />
+            <span class="row-sub">${imageList.length ? `已上传 ${imageList.length} 张` : "可上传图片资料"}</span>
+          </div>
+          ${thumbs ? `<div class="field-image-list">${thumbs}</div>` : ""}
+        </div>
+      `;
+    }
+
     function renderStudents() {
       const keyword = document.getElementById("globalSearch").value.trim();
       const filtered = state.students.filter(s => !keyword || [s.name, s.issue, s.status, s.phone, s.job, s.body, s.film, s.plan, s.remark].join(" ").includes(keyword));
@@ -3017,11 +3114,11 @@
 
           <div class="field-grid">
             <div class="field"><span>颈椎问题</span><strong>${studentEditableValue(student, "issue", student.issue)}</strong></div>
-            <div class="field"><span>体态情况</span><strong>${studentEditableValue(student, "body", student.body)}</strong></div>
-            <div class="field"><span>片子/检查</span><strong>${studentEditableValue(student, "film", student.film)}</strong></div>
-            <div class="field"><span>康复方案</span><strong>${studentEditableValue(student, "plan", student.plan)}</strong></div>
+            ${studentImageField(student, "body", "体态情况")}
+            ${studentImageField(student, "film", "片子/检查")}
+            ${studentImageField(student, "plan", "康复方案")}
             <div class="field"><span>课堂记录</span><strong>${studentEditableValue(student, "classRecord", student.classRecord)}</strong></div>
-            <div class="field"><span>备注</span><strong>${studentEditableValue(student, "remark", student.remark)}</strong></div>
+            ${studentImageField(student, "remark", "备注")}
           </div>
 
           <div class="section-title">
@@ -4214,7 +4311,77 @@
       renderOverview();
     }
 
+    function handleStudentImageFiles(studentId, field, files) {
+      const student = state.students.find(s => s.id === studentId);
+      if (!student || !field) return;
+      const fileList = Array.from(files || []);
+      if (!fileList.length) return;
+      student.images = student.images || {};
+      student.images[field] = Array.isArray(student.images[field]) ? student.images[field] : [];
+      let loaded = 0;
+      fileList.forEach(file => {
+        if (!file.type.startsWith("image/")) {
+          loaded++;
+          return;
+        }
+        const reader = new FileReader();
+        reader.onload = () => {
+          student.images[field].push(reader.result);
+          loaded++;
+          if (loaded === fileList.length) {
+            saveStudents();
+            renderStudents();
+            renderOverview();
+          }
+        };
+        reader.onerror = () => {
+          loaded++;
+          if (loaded === fileList.length) {
+            saveStudents();
+            renderStudents();
+            renderOverview();
+          }
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function uploadStudentImages(studentId, field) {
+      const input = document.querySelector(`[data-student-image-file="${studentId}"][data-image-field="${field}"]`);
+      if (input) input.click();
+    }
+
+    document.body.addEventListener("change", (event) => {
+      if (event.target.matches("[data-student-image-file]")) {
+        handleStudentImageFiles(event.target.dataset.studentImageFile, event.target.dataset.imageField, event.target.files);
+        event.target.value = "";
+      }
+    });
+
+    function deleteStudentImage(studentId, field, index) {
+      const student = state.students.find(s => s.id === studentId);
+      if (!student || !student.images || !Array.isArray(student.images[field])) return;
+      student.images[field].splice(Number(index), 1);
+      saveStudents();
+      renderStudents();
+      renderOverview();
+    }
+
     document.body.addEventListener("click", (event) => {
+      const uploadImage = event.target.closest("[data-upload-student-image]");
+      if (uploadImage) {
+        event.stopPropagation();
+        uploadStudentImages(uploadImage.dataset.uploadStudentImage, uploadImage.dataset.imageField);
+        return;
+      }
+
+      const deleteImage = event.target.closest("[data-delete-student-image]");
+      if (deleteImage) {
+        event.stopPropagation();
+        deleteStudentImage(deleteImage.dataset.deleteStudentImage, deleteImage.dataset.imageField, deleteImage.dataset.imageIndex);
+        return;
+      }
+
       const paidFeeEditButton = event.target.closest(".paid-fee-edit-btn");
       let editTarget = event.target.closest("[data-edit-student][data-edit-field]");
       if (paidFeeEditButton) {
