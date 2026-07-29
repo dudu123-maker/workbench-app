@@ -453,6 +453,31 @@
       white-space: nowrap;
     }
 
+    .paid-fee-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      border-color: rgba(185, 134, 0, 0.32);
+      background: rgba(255, 248, 225, 0.72);
+      cursor: text;
+    }
+
+    .paid-fee-edit-btn {
+      border: 0;
+      border-radius: 999px;
+      background: #fff3c4;
+      color: #9b6d00;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 3px 8px;
+      cursor: pointer;
+      margin-left: 6px;
+    }
+
+    .paid-fee-edit-btn:hover {
+      background: #ffe28a;
+    }
+
     .layout-two {
       display: grid;
       grid-template-columns: 340px minmax(0, 1fr);
@@ -579,6 +604,23 @@
       border-radius: 16px;
       background: var(--soft);
       padding: 12px;
+    }
+
+    .fee-box.paid-fee-box {
+      border: 1px dashed rgba(185, 134, 0, 0.36);
+      background: rgba(255, 248, 225, 0.72);
+      cursor: text;
+      transition: 0.16s ease;
+    }
+
+    .fee-box.paid-fee-box:hover {
+      border-color: rgba(185, 134, 0, 0.72);
+      transform: translateY(-1px);
+    }
+
+    .fee-box.paid-fee-box .paid-fee-edit-btn {
+      margin-left: 0;
+      margin-top: 8px;
     }
 
     .fee-box span {
@@ -2935,7 +2977,8 @@
               </div>
               <div class="row-main">
                 <span class="row-sub">总费用 ${studentEditableValue(s, "totalFee", s.totalFee)}</span>
-                <span class="coin">已收 ${studentEditableValue(s, "paidFee", paid)}</span>
+                <span class="coin editable-value paid-fee-chip" data-edit-student="${s.id}" data-edit-field="paidFee" title="点击编辑已收费用">已收 ${money(paid)}</span>
+                <button type="button" class="paid-fee-edit-btn" data-edit-student="${s.id}" data-edit-field="paidFee">编辑</button>
               </div>
             </div>
           </div>
@@ -3020,7 +3063,11 @@
           </div>
           <div class="fee-summary">
             <div class="fee-box"><span>应收总费用</span><strong>${money(student.totalFee)}</strong></div>
-            <div class="fee-box"><span>已收费用</span><strong>${studentEditableValue(student, "paidFee", paid)}</strong></div>
+            <div class="fee-box paid-fee-box" data-edit-student="${student.id}" data-edit-field="paidFee" title="点击编辑已收费用">
+              <span>已收费用 · 点击编辑</span>
+              <strong>${money(paid)}</strong>
+              <button type="button" class="paid-fee-edit-btn" data-edit-student="${student.id}" data-edit-field="paidFee">编辑</button>
+            </div>
             <div class="fee-box"><span>待收费用</span><strong>${money(unpaid)}</strong></div>
           </div>
 
@@ -4168,7 +4215,13 @@
     }
 
     document.body.addEventListener("click", (event) => {
-      const editTarget = event.target.closest("[data-edit-student][data-edit-field]");
+      const paidFeeEditButton = event.target.closest(".paid-fee-edit-btn");
+      let editTarget = event.target.closest("[data-edit-student][data-edit-field]");
+      if (paidFeeEditButton) {
+        editTarget = paidFeeEditButton.closest(".paid-fee-box")
+          || paidFeeEditButton.previousElementSibling?.closest(".paid-fee-chip")
+          || paidFeeEditButton;
+      }
       if (editTarget) {
         event.stopPropagation();
         startStudentInlineEdit(editTarget);
