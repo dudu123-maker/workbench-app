@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
   <meta name="theme-color" content="#9b76ea" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
@@ -1047,6 +1050,107 @@
       color: #fff;
     }
 
+
+
+    .plan-editor {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 120px 90px;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .plan-editor input {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 10px 12px;
+      outline: none;
+      background: #fff;
+    }
+
+    .task-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .source-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      padding: 9px 12px;
+      background: var(--purple);
+      color: #fff;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+      border: 0;
+    }
+
+    .true-question-import {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .analysis-block {
+      background: var(--soft);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px;
+      line-height: 1.8;
+      margin-top: 12px;
+      font-size: 13px;
+    }
+
+    .action-card {
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 14px;
+      padding: 12px;
+      margin-top: 10px;
+    }
+
+    .mini-diagram {
+      width: 100%;
+      min-height: 110px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #f3ecff 0%, #fff 100%);
+      border: 1px dashed rgba(138, 98, 230, 0.35);
+      display: grid;
+      place-items: center;
+      color: var(--purple);
+      font-weight: 800;
+      margin-top: 8px;
+    }
+
+    .chain-card {
+      border: 1px solid var(--line);
+      background: var(--soft);
+      border-radius: 16px;
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+
+    .url-list {
+      display: grid;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .url-list a {
+      color: var(--purple);
+      font-size: 13px;
+      word-break: break-all;
+    }
+
+    @media (max-width: 720px) {
+      .plan-editor {
+        grid-template-columns: 1fr;
+      }
+    }
+
     @media (max-width: 768px) {
       .search-results-grid {
         grid-template-columns: 1fr;
@@ -1372,12 +1476,12 @@
       <div class="topbar">
         <label class="search">
           🔎
-          <input id="globalSearch" type="search" placeholder="搜索学员、行测、申论、招聘、肌肉..." />
+          <input id="globalSearch" type="search" placeholder="搜索学员、行测、申论、招聘、肌肉、肌筋膜链..." />
         </label>
         <div class="profile">
           <div class="avatar">🐱</div>
           <div>
-            <strong>今日工作台</strong><br />
+            <strong>今日工作台 · 新版 2026-07-29</strong><br />
             <small id="todayText"></small>
           </div>
         </div>
@@ -1431,8 +1535,8 @@
             </div>
             <div class="list">
               <div class="info-row">
-                <div class="row-main"><strong>公考热点新闻</strong><span class="coin">5条</span></div>
-                <div class="row-sub">适合整理成申论素材、面试观点和常识积累。</div>
+                <div class="row-main"><strong>公考热点新闻</strong><span class="coin">10条</span></div>
+                <div class="row-sub">按申论素材标准整理：背景、考点、金句、答题角度都完整展示。</div>
               </div>
               <div class="info-row">
                 <div class="row-main"><strong>昆明带编制招聘</strong><span class="coin">10条</span></div>
@@ -1443,7 +1547,7 @@
                 <div class="row-sub">每天学习功能、起止点、动作模式和训练方法。</div>
               </div>
             </div>
-            <button class="primary-btn" id="overviewExportPack" style="width:100%;margin-top:12px;">📦 一键导出整合学习包（行测+申论+成语）</button>
+            <button class="primary-btn" id="overviewExportPack" style="width:100%;margin-top:12px;">📦 一键导出公考学习包（行测+申论+成语）</button>
           </div>
         </div>
       </section>
@@ -1467,7 +1571,7 @@
               <button class="ghost-btn" id="btnImportLog">📜 导入日志</button>
             </div>
           </div>
-          <p style="font-size:13px;color:var(--muted);margin:6px 0 0;">支持 .xlsx / .xls 文件，上传后自动匹配字段、校验重复和必填项。</p>
+          <p style="font-size:13px;color:var(--muted);margin:6px 0 0;">支持 .xlsx / .xls 文件，只识别学员姓名和费用，适合快速导入学员名单。</p>
           <input type="file" id="excelFileInput" accept=".xlsx,.xls" style="display:none;" />
         </div>
 
@@ -1490,7 +1594,7 @@
             <h2>公考模块</h2>
             <p>行测、申论和热点新闻分栏展示，每天可以作为学习包使用。</p>
           </div>
-          <span class="pill">每日 10-20 条 + 热点 5 条</span>
+          <span class="pill">每日 10-20 条 + 热点 10 条</span>
         </div>
 
         <div class="tabs" id="examTabs"></div>
@@ -1626,9 +1730,6 @@
         job: "办公室久坐",
         issue: "颈椎前倾、右侧斜方肌紧张、偶发头痛",
         status: "康复中",
-        weakSubject: "资料分析、数量关系",
-        examType: "省考",
-        progress: "基础阶段",
         totalFee: 3600,
         body: "头前引明显，圆肩轻度，右肩略高，胸椎活动度不足。",
         film: "颈椎曲度变直，建议结合医生诊断与体态评估。",
@@ -1646,9 +1747,6 @@
         job: "程序员",
         issue: "颈肩僵硬、富贵包、左侧肩胛内侧疼痛",
         status: "待复查",
-        weakSubject: "判断推理、言语理解",
-        examType: "国考",
-        progress: "提升阶段",
         totalFee: 4800,
         body: "颈胸交界处隆起，肩胛稳定性不足，胸小肌紧张。",
         film: "暂无片子，建议补充影像资料和疼痛评分。",
@@ -1665,9 +1763,6 @@
         job: "备考学生",
         issue: "低头学习后颈部酸胀、肩颈紧绷",
         status: "新学员",
-        weakSubject: "申论大作文、常识判断",
-        examType: "省考",
-        progress: "入门阶段",
         totalFee: 2200,
         body: "轻度头前引，双肩内扣，腰背耐力不足。",
         film: "无明显影像资料，先以体态和动作评估为主。",
@@ -2166,29 +2261,20 @@
       }
     ];
 
-    const dailyQuestions = Array.from({ length: 50 }, (_, index) => {
-      const seed = questionSeeds[index % questionSeeds.length];
-      return {
-        ...seed,
-        id: `day-q-${index + 1}`,
-        no: index + 1,
-        stem: `第${Math.floor(index / questionSeeds.length) + 1}组｜${seed.stem}`
-      };
-    });
+    const dailyQuestions = [];
 
     const editingTips = [
-      ["开头3秒", "先抛出痛点：肩颈酸？可能不是按摩能解决。"],
-      ["标题公式", "人群+问题+结果，例如：久坐党改善圆肩的3个动作。"],
-      ["封面重点", "只放一个关键词，例如：颈椎前倾、富贵包、圆肩。"],
-      ["节奏剪辑", "每3-5秒换一次画面或字幕重点，避免平铺直叙。"],
-      ["动作演示", "先展示错误动作，再展示正确动作，转化更好。"],
-      ["口播结构", "问题是什么、为什么出现、怎么处理、注意什么。"],
-      ["字幕技巧", "关键词用加粗或变色，不要整屏全是字。"],
-      ["案例内容", "用体态对比讲变化，但要注意隐私和授权。"],
-      ["结尾引导", "让用户评论自己的症状，而不是只说关注我。"],
-      ["系列化", "做成7天肩颈改善系列，更容易形成追更。"]
+      ["分割剪辑", "剪映时间轴里把播放头拖到要切的位置，点“分割”。先粗剪掉废话，再二次精剪停顿和口误。"],
+      ["自动字幕", "进入“文本-识别字幕”，选择普通话识别。识别后逐句检查错字，重点改专业词和人名。"],
+      ["字幕样式", "字幕不要花，建议白字+黑描边，字号保持统一；重点词可以单独加黄色或紫色强调。"],
+      ["音量统一", "主视频音量保持80-100，背景音乐压到8-15，讲解类视频不要让音乐盖过人声。"],
+      ["降噪处理", "人声有杂音时点音频降噪，强度不要拉满，避免声音变闷。先降噪再调音量。"],
+      ["关键帧放大", "在重点动作前后加关键帧，从100%慢慢放大到115%，能突出动作细节。不要全程乱动。"],
+      ["画中画对比", "用画中画放“错误动作”和“正确动作”对比，适合康复动作教学。注意两段视频长度对齐。"],
+      ["转场使用", "知识类视频少用花哨转场，切场景用0.2-0.4秒淡入淡出即可，重点是清楚。"],
+      ["封面制作", "在剪映里定格关键画面，加大标题字，比如“圆肩改善3步”。封面只放一个核心卖点。"],
+      ["高清导出", "小红书建议1080P、30帧或60帧，码率选推荐或更高。导出前检查字幕有没有被边缘裁掉。"]
     ];
-
     const jobs = [
       ["昆明市某区事业单位", "综合管理岗", "汉语言文学、行政管理", "职测+综合应用能力", "35岁以下", "事业编", "8月上旬"],
       ["昆明市某公立医院", "康复治疗岗", "康复治疗学、运动康复", "医学基础+专业知识", "30岁以下", "事业编", "7月底"],
@@ -2264,7 +2350,7 @@
       }
     ];
 
-    const tasks = [
+    const defaultTasks = [
       { id: "t1", title: "跟进3个学员", time: "30分钟", reward: 20 },
       { id: "t2", title: "检查学员费用记录", time: "10分钟", reward: 10 },
       { id: "t3", title: "学习公考20条内容", time: "40分钟", reward: 20 },
@@ -2278,10 +2364,13 @@
       selectedStudent: localStorage.getItem("workbench_selected_student") || "s1",
       selectedJob: "j0",
       selectedMuscle: 0,
+      anatomyTab: localStorage.getItem("workbench_anatomy_tab") || "肌肉学习",
+      fasciaQuery: "",
       examTab: "每日题库",
-      doneTasks: JSON.parse(localStorage.getItem("workbench_done_tasks") || "[]"),
+      planTasks: JSON.parse(localStorage.getItem("workbench_plan_tasks") || "null") || defaultTasks,
       examAnswers: JSON.parse(localStorage.getItem("workbench_exam_answers") || "{}"),
       wrongBook: JSON.parse(localStorage.getItem("workbench_wrong_book") || "{}"),
+      trueQuestions: JSON.parse(localStorage.getItem("workbench_true_questions") || "[]"),
       actModule: localStorage.getItem("workbench_act_module") || "资料分析",
       actTeacher: localStorage.getItem("workbench_act_teacher") || "全部讲师",
       actExpanded: JSON.parse(localStorage.getItem("workbench_act_expanded") || "{}"),
@@ -2289,7 +2378,6 @@
       shenlunSub: localStorage.getItem("workbench_shenlun_sub") || "全部",
       shenlunTimeliness: localStorage.getItem("workbench_shenlun_timeliness") || "全部时效",
       shenlunTeacher: localStorage.getItem("workbench_shenlun_teacher") || "全部讲师",
-      globalTeacher: localStorage.getItem("workbench_global_teacher") || "全部讲师",
       shenlunExpanded: JSON.parse(localStorage.getItem("workbench_shenlun_expanded") || "{}"),
       shenlunNotes: JSON.parse(localStorage.getItem("workbench_shenlun_notes") || "{}"),
       shenlunFavorites: JSON.parse(localStorage.getItem("workbench_shenlun_favorites") || "[]"),
@@ -2304,10 +2392,11 @@
     };
 
     const saveStudents = () => localStorage.setItem("workbench_students", JSON.stringify(state.students));
-    const saveTasks = () => localStorage.setItem("workbench_done_tasks", JSON.stringify(state.doneTasks));
+    const saveTasks = () => localStorage.setItem("workbench_plan_tasks", JSON.stringify(state.planTasks));
     const saveExamPractice = () => {
       localStorage.setItem("workbench_exam_answers", JSON.stringify(state.examAnswers));
       localStorage.setItem("workbench_wrong_book", JSON.stringify(state.wrongBook));
+      localStorage.setItem("workbench_true_questions", JSON.stringify(state.trueQuestions));
     };
     const saveActState = () => {
       localStorage.setItem("workbench_act_module", state.actModule);
@@ -2329,18 +2418,9 @@
     const saveImportLogs = () => localStorage.setItem("workbench_import_logs", JSON.stringify(state.importLogs));
 
     const EXCEL_STD_FIELDS = [
-      { key: "name", label: "学员姓名", required: true, aliases: ["姓名", "名字", "学员姓名", "学员", "称呼"] },
-      { key: "phone", label: "联系方式", required: true, aliases: ["电话", "手机", "手机号", "联系方式", "联系电话", "微信", "微信号"] },
-      { key: "age", label: "年龄", required: false, aliases: ["年龄", "岁数", "年纪"] },
-      { key: "examType", label: "备考类型", required: false, aliases: ["备考类型", "考试类型", "考公类型", "备考方向", "报考类型"] },
-      { key: "weakSubject", label: "薄弱科目", required: false, aliases: ["薄弱科目", "弱项", "薄弱项", "薄弱环节", "弱势科目"] },
-      { key: "progress", label: "学习进度", required: false, aliases: ["学习进度", "进度", "当前进度", "学习情况"] },
-      { key: "classRecord", label: "上课记录", required: false, aliases: ["上课记录", "课程记录", "课时记录", "已上课时"] },
-      { key: "remark", label: "备注", required: false, aliases: ["备注", "说明", "其他", "补充", "备注信息"] },
-      { key: "issue", label: "颈椎问题", required: false, aliases: ["颈椎问题", "症状", "主诉", "问题", "病情", "主要问题"] },
-      { key: "totalFee", label: "总费用", required: false, aliases: ["总费用", "费用", "总价", "金额", "课程费用", "学费"] }
+      { key: "name", label: "学员姓名", required: true, aliases: ["姓名", "名字", "学员姓名", "学员", "客户", "称呼"] },
+      { key: "totalFee", label: "费用", required: false, aliases: ["费用", "金额", "学费", "课程费", "课程费用", "总费用", "总价", "应收"] }
     ];
-
     function autoMatchHeader(headerName) {
       const h = String(headerName || "").trim();
       if (!h) return "";
@@ -2359,7 +2439,7 @@
         return;
       }
       const headers = EXCEL_STD_FIELDS.map(f => f.label);
-      const sample = ["张三", "13800138000", "25", "省考", "资料分析", "基础阶段", "已上12课时", "颈椎酸痛，久坐加重", "颈椎曲度变直", "3800"];
+      const sample = ["张三", "3800"];
       const ws = XLSX.utils.aoa_to_sheet([headers, sample]);
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, ws, "学员信息");
@@ -2443,7 +2523,7 @@
       const mappedRequired = EXCEL_STD_FIELDS.filter(f => f.required)
         .every(f => Object.values(state._excelMapping).includes(f.key));
       if (!mappedRequired) {
-        alert("请确保必填字段（学员姓名、联系方式）都已映射。");
+        alert("请确保必填字段（学员姓名）已映射。");
         return;
       }
 
@@ -2466,10 +2546,9 @@
         }
 
         record.name = (record.name || "").replace(/[^\u4e00-\u9fa5a-zA-Z0-9]/g, "").slice(0, 20);
-        record.phone = (record.phone || "").replace(/[^\d]/g, "").slice(0, 15);
-        if (record.remark && record.remark.length > 500) record.remark = record.remark.slice(0, 500);
+                if (record.remark && record.remark.length > 500) record.remark = record.remark.slice(0, 500);
 
-        const dupIdx = newStudents.findIndex(s => s.phone === record.phone || s.name === record.name);
+        const dupIdx = newStudents.findIndex(s => s.name === record.name);
         if (dupIdx >= 0) {
           results.duplicate++;
           const existing = newStudents[dupIdx];
@@ -2487,11 +2566,8 @@
         newStudents.push({
           id,
           name: record.name || "",
-          phone: record.phone || "",
+          phone: "",
           age: record.age || "",
-          examType: record.examType || "",
-          weakSubject: record.weakSubject || "",
-          progress: record.progress || "",
           classRecord: record.classRecord || "",
           remark: record.remark || "",
           issue: record.issue || "待评估",
@@ -2499,8 +2575,9 @@
           totalFee: Number(record.totalFee) || 0,
           payments: [],
           images: {},
-          posture: "",
-          plan: "",
+          body: record.body || "待补充体态评估",
+          film: record.film || "待上传片子/报告",
+          plan: record.plan || "待制定康复方案",
           followUps: []
         });
         results.success++;
@@ -2594,38 +2671,48 @@
       const total = state.students.reduce((sum, s) => sum + s.totalFee, 0);
       const paid = state.students.reduce((sum, s) => sum + s.payments.reduce((a, p) => a + Number(p.amount || 0), 0), 0);
       const unpaid = total - paid;
-      const done = state.doneTasks.length;
+      const done = state.planTasks.filter(t => t.done).length;
 
       document.getElementById("totalFee").textContent = money(total);
       document.getElementById("paidFee").textContent = money(paid);
       document.getElementById("unpaidFee").textContent = money(unpaid);
-      document.getElementById("overviewScore").textContent = `今日完成 ${done} / ${tasks.length}`;
-      document.getElementById("planProgress").textContent = `${done} / ${tasks.length}`;
+      document.getElementById("overviewScore").textContent = `今日完成 ${done} / ${state.planTasks.length}`;
+      document.getElementById("planProgress").textContent = `${done} / ${state.planTasks.length}`;
       document.getElementById("studentCount").textContent = `${state.students.length}名学员`;
 
       const overviewTasks = document.getElementById("overviewTasks");
-      overviewTasks.innerHTML = tasks.slice(0, 4).map(taskTemplate).join("");
+      overviewTasks.innerHTML = state.planTasks.slice(0, 4).map(taskTemplate).join("") || `<div class="empty">还没有计划，去“每日计划”里添加。</div>`;
     }
 
     function taskTemplate(task) {
-      const done = state.doneTasks.includes(task.id);
       return `
-        <div class="task ${done ? "done" : ""}" data-task="${task.id}">
+        <div class="task ${task.done ? "done" : ""}">
           <div class="row-main">
-            <strong>${done ? "✓ " : ""}${task.title}</strong>
-            <span class="coin">+${task.reward}</span>
+            <strong>${task.done ? "✓ " : ""}${task.title}</strong>
+            <span class="coin">${task.time || "不限时"}</span>
           </div>
-          <div class="row-sub">${task.time} · 点击切换完成状态</div>
+          <div class="task-actions">
+            <button class="ghost-btn" data-plan-toggle="${task.id}">${task.done ? "取消完成" : "打勾完成"}</button>
+            <button class="ghost-btn" data-plan-edit="${task.id}">编辑</button>
+            <button class="ghost-btn" data-plan-delete="${task.id}">删除</button>
+          </div>
         </div>
       `;
     }
 
     function renderPlan() {
-      document.getElementById("planList").innerHTML = tasks.map(taskTemplate).join("");
+      document.getElementById("planList").innerHTML = `
+        <div class="plan-editor">
+          <input id="newPlanTitle" type="text" placeholder="输入你的每日计划，例如：整理3个学员回访" />
+          <input id="newPlanTime" type="text" placeholder="预计时间" />
+          <button class="primary-btn" id="addPlanTask">添加</button>
+        </div>
+        ${state.planTasks.map(taskTemplate).join("") || `<div class="empty">今天还没有计划，先添加一条。</div>`}
+      `;
       renderOverview();
     }
 
-    function renderStudents() {
+    function renderStudents() {    function renderStudents() {
       const keyword = document.getElementById("globalSearch").value.trim();
       const filtered = state.students.filter(s => !keyword || [s.name, s.issue, s.status, s.phone].join(" ").includes(keyword));
 
@@ -2678,18 +2765,6 @@
             <div class="field"><span>体态情况</span><strong>${student.body}</strong></div>
             <div class="field"><span>片子/检查</span><strong>${student.film}</strong></div>
             <div class="field"><span>康复方案</span><strong>${student.plan}</strong></div>
-          </div>
-
-          <div class="weak-section">
-            <h4>🎯 薄弱科目/考点标记</h4>
-            <div>
-              ${(student.weakSubject || "").split(/[、,，\s]+/).filter(Boolean).map(w => `<span class="weak-tag">${w}</span>`).join("") || '<span style="color:var(--muted);font-size:13px;">暂未标记薄弱科目</span>'}
-            </div>
-            <input type="text" class="weak-edit-input" id="weakSubjectInput" placeholder="输入薄弱科目，用顿号或逗号分隔，例如：资料分析、数量关系、申论大作文" value="${student.weakSubject || ""}" />
-            <div style="display:flex;gap:8px;margin-top:8px;">
-              <button class="primary-btn" id="saveWeakSubject" style="font-size:13px;padding:6px 14px;">保存薄弱标记</button>
-              <span style="font-size:12px;color:var(--muted);margin-top:auto;">标记后，每日学习包将优先推送相关知识点</span>
-            </div>
           </div>
 
           <div class="section-title">
@@ -2869,40 +2944,11 @@
     function renderExam() {
       const tabs = ["每日题库", "错题本", ...Object.keys(examData)];
       const keyword = document.getElementById("globalSearch").value.trim();
-      const selectedStudent = state.students.find(s => s.id === state.selectedStudent);
-      const weakSubject = selectedStudent?.weakSubject || "";
-
-      // 全局讲师筛选器 + 整合学习包按钮
-      const globalTeacherBar = `
-        <div class="global-teacher-bar">
-          <label>👨‍🏫 全局讲师筛选</label>
-          <select id="globalTeacherFilter">
-            ${["全部讲师", "花生十三", "刘文超", "刘文波", "粉笔"].map(name =>
-              `<option ${state.globalTeacher === name ? "selected" : ""}>${name}</option>`
-            ).join("")}
-          </select>
-          <span class="hint">选择后自动同步到行测和申论的名师对比表格</span>
-          <button class="primary-btn" id="exportIntegratedPack" style="margin-left:auto;padding:8px 14px;font-size:13px;">
-            📦 整合学习包导出
-          </button>
-        </div>
-      `;
-
-      // 薄弱科目提示条
-      const weakTipBar = weakSubject ? `
-        <div class="weak-recommend-bar">
-          <span class="label">🎯 ${selectedStudent.name}的薄弱考点：</span>
-          ${weakSubject.split(/[、,，\s]+/).filter(Boolean).map(w =>
-            `<span class="weak-recommend-tag" data-weak-jump="${w}">${w}</span>`
-          ).join("")}
-          <span style="font-size:12px;color:var(--muted);margin-left:auto;">每日学习包优先推送</span>
-        </div>
-      ` : "";
 
       // 全局搜索结果（公考模块内分栏展示）
       const searchResults = keyword ? renderGlobalSearchResults(getGlobalSearchResults(keyword)) : "";
 
-      document.getElementById("examTabs").innerHTML = globalTeacherBar + weakTipBar + '<div class="tabs">' + tabs.map(tab => `
+      document.getElementById("examTabs").innerHTML = '<div class="tabs">' + tabs.map(tab => `
         <button class="tab ${state.examTab === tab ? "active" : ""}" data-exam-tab="${tab}">${tab}</button>
       `).join("") + '</div>';
 
@@ -2931,6 +2977,11 @@
         return;
       }
 
+      if (state.examTab === "热点新闻") {
+        renderHotNews();
+        return;
+      }
+
       const list = examData[state.examTab] || [];
       document.getElementById("examContent").innerHTML = list.map((item, index) => `
         <div class="card">
@@ -2949,9 +3000,44 @@
       `).join("");
     }
 
+
+
+    function renderHotNews() {
+      const items = (examData["申论素材"].list || []).slice(0, 10);
+      document.getElementById("examContent").innerHTML = `
+        <div class="card" style="grid-column:1/-1;">
+          <div class="section-title">
+            <h3>公考热点新闻深度版</h3>
+            <span class="pill">每日10条 · 可直接转申论素材</span>
+          </div>
+          <div class="empty">每条热点都包含新闻背景、申论考点、答题角度和金句，不再是一句话素材。</div>
+        </div>
+        ${items.map(item => `
+          <details class="card knowledge-card" open>
+            <summary>
+              <div class="row-main"><strong>${item.title}</strong><span class="coin">${item.timeliness}</span></div>
+              <div class="row-sub">${item.summary}</div>
+              <div class="card-tags">${(item.tags || []).map(t => `<span class="pill">${t}</span>`).join("")}</div>
+            </summary>
+            <div class="shenlun-section">
+              <h4>申论可考角度</h4>
+              <p class="row-sub">${item.思路?.分析 || ""}</p>
+            </div>
+            <div class="shenlun-section">
+              <h4>可直接背的金句</h4>
+              <ul>${[...(item.quotes?.general || []), ...(item.quotes?.ending || [])].map(q => `<li>${q}</li>`).join("")}</ul>
+            </div>
+            <div class="shenlun-section">
+              <h4>大作文分论点</h4>
+              <ul>${(item.思路?.作文 || []).map(q => `<li>${q}</li>`).join("")}</ul>
+            </div>
+          </details>
+        `).join("")}
+      `;
+    }
+
     function renderActFocus() {
       const keyword = document.getElementById("globalSearch").value.trim();
-      const teacher = state.actTeacher;
       const moduleCards = actKnowledge[state.actModule] || [];
       const cards = moduleCards.filter(item => {
         const haystack = [
@@ -2968,41 +3054,21 @@
         return !keyword || haystack.includes(keyword);
       });
 
-      // 检查当前模块是否为薄弱模块
-      const selectedStudent = state.students.find(s => s.id === state.selectedStudent);
-      const weakModules = getWeakActModules(selectedStudent?.weakSubject || "");
-      const isWeakModule = weakModules.includes(state.actModule);
-
       document.getElementById("examContent").innerHTML = `
         <div class="card" style="grid-column: 1 / -1;">
           <div class="section-title">
             <h3>行测重点升级版</h3>
             <span class="pill">保留积分 · 支持搜索 · 表格横滑</span>
           </div>
-          ${isWeakModule ? `
-            <div class="weak-recommend-bar">
-              <span class="label">⚠️ 薄弱模块：</span>
-              <span class="weak-tag">${state.actModule}</span>
-              <span style="font-size:12px;color:var(--muted);margin-left:auto;">${selectedStudent.name}的薄弱考点，建议重点学习</span>
-            </div>
-          ` : ""}
           <div class="sub-tabs">
-            ${actModules.map(module => {
-              const isWeak = weakModules.includes(module);
-              return `<button class="sub-tab ${state.actModule === module ? "active" : ""}" data-act-module="${module}" style="${isWeak && state.actModule !== module ? 'border-color:#ef9a9a;color:#c62828;' : ''}">
-                ${module}${isWeak ? ' ⚠️' : ''}
-              </button>`;
-            }).join("")}
+            ${actModules.map(module => `<button class="sub-tab ${state.actModule === module ? "active" : ""}" data-act-module="${module}">${module}</button>`).join("")}
           </div>
           <div class="toolbar">
-            <select id="actTeacherFilter">
-              ${["全部讲师", ...actTeachers].map(name => `<option ${teacher === name ? "selected" : ""}>${name}</option>`).join("")}
-            </select>
-            <button class="ghost-btn" data-switch-exam="每日题库">联动题库</button>
-            <button class="ghost-btn" data-switch-exam="错题本">联动错题本</button>
-            <button class="primary-btn" id="exportActPack">每日一键导出学习包</button>
+            <button class="ghost-btn" data-switch-exam="每日题库">联动真题库</button>
+            <button class="ghost-btn" data-switch-exam="错题本">看错题本</button>
+            <button class="primary-btn" id="exportActPack">导出行测学习包</button>
           </div>
-          <div class="empty">当前模块：${state.actModule}${isWeakModule ? ' <strong style="color:#c62828;">（薄弱模块 · 建议优先学习）</strong>' : ''}。知识点卡片可点开/收起；每张卡都固定对比花生十三、刘文超、刘文波、粉笔四大体系。</div>
+          <div class="empty">当前模块：${state.actModule}。知识点卡片可点开/收起；每张卡都固定对比花生十三、刘文超、刘文波、粉笔四大体系。</div>
         </div>
         ${
           cards.length
@@ -3048,7 +3114,7 @@
     }
 
     function teacherCompareTable(item) {
-      const visibleTeachers = state.actTeacher === "全部讲师" ? actTeachers : [state.actTeacher];
+      const visibleTeachers = actTeachers;
       const rows = [
         ["核心思路", t => `${teacherProfiles[t].style} 本考点重点：${item.core}`],
         ["适配题型", t => `${item.type}、${item.title}及相邻易混题。${t === "粉笔" ? "适合系统刷题巩固。" : ""}`],
@@ -3097,22 +3163,10 @@
       const keyword = document.getElementById("globalSearch").value.trim();
       const sub = state.shenlunSub;
       const timeliness = state.shenlunTimeliness;
-      const teacher = state.shenlunTeacher;
       const showFav = state.shenlunShowFav;
       const data = examData["申论素材"];
       const subTabs = data.subTabs || ["全部", "人物素材", "政策素材", "民生案例", "时代热点"];
       const allItems = data.list || [];
-
-      // 当前学员薄弱科目 → 推荐标签
-      const selectedStudent = state.students.find(s => s.id === state.selectedStudent);
-      const weakTags = getWeakShenlunTags(selectedStudent?.weakSubject || "");
-      const weakRecommendBar = weakTags.length ? `
-        <div class="weak-recommend-bar">
-          <span class="label">🎯 薄弱推荐标签：</span>
-          ${weakTags.map(tag => `<span class="weak-recommend-tag" data-shenlun-weak-tag="${tag}">${tag}</span>`).join("")}
-          <span style="font-size:12px;color:var(--muted);margin-left:auto;">基于${selectedStudent.name}的薄弱科目</span>
-        </div>
-      ` : "";
 
       const filteredItems = allItems.filter(item => {
         if (showFav && !state.shenlunFavorites.includes(item.id)) return false;
@@ -3134,16 +3188,6 @@
         }
         return true;
       });
-
-      // 薄弱相关素材优先排序
-      if (weakTags.length && sub === "全部" && timeliness === "全部时效" && !keyword) {
-        filteredItems.sort((a, b) => {
-          const aMatch = (a.tags || []).filter(t => weakTags.includes(t)).length;
-          const bMatch = (b.tags || []).filter(t => weakTags.includes(t)).length;
-          return bMatch - aMatch;
-        });
-      }
-
       const favCount = state.shenlunFavorites.length;
 
       document.getElementById("examContent").innerHTML = `
@@ -3152,7 +3196,6 @@
             <h3>申论素材深度库</h3>
             <span class="pill">共 ${allItems.length} 条 · 收藏 ${favCount} 条</span>
           </div>
-          ${weakRecommendBar}
           <div class="sub-tabs">
             ${subTabs.map(tab => `
               <button class="sub-tab ${sub === tab ? "active" : ""}" data-shenlun-sub="${tab}">${tab}</button>
@@ -3164,14 +3207,11 @@
             `).join("")}
           </div>
           <div class="toolbar">
-            <select id="shenlunTeacherFilter">
-              ${["全部讲师", ...shenlunTeachers].map(name => `<option ${teacher === name ? "selected" : ""}>${name}</option>`).join("")}
-            </select>
             <button class="ghost-btn ${showFav ? "active" : ""}" data-shenlun-show-fav="1" style="${showFav ? 'background:var(--purple);color:#fff;border-color:var(--purple);' : ''}">我的收藏 (${favCount})</button>
             <button class="ghost-btn" data-switch-exam="每日题库">联动题库</button>
             <button class="primary-btn" id="exportShenlunPack">每日一键导出学习包</button>
           </div>
-          <div class="empty">当前分类：${sub} · 时效：${timeliness} · 讲师筛选：${teacher}${showFav ? ' · <strong style="color:var(--purple);">仅显示收藏</strong>' : ''}${weakTags.length ? ' · <strong style="color:#c62828;">薄弱推荐已置顶</strong>' : ''}。点开完整名师对比表格每条 +10 积分。卡片支持收藏、记笔记、联动申论真题。</div>
+          <div class="empty">当前分类：${sub} · 时效：${timeliness}${showFav ? ' · <strong style="color:var(--purple);">仅显示收藏</strong>' : ''}。卡片支持收藏、记笔记、联动申论真题。</div>
         </div>
         ${
           filteredItems.length
@@ -3186,7 +3226,6 @@
       const expanded = state.shenlunExpanded[id] !== false;
       const note = state.shenlunNotes[id] || "";
       const isFav = state.shenlunFavorites.includes(id);
-      const teacher = state.shenlunTeacher;
       const compareUnlocked = state.shenlunTeacherCompareUnlocked.includes(id);
 
       const timelinessClass = item.timeliness === "当日热点" ? "status" :
@@ -3293,7 +3332,7 @@
     }
 
     function shenlunTeacherCompareTable(item, currentTeacher) {
-      const visibleTeachers = currentTeacher === "全部讲师" ? shenlunTeachers : [currentTeacher];
+      const visibleTeachers = shenlunTeachers;
       const rows = [
         ["答题切入角度", t => item.teachers[t].angle],
         ["高分写作技巧", t => item.teachers[t].skill],
@@ -3324,6 +3363,7 @@
     }
 
     function renderQuestionBank() {
+      const questions = state.trueQuestions || [];
       const answered = Object.keys(state.examAnswers).length;
       const wrongCount = Object.values(state.examAnswers).filter(item => item && !item.correct).length;
       const correctCount = Object.values(state.examAnswers).filter(item => item && item.correct).length;
@@ -3331,22 +3371,26 @@
       document.getElementById("examContent").innerHTML = `
         <div class="card" style="grid-column: 1 / -1;">
           <div class="section-title">
-            <h3>每日50题题库</h3>
-            <span class="pill">已做 ${answered} / 50</span>
+            <h3>云南真题库</h3>
+            <span class="pill">已导入 ${questions.length} 题</span>
           </div>
           <div class="analysis-strip">
-            <div class="analysis-box"><span>今日题量</span><strong>50题</strong></div>
+            <div class="analysis-box"><span>真题数量</span><strong>${questions.length}题</strong></div>
             <div class="analysis-box"><span>已答题</span><strong>${answered}题</strong></div>
             <div class="analysis-box"><span>答对</span><strong>${correctCount}题</strong></div>
             <div class="analysis-box"><span>答错</span><strong>${wrongCount}题</strong></div>
           </div>
-          <div class="empty">题目覆盖言语理解、判断推理、数量关系、资料分析、常识判断和申论。做错后会自动进入错题本，并识别考点和出错原因。</div>
+          <div class="empty">为了保证都是真题，这里不再自动生成虚构题。请把云南省联考/云南省考真题按下面格式导入；导入后才会进入每日题库和错题本。</div>
+          <div class="true-question-import">
+            <textarea class="note-box" id="trueQuestionInput" placeholder="每行一题，用 | 分隔：年份|来源|模块|考点|题干|A选项|B选项|C选项|D选项|答案|详细解析|易错点\n例：2023|云南省联考|判断推理|定义判断|题干...|A...|B...|C...|D...|B|第一步看定义关键词...|容易只看生活常识"></textarea>
+            <button class="primary-btn" id="importTrueQuestions">导入真题</button>
+          </div>
         </div>
-        ${dailyQuestions.map(questionTemplate).join("")}
+        ${questions.length ? questions.map(questionTemplate).join("") : `<div class="card" style="grid-column:1/-1;"><div class="empty">还没有导入真题。导入后这里会显示题目、答案和通俗详细解析。</div></div>`}
       `;
     }
 
-    function questionTemplate(question) {
+    function questionTemplate(question) {    function questionTemplate(question) {
       const answerRecord = state.examAnswers[question.id];
       const letters = ["A", "B", "C", "D"];
       return `
@@ -3358,7 +3402,7 @@
           </div>
           <div class="row-main">
             <strong>${question.stem}</strong>
-            <span class="coin">${answerRecord ? (answerRecord.correct ? "已答对" : "已入错题") : "+2"}</span>
+            <span class="coin">${question.year || ""} ${question.source || ""}</span>
           </div>
           <div class="option-grid">
             ${question.options.map((option, index) => {
@@ -3379,8 +3423,13 @@
             answerRecord
               ? `<div class="answer-box">
                    <strong>${answerRecord.correct ? "答对了" : "做错了，已自动加入错题本"}</strong><br />
-                   正确答案：${question.answer}。${question.explanation}<br />
-                   自动识别考点：${question.point}；错误类型：${question.errorType}；易错原因：${question.trap}
+                   正确答案：${question.answer}<br />
+                   <div class="analysis-block">
+                     <strong>通俗解析：</strong>${question.explanation || "暂无解析"}<br />
+                     <strong>怎么想：</strong>${question.method || "先看题目问法，再找关键词，最后逐项排除。"}<br />
+                     <strong>易错点：</strong>${question.trap || "暂无"}<br />
+                     <strong>同类题提醒：</strong>${question.tip || "下次遇到同类题，先确定考点，再按固定步骤做。"}
+                   </div>
                  </div>`
               : ""
           }
@@ -3513,8 +3562,10 @@
           <div class="field"><span>考试科目</span><strong>${job.exam}</strong></div>
           <div class="field"><span>年龄要求</span><strong>${job.age}</strong></div>
           <div class="field"><span>报名时间</span><strong>${job.date}</strong></div>
+          <div class="field"><span>公告来源</span><strong>${job.source || "官方公告"}</strong></div>
         </div>
-        <div class="empty">后续可以接入真实招聘公告来源，这里先做成可用的信息展示结构。</div>
+        <a class="source-link" href="${job.url}" target="_blank" rel="noopener">查看官方/权威公告来源</a>
+        <div class="empty" style="margin-top:12px;">报名条件、岗位表和时间以跳转后的官方公告为准。</div>
       `;
     }
 
@@ -3718,23 +3769,12 @@
     // ===== 整合学习包导出 =====
     function exportIntegratedPack() {
       const today = new Date().toLocaleDateString("zh-CN");
-      const selectedStudent = state.students.find(s => s.id === state.selectedStudent);
-      const weakSubject = selectedStudent?.weakSubject || "";
 
       // 行测：从各模块抽取，优先薄弱科目
       const actItems = [];
       const weakModules = weakSubject ? weakSubject.split(/[、,，\s]+/).map(w => w.trim()) : [];
       const allModules = Object.keys(actKnowledge);
-
-      // 优先抽取薄弱模块
-      const prioritizedModules = [];
-      allModules.forEach(mod => {
-        if (weakModules.some(w => mod.includes(w) || w.includes(mod))) {
-          prioritizedModules.unshift(mod);
-        } else {
-          prioritizedModules.push(mod);
-        }
-      });
+      const prioritizedModules = allModules;
 
       let actCount = 0;
       const targetActCount = 15;
@@ -3742,28 +3782,12 @@
         const items = actKnowledge[mod] || [];
         for (const item of items) {
           if (actCount >= targetActCount) break;
-          actItems.push({ module: mod, ...item, isWeak: weakModules.some(w => mod.includes(w) || w.includes(mod)) });
+          actItems.push({ module: mod, ...item });
           actCount++;
         }
         if (actCount >= targetActCount) break;
       }
-
-      // 申论：当日热点10条（优先薄弱相关标签）
-      const allShenlun = examData["申论素材"].list || [];
-      const weakTags = [];
-      if (weakSubject) {
-        if (weakSubject.includes("申论") || weakSubject.includes("作文") || weakSubject.includes("民生")) weakTags.push("民生");
-        if (weakSubject.includes("法治") || weakSubject.includes("法律")) weakTags.push("法治");
-        if (weakSubject.includes("经济")) weakTags.push("经济");
-        if (weakSubject.includes("文化")) weakTags.push("文化");
-        if (weakSubject.includes("生态")) weakTags.push("生态");
-      }
-
-      const shenlunItems = [...allShenlun].sort((a, b) => {
-        const aMatch = (a.tags || []).filter(t => weakTags.includes(t)).length;
-        const bMatch = (b.tags || []).filter(t => weakTags.includes(t)).length;
-        return bMatch - aMatch;
-      }).slice(0, 10);
+      const shenlunItems = [...allShenlun].slice(0, 10);
 
       // 成语：5条
       const idiomItems = (examData["易错成语积累"] || []).slice(0, 5);
@@ -3773,8 +3797,6 @@
       lines.push("═══════════════════════════════════════");
       lines.push("  公考每日整合学习包");
       lines.push(`  生成日期：${today}`);
-      lines.push(`  当前学员：${selectedStudent?.name || "未选择"}`);
-      if (weakSubject) lines.push(`  薄弱科目：${weakSubject}`);
       lines.push("═══════════════════════════════════════");
       lines.push("");
 
@@ -3790,7 +3812,7 @@
           lines.push(`◆ ${currentModule}`);
           lines.push("");
         }
-        lines.push(`${idx + 1}. ${item.title}${item.isWeak ? " ⚠️薄弱重点" : ""}`);
+        lines.push(`${idx + 1}. ${item.title}`);
         lines.push(`   核心：${item.core}`);
         lines.push(`   公式口诀：${item.formula}`);
         lines.push(`   易混点：${item.mix}`);
@@ -3843,32 +3865,6 @@
       URL.revokeObjectURL(link.href);
     }
 
-    // ===== 薄弱科目→行测模块映射 =====
-    function getWeakActModules(weakSubject) {
-      if (!weakSubject) return [];
-      const weak = weakSubject.toLowerCase();
-      const modules = [];
-      if (weak.includes("资料") || weak.includes("分析")) modules.push("资料分析");
-      if (weak.includes("判断") || weak.includes("推理") || weak.includes("逻辑")) modules.push("判断推理");
-      if (weak.includes("言语") || weak.includes("理解")) modules.push("言语");
-      if (weak.includes("数量") || weak.includes("数学")) modules.push("数量");
-      if (weak.includes("常识")) modules.push("常识");
-      return modules;
-    }
-
-    // ===== 薄弱科目→申论标签映射 =====
-    function getWeakShenlunTags(weakSubject) {
-      if (!weakSubject) return [];
-      const weak = weakSubject.toLowerCase();
-      const tags = [];
-      if (weak.includes("民生") || weak.includes("基层") || weak.includes("乡村")) tags.push("民生");
-      if (weak.includes("法治") || weak.includes("法律") || weak.includes("政府")) tags.push("法治");
-      if (weak.includes("经济") || weak.includes("营商") || weak.includes("产业")) tags.push("经济");
-      if (weak.includes("文化") || weak.includes("青年") || weak.includes("自信")) tags.push("文化");
-      if (weak.includes("生态") || weak.includes("环保") || weak.includes("绿色")) tags.push("生态");
-      return tags;
-    }
-
     document.body.addEventListener("click", (event) => {
       const task = event.target.closest("[data-task]");
       if (task) {
@@ -3912,7 +3908,7 @@
 
       const answerButton = event.target.closest("[data-question-id][data-choice]");
       if (answerButton) {
-        const question = dailyQuestions.find(item => item.id === answerButton.dataset.questionId);
+        const question = state.trueQuestions.find(item => item.id === answerButton.dataset.questionId);
         if (!question) return;
 
         const choice = answerButton.dataset.choice;
@@ -3975,17 +3971,6 @@
         renderOverview();
       }
 
-      if (event.target.id === "saveWeakSubject") {
-        const student = state.students.find(s => s.id === state.selectedStudent);
-        if (student) {
-          const input = document.getElementById("weakSubjectInput");
-          student.weakSubject = input.value.trim();
-          saveStudents();
-          renderStudents();
-          alert("薄弱科目标记已保存！每日学习包将优先推送相关内容。");
-        }
-      }
-
       if (event.target.id === "resetDemo") {
         if (confirm("确定恢复示例学员数据吗？这会覆盖当前费用记录。")) {
           state.students = JSON.parse(JSON.stringify(defaultStudents));
@@ -4032,7 +4017,7 @@
         const list = actKnowledge[state.actModule] || [];
         const content = [
           `【${state.actModule}】每日学习包`,
-          `讲师筛选：${state.actTeacher}`,
+          "讲师思路区别已写在每个知识点卡片中",
           "",
           ...list.map(item => [
             `考点：${item.title}`,
@@ -4056,14 +4041,6 @@
       if (shenlunSub) {
         state.shenlunSub = shenlunSub.dataset.shenlunSub;
         saveShenlunState();
-        renderExam();
-      }
-
-      const shenlunWeakTag = event.target.closest("[data-shenlun-weak-tag]");
-      if (shenlunWeakTag) {
-        const tag = shenlunWeakTag.dataset.shenlunWeakTag;
-        // 用搜索框搜索该标签
-        document.getElementById("globalSearch").value = tag;
         renderExam();
       }
 
@@ -4175,28 +4152,6 @@
 
       if (event.target.id === "overviewExportPack") {
         exportIntegratedPack();
-      }
-
-      const weakJump = event.target.closest("[data-weak-jump]");
-      if (weakJump) {
-        const weakText = weakJump.dataset.weakJump;
-        // 判断是行测还是申论薄弱
-        if (["资料", "分析", "判断", "推理", "言语", "理解", "数量", "常识", "逻辑"].some(k => weakText.includes(k))) {
-          // 跳转到行测重点
-          state.examTab = "行测重点";
-          // 尝试匹配模块
-          if (weakText.includes("资料") || weakText.includes("分析")) state.actModule = "资料分析";
-          else if (weakText.includes("判断") || weakText.includes("推理") || weakText.includes("逻辑")) state.actModule = "判断推理";
-          else if (weakText.includes("言语") || weakText.includes("理解")) state.actModule = "言语";
-          else if (weakText.includes("数量") || weakText.includes("数学")) state.actModule = "数量";
-          else if (weakText.includes("常识")) state.actModule = "常识";
-          saveActState();
-        } else {
-          // 跳转到申论素材
-          state.examTab = "申论素材";
-          saveShenlunState();
-        }
-        renderExam();
       }
 
       // 全局搜索结果点击跳转
@@ -4317,35 +4272,6 @@
     });
 
     document.body.addEventListener("change", (event) => {
-      if (event.target.id === "actTeacherFilter") {
-        state.actTeacher = event.target.value;
-        saveActState();
-        renderExam();
-      }
-
-      if (event.target.id === "shenlunTeacherFilter") {
-        state.shenlunTeacher = event.target.value;
-        saveShenlunState();
-        renderExam();
-      }
-
-      if (event.target.id === "globalTeacherFilter") {
-        const selected = event.target.value;
-        state.globalTeacher = selected;
-        localStorage.setItem("workbench_global_teacher", selected);
-        // 同步到行测
-        state.actTeacher = selected;
-        saveActState();
-        // 同步到申论（处理粉笔名称差异）
-        if (selected === "粉笔") {
-          state.shenlunTeacher = "粉笔标准体系";
-        } else {
-          state.shenlunTeacher = selected;
-        }
-        saveShenlunState();
-        renderExam();
-      }
-
       if (event.target.matches("[data-act-note]")) {
         state.actNotes[event.target.dataset.actNote] = event.target.value;
         saveActState();
@@ -4398,6 +4324,8 @@
       caches.keys()
         .then((keys) => keys.forEach((key) => caches.delete(key)))
         .catch(() => {});
+    }
+    }
     }
   </script>
 </body>
