@@ -1730,20 +1730,7 @@
               <h3>今日重点信息</h3>
               <span class="pill">自动更新区</span>
             </div>
-            <div class="list">
-              <div class="info-row">
-                <div class="row-main"><strong>公考热点新闻</strong><span class="coin">10条</span></div>
-                <div class="row-sub">按申论素材标准整理：背景、考点、金句、答题角度都完整展示。</div>
-              </div>
-              <div class="info-row">
-                <div class="row-main"><strong>昆明带编制招聘</strong><span class="coin">10条</span></div>
-                <div class="row-sub">重点查看专业要求、考试科目、年龄限制和报名时间。</div>
-              </div>
-              <div class="info-row">
-                <div class="row-main"><strong>解剖康复肌肉学习</strong><span class="coin">5条</span></div>
-                <div class="row-sub">每天学习功能、起止点、动作模式和训练方法。</div>
-              </div>
-            </div>
+            <div class="list" id="overviewDailyInfo"></div>
             <button class="primary-btn" id="overviewExportPack" style="width:100%;margin-top:12px;">📦 一键导出公考学习包（行测+申论+成语）</button>
           </div>
         </div>
@@ -1802,9 +1789,9 @@
         <div class="page-head">
           <div>
             <h2>小红书剪辑技巧</h2>
-            <p>每天10条剪辑、选题、标题、封面和脚本技巧。</p>
+            <p>每天从技巧库轮换5条剪辑、选题、标题、封面和脚本技巧。</p>
           </div>
-          <span class="pill">10条/天</span>
+          <span class="pill">5条/天</span>
         </div>
         <div class="grid cols-2" id="editingList"></div>
       </section>
@@ -2461,28 +2448,38 @@
     const dailyQuestions = [];
 
     const editingTips = [
-      ["分割剪辑", "剪映时间轴里把播放头拖到要切的位置，点“分割”。先粗剪掉废话，再二次精剪停顿和口误。"],
-      ["自动字幕", "进入“文本-识别字幕”，选择普通话识别。识别后逐句检查错字，重点改专业词和人名。"],
-      ["字幕样式", "字幕不要花，建议白字+黑描边，字号保持统一；重点词可以单独加黄色或紫色强调。"],
-      ["音量统一", "主视频音量保持80-100，背景音乐压到8-15，讲解类视频不要让音乐盖过人声。"],
-      ["降噪处理", "人声有杂音时点音频降噪，强度不要拉满，避免声音变闷。先降噪再调音量。"],
-      ["关键帧放大", "在重点动作前后加关键帧，从100%慢慢放大到115%，能突出动作细节。不要全程乱动。"],
-      ["画中画对比", "用画中画放“错误动作”和“正确动作”对比，适合康复动作教学。注意两段视频长度对齐。"],
-      ["转场使用", "知识类视频少用花哨转场，切场景用0.2-0.4秒淡入淡出即可，重点是清楚。"],
-      ["封面制作", "在剪映里定格关键画面，加大标题字，比如“圆肩改善3步”。封面只放一个核心卖点。"],
-      ["高清导出", "小红书建议1080P、30帧或60帧，码率选推荐或更高。导出前检查字幕有没有被边缘裁掉。"]
+      { title: "黄金3秒开头", hot: 98, practical: 96, scene: "适合康复知识、动作纠错、疼痛科普类短视频。", steps: ["第一秒直接说痛点，例如“圆肩不是只拉胸就行”。", "第二秒给反差结论，例如“很多人练错了发力位置”。", "第三秒露出今天要解决的动作或对比画面。"], mistake: "不要用“大家好，今天分享一下”开头，信息太慢，容易被划走。", tip: "开头字幕控制在12字以内，最好包含“错误、改善、别再、3步”这类高点击词。", tags: ["热门", "完播率", "开头"] },
+      { title: "问题-原因-解决三段式", hot: 96, practical: 98, scene: "适合讲解圆肩、头前引、腰痛、膝痛等康复主题。", steps: ["先用一句话说用户问题。", "再用一张图或一个动作解释原因。", "最后给1个可马上练的动作，不要一次给太多。"], mistake: "只讲理论不落动作，观众会觉得有用但不知道怎么做。", tip: "每段之间用大字标题切换：问题、原因、练法，观众更容易跟上。", tags: ["实用", "脚本", "知识类"] },
+      { title: "错误动作 vs 正确动作对比", hot: 95, practical: 97, scene: "适合康复训练、健身教学、动作纠错视频。", steps: ["左边放错误动作，右边放正确动作。", "用红色圈出错误代偿位置，用绿色箭头指向正确发力。", "每个对比停留2-3秒，让观众看清区别。"], mistake: "不要只说“这样不对”，要明确指出错在哪里，比如耸肩、塌腰、膝内扣。", tip: "对比视频最好同角度、同距离拍摄，不然观众会误以为是镜头差异。", tags: ["热门", "康复", "对比"] },
+      { title: "自动字幕精修", hot: 94, practical: 95, scene: "适合所有口播和知识讲解视频。", steps: ["先用自动识别生成字幕。", "逐句检查专业词、人名、动作名。", "每行控制12-18个字，断句跟着呼吸和语义走。"], mistake: "不要让一整段话挤在一屏，观众读不完，也会显得不专业。", tip: "康复类词汇如“前锯肌、胸小肌、骨盆前倾”一定手动校对。", tags: ["字幕", "效率", "基础"] },
+      { title: "封面一句话卖点", hot: 97, practical: 94, scene: "适合小红书封面、视频首帧、合集封面。", steps: ["先确定一个具体人群或问题。", "标题写成“问题+结果”，例如“圆肩改善3步”。", "画面只保留人物、动作和一个箭头，不堆太多字。"], mistake: "封面同时写痛点、原理、动作、口号，会让用户不知道看哪里。", tip: "封面主标题建议8-12个字，副标题最多一行。", tags: ["热门", "封面", "点击率"] },
+      { title: "口播节奏压缩", hot: 90, practical: 96, scene: "适合真人出镜讲解、课程切片、知识分享。", steps: ["删掉口头禅和重复解释。", "每个知识点只保留一个核心句。", "重点结论前后留0.2-0.4秒停顿。"], mistake: "全程语速过快会显得信息密，但观众记不住。", tip: "剪完后闭眼听一遍，如果不看画面也能听懂，说明节奏基本合格。", tags: ["口播", "节奏", "实用"] },
+      { title: "关键帧局部放大", hot: 88, practical: 93, scene: "适合突出肩胛、膝盖、骨盆、手腕等细节动作。", steps: ["在关键动作开始前打一个关键帧。", "动作重点处放大到110%-125%。", "动作结束后回到100%，避免一直放大。"], mistake: "不要频繁乱放大，会让画面晃、观众晕。", tip: "每条视频最多放大2-4次，只放真正需要看的发力位置。", tags: ["剪映", "动作细节", "关键帧"] },
+      { title: "B-roll补画面", hot: 89, practical: 92, scene: "适合口播太长、知识点抽象、需要解释肌肉原理的视频。", steps: ["口播说问题时放真人状态。", "讲原因时插入肌肉图、动作慢放或错误示范。", "讲解决方法时回到完整训练动作。"], mistake: "B-roll和口播内容不匹配，会显得像硬凑素材。", tip: "每6-8秒换一次画面，能明显降低枯燥感。", tags: ["画面", "知识类", "完播率"] },
+      { title: "声音层级统一", hot: 87, practical: 95, scene: "适合有口播、背景音乐、动作原声的视频。", steps: ["先把人声音量调到清楚。", "背景音乐压到8-15。", "有动作提示音时只保留短促音效，不要盖住说话。"], mistake: "背景音乐太大是知识类视频最常见的劝退点。", tip: "戴耳机和外放各听一遍，外放能听清才适合手机端。", tags: ["音频", "实用", "基础"] },
+      { title: "降噪先轻后重", hot: 82, practical: 91, scene: "适合室内口播、门店拍摄、环境声偏杂的视频。", steps: ["先开轻度降噪。", "再听人声是否发闷。", "如果仍有噪声，优先降低环境音片段，而不是拉满降噪。"], mistake: "降噪强度拉满会让声音像隔着水，影响专业感。", tip: "拍摄时靠近麦克风，比后期猛降噪更有效。", tags: ["音频", "收音", "降噪"] },
+      { title: "动作慢放讲重点", hot: 86, practical: 94, scene: "适合康复动作、拉伸动作、训练发力教学。", steps: ["完整动作先正常速度播放一遍。", "关键发力阶段降到0.6-0.8倍速。", "慢放时加箭头或短字幕说明发力点。"], mistake: "整条视频都慢放会拖节奏，只慢放关键2-4秒。", tip: "慢放片段前加“注意这里”四个字，观众会更集中。", tags: ["康复", "动作", "慢放"] },
+      { title: "文字高亮只抓关键词", hot: 85, practical: 90, scene: "适合知识点、注意事项、动作禁忌提示。", steps: ["先写完整字幕。", "只把动作名、禁忌、次数、错误点高亮。", "同一条视频固定一种高亮色。"], mistake: "整句高亮等于没有重点，画面也会乱。", tip: "黄色适合重点词，红色只用于错误和禁止。", tags: ["字幕", "视觉", "重点"] },
+      { title: "镜头留白方便后期", hot: 80, practical: 92, scene: "适合拍康复动作、训练教程、全身示范。", steps: ["拍摄时头顶和脚底都留空间。", "人物放在画面中间偏下，不要贴边。", "提前想好字幕放上方还是下方。"], mistake: "拍摄时手脚出画，后期再怎么剪都救不回来。", tip: "全身动作建议竖屏后退半步拍，宁愿多留一点空间。", tags: ["拍摄", "构图", "实用"] },
+      { title: "结尾引导下一条", hot: 84, practical: 88, scene: "适合系列内容、康复知识连载、账号涨粉。", steps: ["结尾先总结今天解决了什么。", "再抛出下一个相关问题。", "最后引导收藏或看下一条。"], mistake: "只说“记得关注”太空，不如给明确期待。", tip: "例句：明天讲这个动作为什么越练肩越酸。", tags: ["涨粉", "系列", "结尾"] },
+      { title: "评论区选题回收", hot: 83, practical: 93, scene: "适合持续更新小红书账号、打造专业人设。", steps: ["发布后收集评论里的疼痛、动作、疑问。", "把高频问题整理成下一条标题。", "开头直接说“很多人问……”。"], mistake: "只按自己想讲的内容做，容易和用户真实需求脱节。", tip: "评论原话往往比自己想的标题更有点击感。", tags: ["选题", "运营", "实用"] },
+      { title: "素材归档复用", hot: 74, practical: 89, scene: "适合每天剪视频、管理大量训练素材。", steps: ["按日期建立文件夹。", "原片、成片、封面、字幕分开放。", "把可复用动作镜头单独存进素材库。"], mistake: "素材乱放会导致第二天找不到，重复拍摄浪费时间。", tip: "文件名加上动作和角度，例如“前锯肌_墙滑_侧面”。", tags: ["效率", "归档", "工作流"] },
+      { title: "封面和标题统一卖点", hot: 92, practical: 90, scene: "适合提高点击率，尤其是康复教学视频。", steps: ["标题说结果，封面说痛点。", "标题和封面不要完全重复。", "保持同一套颜色和字体，形成账号识别度。"], mistake: "标题写“肩颈训练”，封面写“康复知识”，都太泛。", tip: "更具体的写法是“肩颈酸？先练这个稳定肌”。", tags: ["标题", "封面", "热门"] },
+      { title: "去掉无效转场", hot: 79, practical: 91, scene: "适合知识类、康复类、课程切片。", steps: ["不同动作之间用硬切或0.2秒淡入淡出。", "重要结论前不要加花哨转场。", "只在章节切换时使用轻微转场。"], mistake: "炫酷转场会抢走知识重点，显得不稳重。", tip: "知识类视频的高级感来自清楚，不来自特效多。", tags: ["转场", "清爽", "知识类"] },
+      { title: "标题数字化", hot: 91, practical: 87, scene: "适合封面标题、视频标题、合集标题。", steps: ["把模糊表达改成数字。", "把“几个动作”改成“3个动作”。", "把“很快改善”改成“每天5分钟”。"], mistake: "数字不能乱写，内容里必须真的兑现。", tip: "常用结构：3步、5分钟、2个错误、1个关键点。", tags: ["标题", "热门", "点击率"] },
+      { title: "发布前手机预览", hot: 78, practical: 94, scene: "适合所有准备发布的小红书视频。", steps: ["导出后先发给自己或保存预览。", "用手机看字幕是否太小、边缘是否被遮挡。", "检查封面在信息流里是否一眼能看懂。"], mistake: "电脑上看着清楚，手机信息流里可能完全看不清。", tip: "发布前至少检查字幕、音量、封面、前3秒四项。", tags: ["发布", "检查", "实用"] }
     ];
     const jobs = [
-      ["昆明市某区事业单位", "综合管理岗", "汉语言文学、行政管理", "职测+综合应用能力", "35岁以下", "事业编", "8月上旬"],
-      ["昆明市某公立医院", "康复治疗岗", "康复治疗学、运动康复", "医学基础+专业知识", "30岁以下", "事业编", "7月底"],
-      ["昆明市某中学", "体育教师岗", "体育教育、运动训练", "教育综合+学科专业", "35岁以下", "教师编", "8月中旬"],
-      ["昆明市某街道办", "基层治理岗", "不限专业", "职测+综合应用能力", "35岁以下", "事业编", "待公告"],
-      ["昆明市某卫健单位", "健康管理岗", "公共卫生、康复相关", "专业知识+面试", "35岁以下", "事业编", "8月"],
-      ["昆明市某高校", "行政辅助岗", "管理学、教育学", "综合能力测试", "30岁以下", "编制内", "待公告"],
-      ["昆明市某社区卫生中心", "康复辅助岗", "康复治疗技术", "医学基础", "35岁以下", "事业编", "7月底"],
-      ["昆明市某文旅单位", "宣传策划岗", "新闻传播、中文", "公基+写作", "35岁以下", "事业编", "8月"],
-      ["昆明市某自然资源单位", "综合服务岗", "地理、规划、测绘", "职测+综合应用", "35岁以下", "事业编", "待公告"],
-      ["昆明市某教育局下属单位", "教务管理岗", "教育学、心理学", "职测+公基", "35岁以下", "事业编", "8月"]
+      ["昆明市某区事业单位", "综合管理岗", "汉语言文学、行政管理", "职测+综合应用能力", "35岁以下", "事业编", "8月上旬", "昆明市人社局事业单位招聘公告", "https://rsj.km.gov.cn/c/2026-01-27/5052860.shtml"],
+      ["昆明市某公立医院", "康复治疗岗", "康复治疗学、运动康复", "医学基础+专业知识", "30岁以下", "事业编", "7月底", "昆明卫生人才网事业单位考试", "https://www.kmwsrc.com.cn/sydwks?p=1&pagesize=20"],
+      ["昆明市某中学", "体育教师岗", "体育教育、运动训练", "教育综合+学科专业", "35岁以下", "教师编", "8月中旬", "昆明市教育体育局招聘公告", "http://jtj.km.gov.cn/c/2026-07-02/5093913.shtml"],
+      ["昆明市某街道办", "基层治理岗", "不限专业", "职测+综合应用能力", "35岁以下", "事业编", "待公告", "昆明市人社局通知公告", "https://rsj.km.gov.cn/"],
+      ["昆明市某卫健单位", "健康管理岗", "公共卫生、康复相关", "专业知识+面试", "35岁以下", "事业编", "8月", "昆明市卫生健康委公示公告", "https://wsjkw.km.gov.cn/c/2026-04-08/5069729.shtml"],
+      ["昆明市某高校", "行政辅助岗", "管理学、教育学", "综合能力测试", "30岁以下", "编制内", "待公告", "云南人事考试网", "http://hrss.yn.gov.cn/ynrsksw/Index.html/i1203.html"],
+      ["昆明市某社区卫生中心", "康复辅助岗", "康复治疗技术", "医学基础", "35岁以下", "事业编", "7月底", "昆明卫生人才网单位招聘", "https://www.kmwsrc.com.cn/#!/xh"],
+      ["昆明市某文旅单位", "宣传策划岗", "新闻传播、中文", "公基+写作", "35岁以下", "事业编", "8月", "昆明市文旅局直属事业单位招聘公告", "http://m.rsj.km.gov.cn/c/2026-07-14/5097007.shtml"],
+      ["昆明市某自然资源单位", "综合服务岗", "地理、规划、测绘", "职测+综合应用", "35岁以下", "事业编", "待公告", "昆明市人社局通知公告", "https://rsj.km.gov.cn/"],
+      ["昆明市某教育局下属单位", "教务管理岗", "教育学、心理学", "职测+公基", "35岁以下", "事业编", "8月", "昆明市教育体育局招聘公告", "http://jtj.km.gov.cn/c/2026-07-02/5093913.shtml"]
     ].map((item, index) => ({
       id: "j" + index,
       unit: item[0],
@@ -2491,7 +2488,9 @@
       exam: item[3],
       age: item[4],
       type: item[5],
-      date: item[6]
+      date: item[6],
+      source: item[7],
+      url: item[8]
     }));
 
     const muscles = [
@@ -2544,8 +2543,177 @@
         pattern: "无力时头前引明显，浅层颈肌容易代偿。",
         train: "仰卧下巴轻轻内收，像点头一样小幅度控制。",
         stretch: "不以拉伸为主，重点是低强度耐力激活。"
+      },
+      {
+        name: "肩胛提肌",
+        position: "颈后外侧至肩胛骨上角",
+        origin: "第1-4颈椎横突",
+        insertion: "肩胛骨上角和内侧缘上部",
+        functionText: "上提肩胛骨，辅助颈部侧屈和旋转。",
+        pattern: "久坐耸肩、落枕样疼痛和肩胛上角酸痛常与它紧张有关。",
+        train: "先做肩胛下沉控制，再训练下斜方肌和前锯肌稳定。",
+        stretch: "头转向对侧并低头，手轻扶后脑，肩膀保持下沉。"
+      },
+      {
+        name: "菱形肌",
+        position: "肩胛骨内侧缘与胸椎之间",
+        origin: "下颈椎和上胸椎棘突",
+        insertion: "肩胛骨内侧缘",
+        functionText: "肩胛骨后缩、内收，协助维持肩胛稳定。",
+        pattern: "长期圆肩时容易被拉长无力，也可能出现肩胛内侧酸胀。",
+        train: "弹力带划船、俯身肩胛后缩，注意不要耸肩。",
+        stretch: "双手前抱，轻微含胸，感受肩胛内侧拉开。"
+      },
+      {
+        name: "下斜方肌",
+        position: "背部中下段至肩胛冈内侧",
+        origin: "中下胸椎棘突",
+        insertion: "肩胛冈内侧端",
+        functionText: "肩胛骨下压、后倾和上回旋，是改善圆肩和肩峰撞击的重要稳定肌。",
+        pattern: "无力时上斜方肌容易代偿，抬手时肩膀先耸起来。",
+        train: "Y字抬手、墙面滑手、俯卧下斜方肌激活。",
+        stretch: "通常以激活为主，必要时配合胸小肌和背阔肌放松。"
+      },
+      {
+        name: "背阔肌",
+        position: "背部外侧大面积肌肉",
+        origin: "下胸椎、腰椎、髂嵴和下位肋骨",
+        insertion: "肱骨小结节嵴",
+        functionText: "肩关节伸展、内收、内旋，也影响肩胛和胸腰筋膜张力。",
+        pattern: "紧张时容易限制肩上举，训练中出现腰椎代偿或肋骨外翻。",
+        train: "下拉、划船配合肩胛控制，避免用腰后仰借力。",
+        stretch: "跪姿手扶墙或椅子，臀部后坐，感受腋下到背侧拉伸。"
+      },
+      {
+        name: "冈下肌",
+        position: "肩胛骨后侧冈下窝",
+        origin: "肩胛骨冈下窝",
+        insertion: "肱骨大结节",
+        functionText: "肩关节外旋，是肩袖稳定的重要肌肉。",
+        pattern: "无力时推、拉、抬手动作中肩关节容易前顶或不稳。",
+        train: "弹力带外旋、侧卧外旋，小重量慢控制。",
+        stretch: "手臂横抱于胸前，轻柔拉伸肩后侧。"
+      },
+      {
+        name: "臀中肌",
+        position: "髋外侧",
+        origin: "髂骨外侧面",
+        insertion: "股骨大转子",
+        functionText: "髋外展，走路和单腿站立时稳定骨盆。",
+        pattern: "无力时容易骨盆侧倾、膝内扣、跑步或深蹲不稳。",
+        train: "蚌式开合、侧卧抬腿、弹力带侧走，保持骨盆不翻转。",
+        stretch: "仰卧翘腿抱膝向对侧牵拉，感受臀外侧。"
+      },
+      {
+        name: "髂腰肌",
+        position: "髋前深层",
+        origin: "腰椎椎体、横突和髂窝",
+        insertion: "股骨小转子",
+        functionText: "髋关节屈曲，也会影响骨盆前倾和腰椎姿势。",
+        pattern: "久坐后容易短缩，表现为腰紧、髋伸展受限。",
+        train: "死虫、站姿提膝控制，重点保持腰盆稳定。",
+        stretch: "弓步位骨盆后倾，再轻轻向前送髋。"
+      },
+      {
+        name: "腘绳肌",
+        position: "大腿后侧",
+        origin: "坐骨结节",
+        insertion: "胫骨和腓骨近端",
+        functionText: "屈膝、伸髋，并参与骨盆后倾控制。",
+        pattern: "紧张时影响前屈和骨盆活动，无力时跑跳后链发力不足。",
+        train: "臀桥、罗马尼亚硬拉、腿弯举，从髋主导开始。",
+        stretch: "仰卧抬腿或站姿髋折叠，保持背部平直。"
+      },
+      {
+        name: "股四头肌",
+        position: "大腿前侧",
+        origin: "髂前下棘和股骨前外侧",
+        insertion: "髌骨和胫骨粗隆",
+        functionText: "伸膝，股直肌还参与屈髋。",
+        pattern: "膝痛人群可能出现股内侧肌控制不足或髌骨轨迹异常。",
+        train: "靠墙静蹲、台阶下蹲、终末伸膝，注意膝盖对准脚尖。",
+        stretch: "侧卧或站姿屈膝拉脚背，骨盆保持中立。"
+      },
+      {
+        name: "腓肠肌",
+        position: "小腿后侧浅层",
+        origin: "股骨内外侧髁",
+        insertion: "跟骨结节",
+        functionText: "踝跖屈，协助屈膝，是走跑跳推进的重要肌肉。",
+        pattern: "紧张时限制踝背屈，深蹲脚跟容易抬起。",
+        train: "站姿提踵、单腿提踵，慢上慢下。",
+        stretch: "弓步压墙，后腿伸直，脚跟踩地。"
       }
     ];
+
+    const MS_PER_DAY = 24 * 60 * 60 * 1000;
+    const todayDate = new Date();
+    const todayKey = [
+      todayDate.getFullYear(),
+      String(todayDate.getMonth() + 1).padStart(2, "0"),
+      String(todayDate.getDate()).padStart(2, "0")
+    ].join("-");
+    const todaySeed = Math.floor(new Date(todayDate.getFullYear(), todayDate.getMonth(), todayDate.getDate()).getTime() / MS_PER_DAY);
+
+    function dayIndex(length, offset = 0) {
+      if (!length) return 0;
+      return Math.abs(todaySeed + offset) % length;
+    }
+
+    function dailyWindow(items, count, offset = 0) {
+      if (!Array.isArray(items) || !items.length) return [];
+      const start = dayIndex(items.length, offset);
+      return Array.from({ length: Math.min(count, items.length) }, (_, i) => items[(start + i) % items.length]);
+    }
+
+    function dailyOrder(items, offset = 0) {
+      return dailyWindow(items, Array.isArray(items) ? items.length : 0, offset);
+    }
+
+    function getDailyActItems(count = 15) {
+      return actModules.flatMap((module, moduleIndex) =>
+        dailyWindow(actKnowledge[module] || [], Math.ceil(count / actModules.length), moduleIndex)
+          .map(item => ({ module, ...item }))
+      ).slice(0, count);
+    }
+
+    function getDailyShenlunItems(count = 10) {
+      return dailyWindow(examData["申论素材"].list || [], count, 3);
+    }
+
+    function getDailyIdiomItems(count = 5) {
+      return dailyWindow(examData["易错成语积累"] || [], count, 6);
+    }
+
+    function getDailyQuestions(count = 5) {
+      const source = state && state.trueQuestions && state.trueQuestions.length ? state.trueQuestions : questionSeeds;
+      return dailyWindow(source, count, 9).map((question, index) => ({
+        ...question,
+        id: question.id || `daily-seed-${todayKey}-${index}`,
+        no: question.no || index + 1,
+        year: question.year || "每日练习",
+        source: question.source || "内置练习"
+      }));
+    }
+
+    function getDailyMuscles(count = 5) {
+      return dailyWindow(muscles, count, 12);
+    }
+
+    function getDailyEditingTips(count = 5) {
+      return editingTips
+        .map((tip, index) => {
+          const dailyBoost = ((todaySeed + index * 7) % 13) / 10;
+          const score = tip.hot * 0.52 + tip.practical * 0.43 + dailyBoost;
+          return { ...tip, score: Math.round(score * 10) / 10 };
+        })
+        .sort((a, b) => b.score - a.score || b.practical - a.practical)
+        .slice(0, count);
+    }
+
+    function getDailyJobs(count = 10) {
+      return dailyWindow(jobs, count, 15);
+    }
 
     const defaultTasks = [
       { id: "t1", title: "跟进3个学员", time: "30分钟", reward: 20 },
@@ -2559,8 +2727,8 @@
     let state = {
       students: JSON.parse(localStorage.getItem("workbench_students") || "null") || defaultStudents,
       selectedStudent: localStorage.getItem("workbench_selected_student") || "s1",
-      selectedJob: "j0",
-      selectedMuscle: 0,
+      selectedJob: "j" + dayIndex(jobs.length, 15),
+      selectedMuscle: dayIndex(muscles.length, 12),
       anatomyTab: localStorage.getItem("workbench_anatomy_tab") || "肌肉学习",
       fasciaQuery: "",
       examTab: "每日题库",
@@ -2981,6 +3149,30 @@
 
       const overviewTasks = document.getElementById("overviewTasks");
       overviewTasks.innerHTML = state.planTasks.slice(0, 4).map(taskTemplate).join("") || `<div class="empty">还没有计划，去“每日计划”里添加。</div>`;
+
+      const dailyAct = getDailyActItems(3);
+      const dailyShenlun = getDailyShenlunItems(2);
+      const dailyIdioms = getDailyIdiomItems(2);
+      const dailyMuscles = getDailyMuscles(5);
+      const dailyJobs = getDailyJobs(3);
+      const overviewDailyInfo = document.getElementById("overviewDailyInfo");
+      if (overviewDailyInfo) {
+        overviewDailyInfo.innerHTML = `
+          <div class="info-row">
+            <div class="row-main"><strong>今日公考学习包</strong><span class="coin">${dailyAct.length + dailyShenlun.length + dailyIdioms.length}条</span></div>
+            <div class="row-sub">行测：${dailyAct.map(item => item.title).join("、")}；申论：${dailyShenlun.map(item => item.title).join("、")}；成语：${dailyIdioms.map(item => item.title).join("、")}。</div>
+          </div>
+          <div class="info-row">
+            <div class="row-main"><strong>今日昆明招聘</strong><span class="coin">${dailyJobs.length}条</span></div>
+            <div class="row-sub">${dailyJobs.map(job => `${job.post}（${job.date}）`).join("、")}。</div>
+          </div>
+          <div class="info-row">
+            <div class="row-main"><strong>今日解剖肌肉</strong><span class="coin">${dailyMuscles.length}条</span></div>
+            <div class="row-sub">${dailyMuscles.map(m => m.name).join("、")}；默认打开：${dailyMuscles[0] ? dailyMuscles[0].name : "暂无"}。</div>
+          </div>
+          <div class="empty">更新日期：${todayKey}。这些内容会按日期自动轮换，不再每天固定显示同一批。</div>
+        `;
+      }
     }
 
     function taskTemplate(task) {
@@ -3340,7 +3532,7 @@
         return;
       }
 
-      const list = examData[state.examTab] || [];
+      const list = dailyOrder(examData[state.examTab] || [], 6);
       document.getElementById("examContent").innerHTML = list.map((item, index) => `
         <div class="card">
           <div class="row-main">
@@ -3361,12 +3553,12 @@
 
 
     function renderHotNews() {
-      const items = (examData["申论素材"].list || []).slice(0, 10);
+      const items = getDailyShenlunItems(10);
       document.getElementById("examContent").innerHTML = `
         <div class="card" style="grid-column:1/-1;">
           <div class="section-title">
             <h3>公考热点新闻深度版</h3>
-            <span class="pill">每日10条 · 可直接转申论素材</span>
+            <span class="pill">每日轮换10条 · ${todayKey}</span>
           </div>
           <div class="empty">每条热点都包含新闻背景、申论考点、答题角度和金句，不再是一句话素材。</div>
         </div>
@@ -3396,7 +3588,7 @@
 
     function renderActFocus() {
       const keyword = document.getElementById("globalSearch").value.trim();
-      const moduleCards = actKnowledge[state.actModule] || [];
+      const moduleCards = dailyOrder(actKnowledge[state.actModule] || [], actModules.indexOf(state.actModule));
       const cards = moduleCards.filter(item => {
         const haystack = [
           state.actModule,
@@ -3416,7 +3608,7 @@
         <div class="card" style="grid-column: 1 / -1;">
           <div class="section-title">
             <h3>行测重点升级版</h3>
-            <span class="pill">保留积分 · 支持搜索 · 表格横滑</span>
+            <span class="pill">每日轮换 · ${todayKey}</span>
           </div>
           <div class="sub-tabs">
             ${actModules.map(module => `<button class="sub-tab ${state.actModule === module ? "active" : ""}" data-act-module="${module}">${module}</button>`).join("")}
@@ -3426,7 +3618,7 @@
             <button class="ghost-btn" data-switch-exam="错题本">看错题本</button>
             <button class="primary-btn" id="exportActPack">导出行测学习包</button>
           </div>
-          <div class="empty">当前模块：${state.actModule}。知识点卡片可点开/收起；每张卡都固定对比花生十三、刘文超、刘文波、粉笔四大体系。</div>
+          <div class="empty">当前模块：${state.actModule}。每天会把不同知识点排到前面；卡片仍可点开/收起，并保留四大体系对比。</div>
         </div>
         ${
           cards.length
@@ -3524,7 +3716,7 @@
       const showFav = state.shenlunShowFav;
       const data = examData["申论素材"];
       const subTabs = data.subTabs || ["全部", "人物素材", "政策素材", "民生案例", "时代热点"];
-      const allItems = data.list || [];
+      const allItems = dailyOrder(data.list || [], 3);
 
       const filteredItems = allItems.filter(item => {
         if (showFav && !state.shenlunFavorites.includes(item.id)) return false;
@@ -3552,7 +3744,7 @@
         <div class="card" style="grid-column: 1 / -1;">
           <div class="section-title">
             <h3>申论素材深度库</h3>
-            <span class="pill">共 ${allItems.length} 条 · 收藏 ${favCount} 条</span>
+            <span class="pill">每日轮换 · 共 ${allItems.length} 条 · 收藏 ${favCount} 条</span>
           </div>
           <div class="sub-tabs">
             ${subTabs.map(tab => `
@@ -3569,7 +3761,7 @@
             <button class="ghost-btn" data-switch-exam="每日题库">联动题库</button>
             <button class="primary-btn" id="exportShenlunPack">每日一键导出学习包</button>
           </div>
-          <div class="empty">当前分类：${sub} · 时效：${timeliness}${showFav ? ' · <strong style="color:var(--purple);">仅显示收藏</strong>' : ''}。卡片支持收藏、记笔记、联动申论真题。</div>
+          <div class="empty">当前分类：${sub} · 时效：${timeliness}${showFav ? ' · <strong style="color:var(--purple);">仅显示收藏</strong>' : ''}。每天会把不同申论素材排到前面，卡片支持收藏、记笔记、联动题库。</div>
         </div>
         ${
           filteredItems.length
@@ -3721,7 +3913,8 @@
     }
 
     function renderQuestionBank() {
-      const questions = state.trueQuestions || [];
+      const importedQuestions = state.trueQuestions || [];
+      const questions = getDailyQuestions(5);
       const answered = Object.keys(state.examAnswers).length;
       const wrongCount = Object.values(state.examAnswers).filter(item => item && !item.correct).length;
       const correctCount = Object.values(state.examAnswers).filter(item => item && item.correct).length;
@@ -3729,16 +3922,16 @@
       document.getElementById("examContent").innerHTML = `
         <div class="card" style="grid-column: 1 / -1;">
           <div class="section-title">
-            <h3>云南真题库</h3>
-            <span class="pill">已导入 ${questions.length} 题</span>
+            <h3>每日题库</h3>
+            <span class="pill">今日 ${questions.length} 题 · 已导入 ${importedQuestions.length} 题</span>
           </div>
           <div class="analysis-strip">
-            <div class="analysis-box"><span>真题数量</span><strong>${questions.length}题</strong></div>
+            <div class="analysis-box"><span>今日题目</span><strong>${questions.length}题</strong></div>
             <div class="analysis-box"><span>已答题</span><strong>${answered}题</strong></div>
             <div class="analysis-box"><span>答对</span><strong>${correctCount}题</strong></div>
             <div class="analysis-box"><span>答错</span><strong>${wrongCount}题</strong></div>
           </div>
-          <div class="empty">为了保证都是真题，这里不再自动生成虚构题。请把云南省联考/云南省考真题按下面格式导入；导入后才会进入每日题库和错题本。</div>
+          <div class="empty">更新日期：${todayKey}。如果已导入真题，每天优先轮换真题；未导入时显示内置练习题，避免每日题库空白。</div>
           <div class="true-question-import">
             <textarea class="note-box" id="trueQuestionInput" placeholder="每行一题，用 | 分隔：年份|来源|模块|考点|题干|A选项|B选项|C选项|D选项|答案|详细解析|易错点\n例：2023|云南省联考|判断推理|定义判断|题干...|A...|B...|C...|D...|B|第一步看定义关键词...|容易只看生活常识"></textarea>
             <div style="display:flex;gap:12px;flex-wrap:wrap;">
@@ -3747,7 +3940,7 @@
             </div>
           </div>
         </div>
-        ${questions.length ? questions.map(questionTemplate).join("") : `<div class="card" style="grid-column:1/-1;"><div class="empty">还没有导入真题。导入后这里会显示题目、答案和通俗详细解析。</div></div>`}
+        ${questions.length ? questions.map(questionTemplate).join("") : `<div class="card" style="grid-column:1/-1;"><div class="empty">还没有可用题目。请导入真题或加载内置题库。</div></div>`}
       `;
     }
 
@@ -3882,20 +4075,42 @@
     }
 
     function renderEditing() {
-      document.getElementById("editingList").innerHTML = editingTips.map(([title, content], index) => `
+      const todayTips = getDailyEditingTips(5);
+      document.getElementById("editingList").innerHTML = `
+        <div class="card" style="grid-column:1/-1;">
+          <div class="section-title">
+            <h3>今日剪辑技巧</h3>
+            <span class="pill">${todayKey} · 5条</span>
+          </div>
+          <div class="empty">每天从 ${editingTips.length} 条技巧库中，按热门度、实用度和当天权重筛出最值得练的 5 条。</div>
+        </div>
+        ${todayTips.map((tip, index) => `
         <div class="card">
           <div class="row-main">
-            <strong>${index + 1}. ${title}</strong>
-            <span class="coin">+10</span>
+            <strong>${index + 1}. ${tip.title}</strong>
+            <span class="coin">热${tip.hot} · 实${tip.practical}</span>
           </div>
-          <p class="row-sub">${content}</p>
+          <div class="card-tags">
+            ${(tip.tags || []).map(tag => `<span class="pill">${tag}</span>`).join("")}
+            <span class="status">综合 ${tip.score}</span>
+          </div>
+          <p class="row-sub"><strong>适用场景：</strong>${tip.scene}</p>
+          <div class="field" style="margin-top:10px;">
+            <span>具体怎么做</span>
+            <strong style="font-size:13px;line-height:1.7;">${tip.steps.map((step, stepIndex) => `${stepIndex + 1}. ${step}`).join("<br/>")}</strong>
+          </div>
+          <div class="field-grid" style="margin-top:10px;">
+            <div class="field"><span>常见错误</span><strong>${tip.mistake}</strong></div>
+            <div class="field"><span>落地建议</span><strong>${tip.tip}</strong></div>
+          </div>
         </div>
-      `).join("");
+      `).join("")}`;
     }
 
     function renderJobs() {
       const keyword = document.getElementById("globalSearch").value.trim();
-      const filtered = jobs.filter(job => !keyword || Object.values(job).join(" ").includes(keyword));
+      const orderedJobs = getDailyJobs(jobs.length);
+      const filtered = orderedJobs.filter(job => !keyword || Object.values(job).join(" ").includes(keyword));
       document.getElementById("jobList").innerHTML = filtered.map(job => `
         <div class="job-row ${state.selectedJob === job.id ? "active" : ""}" data-job="${job.id}">
           <div class="row-main">
@@ -3907,7 +4122,7 @@
         </div>
       `).join("") || `<div class="empty">没有找到匹配的招聘信息。</div>`;
 
-      const job = jobs.find(j => j.id === state.selectedJob) || jobs[0];
+      const job = jobs.find(j => j.id === state.selectedJob) || orderedJobs[0] || jobs[0];
       document.getElementById("jobDetail").innerHTML = `
         <div class="detail-head">
           <div>
@@ -3925,30 +4140,42 @@
           <div class="field"><span>报名时间</span><strong>${job.date}</strong></div>
           <div class="field"><span>公告来源</span><strong>${job.source || "官方公告"}</strong></div>
         </div>
-        <a class="source-link" href="${job.url}" target="_blank" rel="noopener">查看官方/权威公告来源</a>
+        ${
+          job.url
+            ? `<a class="source-link" href="${job.url}" target="_blank" rel="noopener noreferrer">查看官方/权威公告来源</a>`
+            : `<span class="source-link" style="opacity:.55;pointer-events:none;">暂无官方链接</span>`
+        }
         <div class="empty" style="margin-top:12px;">报名条件、岗位表和时间以跳转后的官方公告为准。</div>
       `;
     }
 
     function renderMuscles() {
-      document.getElementById("muscleList").innerHTML = muscles.map((m, index) => `
+      const dailyMuscles = getDailyMuscles(5);
+      const dailyIndexes = dailyMuscles.map(m => muscles.indexOf(m));
+      if (!dailyIndexes.includes(state.selectedMuscle)) {
+        state.selectedMuscle = dailyIndexes[0] || 0;
+      }
+      document.getElementById("muscleList").innerHTML = dailyMuscles.map((m) => {
+        const index = muscles.indexOf(m);
+        return `
         <div class="muscle-row ${state.selectedMuscle === index ? "active" : ""}" data-muscle="${index}">
           <div class="row-main">
             <strong>${m.name}</strong>
-            <span class="coin">+10</span>
+            <span class="coin">${index === dayIndex(muscles.length, 12) ? "今日" : "+10"}</span>
           </div>
           <div class="row-sub">${m.position} · ${m.functionText}</div>
         </div>
-      `).join("");
+      `;
+      }).join("");
 
-      const m = muscles[state.selectedMuscle];
+      const m = muscles[state.selectedMuscle] || dailyMuscles[0];
       document.getElementById("muscleDetail").innerHTML = `
         <div class="detail-head">
           <div>
             <h3>${m.name}</h3>
             <p class="row-sub">${m.position}</p>
           </div>
-          <span class="status">今日肌肉</span>
+          <span class="status">${state.selectedMuscle === dayIndex(muscles.length, 12) ? "今日肌肉" : "肌肉资料"}</span>
         </div>
         <div class="field-grid">
           <div class="field"><span>起点</span><strong>${m.origin}</strong></div>
@@ -4131,27 +4358,12 @@
     function exportIntegratedPack() {
       const today = new Date().toLocaleDateString("zh-CN");
 
-      // 行测：从各模块抽取，优先薄弱科目
-      const actItems = [];
-      const weakModules = weakSubject ? weakSubject.split(/[、,，\s]+/).map(w => w.trim()) : [];
-      const allModules = Object.keys(actKnowledge);
-      const prioritizedModules = allModules;
-
-      let actCount = 0;
-      const targetActCount = 15;
-      for (const mod of prioritizedModules) {
-        const items = actKnowledge[mod] || [];
-        for (const item of items) {
-          if (actCount >= targetActCount) break;
-          actItems.push({ module: mod, ...item });
-          actCount++;
-        }
-        if (actCount >= targetActCount) break;
-      }
-      const shenlunItems = [...allShenlun].slice(0, 10);
+      // 行测：使用和页面一致的每日轮换内容
+      const actItems = getDailyActItems(15);
+      const shenlunItems = getDailyShenlunItems(10);
 
       // 成语：5条
-      const idiomItems = (examData["易错成语积累"] || []).slice(0, 5);
+      const idiomItems = getDailyIdiomItems(5);
 
       // 构建TXT内容
       const lines = [];
@@ -4551,9 +4763,10 @@
       }
 
       if (event.target.id === "exportActPack") {
-        const list = actKnowledge[state.actModule] || [];
+        const list = dailyOrder(actKnowledge[state.actModule] || [], actModules.indexOf(state.actModule));
         const content = [
           `【${state.actModule}】每日学习包`,
+          `日期：${todayKey}`,
           "讲师思路区别已写在每个知识点卡片中",
           "",
           ...list.map(item => [
@@ -4639,7 +4852,7 @@
       if (event.target.id === "exportShenlunPack") {
         const data = examData["申论素材"];
         const sub = state.shenlunSub;
-        const items = (data.list || []).filter(item => {
+        const items = dailyOrder(data.list || [], 3).filter(item => {
           if (sub !== "全部") {
             const category = getShenlunSubCategory(item);
             if (category !== sub) return false;
@@ -4648,6 +4861,7 @@
         });
         const content = [
           `【申论素材】每日学习包`,
+          `日期：${todayKey}`,
           `分类：${state.shenlunSub}`,
           `时效：${state.shenlunTimeliness}`,
           `讲师筛选：${state.shenlunTeacher}`,
