@@ -341,12 +341,28 @@
       transform: translateY(-1px);
     }
 
-    .task.done,
     .student-row.active,
     .job-row.active,
     .muscle-row.active {
       background: var(--green-soft);
       border-color: rgba(82, 200, 137, 0.58);
+    }
+
+    .task.done {
+      background: #f1f2f4;
+      border-color: #d6d9de;
+      color: #9aa0a6;
+      opacity: 0.72;
+    }
+
+    .task.done strong {
+      text-decoration: line-through;
+      color: #8b929a;
+    }
+
+    .task.done .coin,
+    .task.done .ghost-btn {
+      color: #9aa0a6;
     }
 
     .student-row {
@@ -623,6 +639,7 @@
       border-radius: 12px;
       background: #fff;
       border: 1px solid rgba(138, 98, 230, 0.18);
+      cursor: pointer;
     }
 
     .field-image-thumb img {
@@ -645,6 +662,43 @@
       width: 22px;
       height: 22px;
       cursor: pointer;
+    }
+
+    .field-file-card {
+      display: grid;
+      place-items: center;
+      min-height: 82px;
+      padding: 10px;
+      text-align: center;
+      color: var(--text);
+      font-size: 12px;
+      line-height: 1.45;
+      background: linear-gradient(135deg, #fff7f7, #f6f0ff);
+    }
+
+    .field-file-card strong {
+      display: block;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 12px;
+    }
+
+    .student-preview-image {
+      width: 100%;
+      max-height: 72vh;
+      object-fit: contain;
+      border-radius: 16px;
+      background: var(--soft);
+    }
+
+    .student-preview-pdf {
+      width: 100%;
+      height: 72vh;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fff;
     }
 
     .image-slots {
@@ -791,7 +845,27 @@
     }
 
     .question-card {
+      grid-column: 1 / -1;
       gap: 12px;
+    }
+
+    .question-card .row-main {
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+
+    .question-card .row-main strong {
+      flex: 1 1 100%;
+      min-width: 0;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      line-height: 1.7;
+    }
+
+    .question-card .coin {
+      white-space: normal;
+      overflow-wrap: anywhere;
+      line-height: 1.5;
     }
 
     .question-meta {
@@ -819,6 +893,15 @@
       gap: 8px;
       align-items: flex-start;
       transition: 0.16s ease;
+      white-space: normal;
+      overflow-wrap: anywhere;
+    }
+
+    .option-btn span {
+      min-width: 0;
+      white-space: normal;
+      overflow-wrap: anywhere;
+      line-height: 1.6;
     }
 
     .option-btn:hover {
@@ -1640,6 +1723,199 @@
         width: 100%;
       }
     }
+
+    .study-mark {
+      background: linear-gradient(transparent 48%, rgba(255, 226, 93, 0.72) 48%);
+      border-radius: 3px;
+      padding: 0 2px;
+    }
+
+    .study-underline {
+      text-decoration: underline wavy #8a62e6 2px;
+      text-underline-offset: 3px;
+    }
+
+    .study-tools {
+      border: 1px dashed rgba(138, 98, 230, 0.28);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.72);
+      padding: 10px;
+      margin-top: 12px;
+    }
+
+    .study-annotation-area {
+      position: relative;
+      height: 132px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: repeating-linear-gradient(0deg, #fff, #fff 23px, #f4f1ff 24px);
+      overflow: hidden;
+      touch-action: none;
+    }
+
+    .study-canvas {
+      width: 100%;
+      height: 132px;
+      display: block;
+      cursor: crosshair;
+    }
+
+    .muscle-visuals {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin: 14px 0;
+    }
+
+    .muscle-svg-card {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #fff;
+      padding: 12px;
+      min-height: 220px;
+    }
+
+    .simple-body-svg {
+      width: 100%;
+      height: 190px;
+    }
+
+    .asset-frame {
+      position: relative;
+      height: 190px;
+      border-radius: 16px;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 50% 34%, rgba(138, 98, 230, 0.16), transparent 28%),
+        linear-gradient(135deg, rgba(82, 200, 137, 0.12), rgba(255, 198, 41, 0.13));
+    }
+
+    .asset-frame.has-asset {
+      background: #08070d;
+    }
+
+    .asset-img,
+    .asset-video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: none;
+      background: #08070d;
+    }
+
+    .asset-frame.has-asset .asset-img,
+    .asset-frame.has-asset .asset-video {
+      display: block;
+    }
+
+    .asset-fallback {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 12px;
+      text-align: center;
+    }
+
+    .asset-frame.has-asset .asset-fallback {
+      display: none;
+    }
+
+    .asset-source-tag {
+      position: absolute;
+      left: 10px;
+      top: 10px;
+      z-index: 2;
+      border-radius: 999px;
+      padding: 4px 8px;
+      background: rgba(255, 255, 255, 0.86);
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .asset-filename {
+      margin-top: 6px;
+      font-size: 11px;
+      color: var(--muted);
+      word-break: break-all;
+    }
+
+    .muscle-visual-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 8px;
+      font-weight: 800;
+      color: var(--ink);
+    }
+
+    .muscle-visual-title span {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .muscle-legend {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .muscle-legend b {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      color: var(--ink);
+    }
+
+    .legend-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      display: inline-block;
+    }
+
+    .exercise-caption {
+      margin-top: 8px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .muscle-origin {
+      fill: #8a62e6;
+    }
+
+    .muscle-insertion {
+      fill: #52c889;
+    }
+
+    .muscle-line {
+      stroke: #b98600;
+      stroke-width: 5;
+      stroke-linecap: round;
+      stroke-dasharray: 10 6;
+      animation: dashMove 1.8s linear infinite;
+    }
+
+    @keyframes dashMove {
+      to { stroke-dashoffset: -32; }
+    }
+
+    @media (max-width: 760px) {
+      .muscle-visuals {
+        grid-template-columns: 1fr;
+      }
+
+      .exercise-asset-grid {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
 <body>
@@ -1693,21 +1969,11 @@
           <span class="pill" id="overviewScore">今日完成 0 / 6</span>
         </div>
 
-        <div class="grid cols-4">
+        <div class="grid cols-2">
           <div class="card metric">
-            <span class="label">学员总费用</span>
-            <span class="num" id="totalFee">¥0</span>
-            <span class="hint">来源于已收费用汇总</span>
-          </div>
-          <div class="card metric">
-            <span class="label">已收费用</span>
+            <span class="label">总已收费用</span>
             <span class="num" id="paidFee">¥0</span>
-            <span class="hint">已付款记录自动累加</span>
-          </div>
-          <div class="card metric">
-            <span class="label">待收费用</span>
-            <span class="num" id="unpaidFee">¥0</span>
-            <span class="hint">应收费用 - 已收费用</span>
+            <span class="hint">学员康复付款记录自动合计</span>
           </div>
           <div class="card metric">
             <span class="label">今日学习内容</span>
@@ -1731,7 +1997,10 @@
               <span class="pill">自动更新区</span>
             </div>
             <div class="list" id="overviewDailyInfo"></div>
-            <button class="primary-btn" id="overviewExportPack" style="width:100%;margin-top:12px;">📦 一键导出公考学习包（行测+申论+成语）</button>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;">
+              <button class="primary-btn" id="overviewExportWord" style="flex:1;">📄 导出Word学习包</button>
+              <button class="ghost-btn" id="overviewExportPdf" style="flex:1;">🖨️ 打印/保存PDF</button>
+            </div>
           </div>
         </div>
       </section>
@@ -1907,6 +2176,16 @@
         <button class="ghost-btn" id="closeStudentProfile">返回列表</button>
       </div>
       <div id="studentProfileBody"></div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="studentFilePreviewModal" style="display:none;">
+    <div class="modal-card" style="max-width:920px;max-height:88vh;overflow:auto;">
+      <div class="section-title">
+        <h3 id="studentFilePreviewTitle">资料预览</h3>
+        <button class="ghost-btn" id="closeStudentFilePreview">关闭</button>
+      </div>
+      <div id="studentFilePreviewBody"></div>
     </div>
   </div>
 
@@ -2756,6 +3035,7 @@
       shenlunFavorites: JSON.parse(localStorage.getItem("workbench_shenlun_favorites") || "[]"),
       shenlunShowFav: localStorage.getItem("workbench_shenlun_showfav") === "1",
       shenlunTeacherCompareUnlocked: JSON.parse(localStorage.getItem("workbench_shenlun_unlocked") || "[]"),
+      studyAnnotations: JSON.parse(localStorage.getItem("workbench_study_annotations") || "{}"),
       chatMatches: JSON.parse(localStorage.getItem("workbench_chat_matches") || "[]"),
       importLogs: JSON.parse(localStorage.getItem("workbench_import_logs") || "[]"),
       _excelData: null,
@@ -2789,6 +3069,97 @@
     };
     const saveChatMatches = () => localStorage.setItem("workbench_chat_matches", JSON.stringify(state.chatMatches));
     const saveImportLogs = () => localStorage.setItem("workbench_import_logs", JSON.stringify(state.importLogs));
+    const saveStudyAnnotations = () => localStorage.setItem("workbench_study_annotations", JSON.stringify(state.studyAnnotations));
+
+    function getStudyAnnotation(id) {
+      state.studyAnnotations[id] = state.studyAnnotations[id] || { highlights: [], underlines: [], note: "", drawing: "" };
+      return state.studyAnnotations[id];
+    }
+
+    function applyStudyMarks(text, id) {
+      let html = safeText(text || "");
+      const annotation = getStudyAnnotation(id);
+      const wrap = (value, className) => {
+        const raw = String(value || "").trim();
+        if (!raw || raw.length < 2) return;
+        const escaped = safeText(raw);
+        html = html.split(escaped).join(`<span class="${className}">${escaped}</span>`);
+      };
+      (annotation.highlights || []).forEach(value => wrap(value, "study-mark"));
+      (annotation.underlines || []).forEach(value => wrap(value, "study-underline"));
+      return html.replace(/\n/g, "<br/>");
+    }
+
+    function studyTools(id, placeholder = "添加个人笔记，选中文本后可高亮/划线，下面可手绘划重点。") {
+      const annotation = getStudyAnnotation(id);
+      return `
+        <div class="study-tools" data-study-tools="${id}">
+          <div class="toolbar" style="margin-bottom:8px;">
+            <button class="ghost-btn" data-study-mark="${id}" data-study-type="highlight">高亮选中文字</button>
+            <button class="ghost-btn" data-study-mark="${id}" data-study-type="underline">划线选中文字</button>
+            <button class="ghost-btn" data-study-clear-drawing="${id}">清空手绘</button>
+          </div>
+          <textarea class="note-box" data-study-note="${id}" placeholder="${placeholder}">${annotation.note || ""}</textarea>
+          <div class="study-annotation-area">
+            <canvas class="study-canvas" data-study-canvas="${id}"></canvas>
+          </div>
+        </div>
+      `;
+    }
+
+    function initStudyCanvases() {
+      document.querySelectorAll(".study-canvas").forEach(canvas => {
+        const id = canvas.dataset.studyCanvas;
+        const annotation = getStudyAnnotation(id);
+        const rect = canvas.getBoundingClientRect();
+        const dpr = window.devicePixelRatio || 1;
+        canvas.width = Math.max(1, rect.width * dpr);
+        canvas.height = 132 * dpr;
+        const ctx = canvas.getContext("2d");
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ctx.lineWidth = 3;
+        ctx.lineCap = "round";
+        ctx.strokeStyle = "#8a62e6";
+        if (annotation.drawing) {
+          const img = new Image();
+          img.onload = () => ctx.drawImage(img, 0, 0, rect.width, 132);
+          img.src = annotation.drawing;
+        }
+        let drawing = false;
+        const pos = (event) => {
+          const r = canvas.getBoundingClientRect();
+          const point = event.touches ? event.touches[0] : event;
+          return { x: point.clientX - r.left, y: point.clientY - r.top };
+        };
+        const start = (event) => {
+          event.preventDefault();
+          drawing = true;
+          const p = pos(event);
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+        };
+        const move = (event) => {
+          if (!drawing) return;
+          event.preventDefault();
+          const p = pos(event);
+          ctx.lineTo(p.x, p.y);
+          ctx.stroke();
+        };
+        const end = () => {
+          if (!drawing) return;
+          drawing = false;
+          annotation.drawing = canvas.toDataURL("image/png");
+          saveStudyAnnotations();
+        };
+        canvas.onpointerdown = start;
+        canvas.onpointermove = move;
+        canvas.onpointerup = end;
+        canvas.onpointerleave = end;
+        canvas.ontouchstart = start;
+        canvas.ontouchmove = move;
+        canvas.ontouchend = end;
+      });
+    }
 
     const STUDENT_STATUS_OPTIONS = ["新学员", "康复中", "待复查", "已结课", "暂停", "新导入"];
 
@@ -3148,9 +3519,8 @@
       const unpaid = Math.max(0, receivable - paid);
       const done = state.planTasks.filter(t => t.done).length;
 
-      document.getElementById("totalFee").textContent = money(paid);
-      document.getElementById("paidFee").textContent = money(paid);
-      document.getElementById("unpaidFee").textContent = money(unpaid);
+      const paidFeeEl = document.getElementById("paidFee");
+      if (paidFeeEl) paidFeeEl.textContent = money(paid);
       document.getElementById("overviewScore").textContent = `今日完成 ${done} / ${state.planTasks.length}`;
       document.getElementById("planProgress").textContent = `${done} / ${state.planTasks.length}`;
       document.getElementById("studentCount").textContent = `${state.students.length}名学员`;
@@ -3185,13 +3555,12 @@
 
     function taskTemplate(task) {
       return `
-        <div class="task ${task.done ? "done" : ""}">
+        <div class="task ${task.done ? "done" : ""}" data-plan-task="${task.id}" title="点击整条任务可切换完成状态">
           <div class="row-main">
             <strong>${task.done ? "✓ " : ""}${task.title}</strong>
             <span class="coin">${task.time || "不限时"}</span>
           </div>
           <div class="task-actions">
-            <button class="ghost-btn" data-plan-toggle="${task.id}">${task.done ? "取消完成" : "打勾完成"}</button>
             <button class="ghost-btn" data-plan-edit="${task.id}">编辑</button>
             <button class="ghost-btn" data-plan-delete="${task.id}">删除</button>
           </div>
@@ -3226,22 +3595,33 @@
     }
 
     function studentImageField(student, key, label) {
-      const imageList = Array.isArray(student.images?.[key]) ? student.images[key] : [];
+      const fileList = Array.isArray(student.images?.[key]) ? student.images[key] : [];
       const inputId = `student-image-${student.id}-${key}`;
-      const thumbs = imageList.map((src, index) => `
-        <div class="field-image-thumb">
-          <img src="${src}" alt="${safeText(label)}图片${index + 1}" />
-          <button type="button" data-delete-student-image="${student.id}" data-image-field="${key}" data-image-index="${index}" title="删除图片">×</button>
+      const thumbs = fileList.map((file, index) => {
+        const item = typeof file === "string"
+          ? { type: "image", name: `${label}图片${index + 1}`, data: file, mime: "image/*" }
+          : file;
+        const isPdf = item.type === "pdf" || item.mime === "application/pdf";
+        const preview = isPdf
+          ? `<div class="field-file-card"><div>📄 PDF<br/><strong>${safeText(item.name || "康复方案PDF")}</strong><span class="row-sub">点击预览</span></div></div>`
+          : `<img src="${item.data}" alt="${safeText(item.name || label + '图片')}" />`;
+        return `
+        <div class="field-image-thumb" data-preview-student-file="${student.id}" data-image-field="${key}" data-image-index="${index}" title="点击预览">
+          ${preview}
+          <button type="button" data-delete-student-image="${student.id}" data-image-field="${key}" data-image-index="${index}" title="删除资料">×</button>
         </div>
-      `).join("");
+      `;
+      }).join("");
+      const imageCount = fileList.filter(file => typeof file === "string" || file.type === "image" || (file.mime || "").startsWith("image/")).length;
+      const pdfCount = fileList.filter(file => typeof file !== "string" && (file.type === "pdf" || file.mime === "application/pdf")).length;
       return `
         <div class="field with-images">
           <span>${label}</span>
           <strong>${studentEditableValue(student, key, student[key])}</strong>
           <div class="field-image-actions">
-            <label class="image-upload-btn" for="${inputId}">上传图片</label>
-            <input id="${inputId}" class="student-image-file-input" type="file" accept="image/*" multiple data-student-image-file="${student.id}" data-image-field="${key}" />
-            <span class="row-sub">${imageList.length ? `已上传 ${imageList.length} 张` : "可上传图片资料"}</span>
+            <label class="image-upload-btn" for="${inputId}">上传照片/PDF</label>
+            <input id="${inputId}" class="student-image-file-input" type="file" accept="image/*,application/pdf,.pdf" multiple data-student-image-file="${student.id}" data-image-field="${key}" />
+            <span class="row-sub">${fileList.length ? `已上传 ${fileList.length} 个资料（图片 ${imageCount}，PDF ${pdfCount}）` : "可上传照片、X光片或康复方案PDF"}</span>
           </div>
           ${thumbs ? `<div class="field-image-list">${thumbs}</div>` : ""}
         </div>
@@ -3548,13 +3928,17 @@
           </div>
           ${
             item.title
-              ? `<p class="row-sub"><strong>易错原因：</strong>${item.wrong}</p>
-                 <p class="row-sub"><strong>正确意思：</strong>${item.meaning}</p>
-                 <p class="row-sub"><strong>使用提醒：</strong>${item.tip}</p>`
+              ? `<div class="study-readable">
+                   <p class="row-sub"><strong>易错原因：</strong>${applyStudyMarks(item.wrong, `idiom-${item.title}`)}</p>
+                   <p class="row-sub"><strong>正确意思：</strong>${applyStudyMarks(item.meaning, `idiom-${item.title}`)}</p>
+                   <p class="row-sub"><strong>使用提醒：</strong>${applyStudyMarks(item.tip, `idiom-${item.title}`)}</p>
+                 </div>
+                 ${studyTools(`idiom-${item.title}`, "记录这个成语的易错点、例句和自己的记忆方法。")}`
               : `<p class="row-sub">${item}</p>`
           }
         </div>
       `).join("");
+      setTimeout(initStudyCanvases, 0);
     }
 
 
@@ -3633,6 +4017,7 @@
             : `<div class="card" style="grid-column: 1 / -1;"><div class="empty">没有搜到对应考点、讲师或题型。</div></div>`
         }
       `;
+      setTimeout(initStudyCanvases, 0);
     }
 
     function actKnowledgeCard(item) {
@@ -3653,11 +4038,11 @@
               <span class="pill">易混：${item.mix}</span>
             </div>
           </summary>
-          <div class="field-grid" style="margin-top:14px;">
-            <div class="field"><span>核心知识</span><strong>${item.core}</strong></div>
-            <div class="field"><span>考场取舍策略</span><strong>${item.strategy}</strong></div>
-            <div class="field"><span>易混考点专区</span><strong>${item.mix}</strong></div>
-            <div class="field"><span>避坑点</span><strong>${item.avoid}</strong></div>
+          <div class="field-grid study-readable" style="margin-top:14px;">
+            <div class="field"><span>核心知识</span><strong>${applyStudyMarks(item.core, `act-${key}`)}</strong></div>
+            <div class="field"><span>考场取舍策略</span><strong>${applyStudyMarks(item.strategy, `act-${key}`)}</strong></div>
+            <div class="field"><span>易混考点专区</span><strong>${applyStudyMarks(item.mix, `act-${key}`)}</strong></div>
+            <div class="field"><span>避坑点</span><strong>${applyStudyMarks(item.avoid, `act-${key}`)}</strong></div>
           </div>
           <div class="toolbar">
             <button class="ghost-btn" data-formula-title="${item.title}" data-formula-body="${encodeURIComponent(item.formula)}">公式口诀弹窗</button>
@@ -3665,7 +4050,8 @@
             <button class="ghost-btn" data-switch-exam="错题本">看相关错题</button>
           </div>
           ${teacherCompareTable(item)}
-          <textarea class="note-box" data-act-note="${key}" placeholder="在这里录入你的个人笔记、错因、老师讲法取舍...">${note}</textarea>
+          ${studyTools(`act-${key}`, "记录行测知识点、错因、老师讲法取舍；可手绘公式或解题路径。")}
+          <textarea class="note-box" data-act-note="${key}" placeholder="旧版个人笔记仍保留在这里，可继续使用...">${note}</textarea>
         </details>
       `;
     }
@@ -3776,6 +4162,7 @@
             : `<div class="card" style="grid-column: 1 / -1;"><div class="empty">没有搜到对应素材。试试换个关键词或分类。</div></div>`
         }
       `;
+      setTimeout(initStudyCanvases, 0);
     }
 
     function shenlunCard(item) {
@@ -3816,8 +4203,8 @@
 
           <div class="shenlun-section">
             <h4 style="margin:14px 0 8px;font-size:14px;color:var(--purple);">📰 新闻原文精简</h4>
-            <div class="empty" style="background:#fff;border:1px solid var(--line);">
-              ${item.summary}
+            <div class="empty study-readable" style="background:#fff;border:1px solid var(--line);">
+              ${applyStudyMarks(item.summary, `shenlun-${id}`)}
             </div>
           </div>
 
@@ -3834,16 +4221,16 @@
             <div class="field-grid">
               <div class="field">
                 <span>通用句</span>
-                <strong style="font-size:13px;line-height:1.7;">${(item.quotes && item.quotes.general || []).join("<br/>")}</strong>
+                <strong style="font-size:13px;line-height:1.7;">${applyStudyMarks((item.quotes && item.quotes.general || []).join("\n"), `shenlun-${id}`)}</strong>
               </div>
               <div class="field">
                 <span>结尾升华句</span>
-                <strong style="font-size:13px;line-height:1.7;">${(item.quotes && item.quotes.ending || []).join("<br/>")}</strong>
+                <strong style="font-size:13px;line-height:1.7;">${applyStudyMarks((item.quotes && item.quotes.ending || []).join("\n"), `shenlun-${id}`)}</strong>
               </div>
             </div>
             <div class="field" style="margin-top:10px;">
               <span>分论点句</span>
-              <strong style="font-size:13px;line-height:1.7;">${(item.quotes && item.quotes["论点"] || []).join("<br/>")}</strong>
+              <strong style="font-size:13px;line-height:1.7;">${applyStudyMarks((item.quotes && item.quotes["论点"] || []).join("\n"), `shenlun-${id}`)}</strong>
             </div>
           </div>
 
@@ -3852,16 +4239,16 @@
             <div class="field-grid">
               <div class="field">
                 <span>概括题思路</span>
-                <strong style="font-size:13px;line-height:1.7;">${item.思路 && item.思路.概括 || ""}</strong>
+                <strong style="font-size:13px;line-height:1.7;">${applyStudyMarks(item.思路 && item.思路.概括 || "", `shenlun-${id}`)}</strong>
               </div>
               <div class="field">
                 <span>综合分析题思路</span>
-                <strong style="font-size:13px;line-height:1.7;">${item.思路 && item.思路.分析 || ""}</strong>
+                <strong style="font-size:13px;line-height:1.7;">${applyStudyMarks(item.思路 && item.思路.分析 || "", `shenlun-${id}`)}</strong>
               </div>
             </div>
             <div class="field" style="margin-top:10px;">
               <span>大作文分论点</span>
-              <strong style="font-size:13px;line-height:1.7;">${(item.思路 && item.思路.作文 || []).map((s, i) => `分论点${i+1}：${s}`).join("<br/>")}</strong>
+              <strong style="font-size:13px;line-height:1.7;">${applyStudyMarks((item.思路 && item.思路.作文 || []).map((s, i) => `分论点${i+1}：${s}`).join("\n"), `shenlun-${id}`)}</strong>
             </div>
           </div>
 
@@ -3883,7 +4270,8 @@
             <button class="ghost-btn" data-shenlun-copy="${id}">复制金句</button>
           </div>
 
-          <textarea class="note-box" data-shenlun-note="${id}" placeholder="在这里录入你的个人笔记：适用场景、自己改写的金句、搭配的真题...">${note}</textarea>
+          ${studyTools(`shenlun-${id}`, "记录申论素材适用场景、改写金句、搭配真题；可手绘作文结构。")}
+          <textarea class="note-box" data-shenlun-note="${id}" placeholder="旧版个人笔记仍保留在这里，可继续使用...">${note}</textarea>
         </details>
       `;
     }
@@ -3921,7 +4309,7 @@
 
     function renderQuestionBank() {
       const importedQuestions = state.trueQuestions || [];
-      const questions = getDailyQuestions(5);
+      const questions = getDailyQuestions(20);
       const answered = Object.keys(state.examAnswers).length;
       const wrongCount = Object.values(state.examAnswers).filter(item => item && !item.correct).length;
       const correctCount = Object.values(state.examAnswers).filter(item => item && item.correct).length;
@@ -3938,12 +4326,12 @@
             <div class="analysis-box"><span>答对</span><strong>${correctCount}题</strong></div>
             <div class="analysis-box"><span>答错</span><strong>${wrongCount}题</strong></div>
           </div>
-          <div class="empty">更新日期：${todayKey}。如果已导入真题，每天优先轮换真题；未导入时显示内置练习题，避免每日题库空白。</div>
+          <div class="empty">更新日期：${todayKey}。如果已导入真题，每天优先轮换真题；未导入时显示内置题库。每日展示 20 题，题干、选项、解析都会完整换行显示。</div>
           <div class="true-question-import">
             <textarea class="note-box" id="trueQuestionInput" placeholder="每行一题，用 | 分隔：年份|来源|模块|考点|题干|A选项|B选项|C选项|D选项|答案|详细解析|易错点\n例：2023|云南省联考|判断推理|定义判断|题干...|A...|B...|C...|D...|B|第一步看定义关键词...|容易只看生活常识"></textarea>
             <div style="display:flex;gap:12px;flex-wrap:wrap;">
               <button class="primary-btn" id="importTrueQuestions">导入真题</button>
-              <button class="primary-btn" id="loadBuiltInQuestions" style="background:var(--green);">📋 一键加载近10年真题（2016-2025）</button>
+              <button class="primary-btn" id="loadBuiltInQuestions" style="background:var(--green);">📋 加载内置题库（2016-2025精选）</button>
             </div>
           </div>
         </div>
@@ -4156,6 +4544,210 @@
       `;
     }
 
+    const muscle3dAssetMap = {
+      "胸锁乳突肌": {
+        diagram: "assets/muscles/3d/01_sternocleidomastoid_origin_insertion.png",
+        trainGif: "assets/muscles/3d/01_sternocleidomastoid_train.gif",
+        stretchGif: "assets/muscles/3d/01_sternocleidomastoid_stretch.gif"
+      },
+      "斜方肌上束": {
+        diagram: "assets/muscles/3d/02_upper_trapezius_origin_insertion.png",
+        trainGif: "assets/muscles/3d/02_upper_trapezius_train.gif",
+        stretchGif: "assets/muscles/3d/02_upper_trapezius_stretch.gif"
+      },
+      "前锯肌": {
+        diagram: "assets/muscles/3d/03_serratus_anterior_origin_insertion.png",
+        trainGif: "assets/muscles/3d/03_serratus_anterior_train.gif",
+        stretchGif: "assets/muscles/3d/03_serratus_anterior_stretch.gif"
+      },
+      "胸小肌": {
+        diagram: "assets/muscles/3d/04_pectoralis_minor_origin_insertion.png",
+        trainGif: "assets/muscles/3d/04_pectoralis_minor_train.gif",
+        stretchGif: "assets/muscles/3d/04_pectoralis_minor_stretch.gif"
+      },
+      "深颈屈肌": {
+        diagram: "assets/muscles/3d/05_deep_neck_flexors_origin_insertion.png",
+        trainGif: "assets/muscles/3d/05_deep_neck_flexors_train.gif",
+        stretchGif: "assets/muscles/3d/05_deep_neck_flexors_stretch.gif"
+      },
+      "肩胛提肌": {
+        diagram: "assets/muscles/3d/06_levator_scapulae_origin_insertion.png",
+        trainGif: "assets/muscles/3d/06_levator_scapulae_train.gif",
+        stretchGif: "assets/muscles/3d/06_levator_scapulae_stretch.gif"
+      },
+      "菱形肌": {
+        diagram: "assets/muscles/3d/07_rhomboids_origin_insertion.png",
+        trainGif: "assets/muscles/3d/07_rhomboids_train.gif",
+        stretchGif: "assets/muscles/3d/07_rhomboids_stretch.gif"
+      },
+      "下斜方肌": {
+        diagram: "assets/muscles/3d/08_lower_trapezius_origin_insertion.png",
+        trainGif: "assets/muscles/3d/08_lower_trapezius_train.gif",
+        stretchGif: "assets/muscles/3d/08_lower_trapezius_stretch.gif"
+      },
+      "背阔肌": {
+        diagram: "assets/muscles/3d/09_latissimus_dorsi_origin_insertion.png",
+        trainGif: "assets/muscles/3d/09_latissimus_dorsi_train.gif",
+        stretchGif: "assets/muscles/3d/09_latissimus_dorsi_stretch.gif"
+      },
+      "冈下肌": {
+        diagram: "assets/muscles/3d/10_infraspinatus_origin_insertion.png",
+        trainGif: "assets/muscles/3d/10_infraspinatus_train.gif",
+        stretchGif: "assets/muscles/3d/10_infraspinatus_stretch.gif"
+      },
+      "臀中肌": {
+        diagram: "assets/muscles/3d/11_gluteus_medius_origin_insertion.png",
+        trainGif: "assets/muscles/3d/11_gluteus_medius_train.gif",
+        stretchGif: "assets/muscles/3d/11_gluteus_medius_stretch.gif"
+      },
+      "髂腰肌": {
+        diagram: "assets/muscles/3d/12_iliopsoas_origin_insertion.png",
+        trainGif: "assets/muscles/3d/12_iliopsoas_train.gif",
+        stretchGif: "assets/muscles/3d/12_iliopsoas_stretch.gif"
+      },
+      "腘绳肌": {
+        diagram: "assets/muscles/3d/13_hamstrings_origin_insertion.png",
+        trainGif: "assets/muscles/3d/13_hamstrings_train.gif",
+        stretchGif: "assets/muscles/3d/13_hamstrings_stretch.gif"
+      },
+      "股四头肌": {
+        diagram: "assets/muscles/3d/14_quadriceps_origin_insertion.png",
+        trainGif: "assets/muscles/3d/14_quadriceps_train.gif",
+        stretchGif: "assets/muscles/3d/14_quadriceps_stretch.gif"
+      },
+      "腓肠肌": {
+        diagram: "assets/muscles/3d/15_gastrocnemius_origin_insertion.png",
+        trainGif: "assets/muscles/3d/15_gastrocnemius_train.gif",
+        stretchGif: "assets/muscles/3d/15_gastrocnemius_stretch.gif"
+      }
+    };
+
+    function muscleAssetKey(muscle) {
+      return (muscle3dAssetMap[muscle.name]?.diagram || `muscle-${muscles.indexOf(muscle)}-${muscle.name}`).split("/").pop().replace(/\.(png|jpg|jpeg|webp|gif|mp4)$/i, "");
+    }
+
+    function getMuscle3dAssets(muscle) {
+      return muscle3dAssetMap[muscle.name] || {
+        diagram: `assets/muscles/3d/${muscleAssetKey(muscle)}_origin_insertion.png`,
+        trainGif: `assets/muscles/3d/${muscleAssetKey(muscle)}_train.gif`,
+        stretchGif: `assets/muscles/3d/${muscleAssetKey(muscle)}_stretch.gif`
+      };
+    }
+
+    function assetFilename(path) {
+      return path.split("/").pop();
+    }
+
+    function getMuscleVisualPlan(muscle) {
+      const text = `${muscle.name} ${muscle.position} ${muscle.origin} ${muscle.insertion}`;
+      const plan = {
+        view: "躯干/四肢简图",
+        origin: { x: 82, y: 62, label: "起点" },
+        insertion: { x: 112, y: 122, label: "止点" },
+        path: "M82 62 C96 82 104 102 112 122",
+        note: "紫色为起点，绿色为止点，虚线表示肌肉走向。"
+      };
+
+      if (/颈|胸锁乳突|深颈|肩胛提/.test(text)) {
+        return {
+          ...plan,
+          view: "头颈侧面简图",
+          origin: { x: 94, y: 115, label: "胸/颈椎侧" },
+          insertion: { x: 124, y: 58, label: "乳突/枕侧" },
+          path: "M94 115 C106 96 114 76 124 58"
+        };
+      }
+      if (/斜方|菱形|冈下|肩胛|前锯|胸小/.test(text)) {
+        return {
+          ...plan,
+          view: "肩胛胸廓简图",
+          origin: { x: 70, y: 92, label: "胸椎/肋骨侧" },
+          insertion: { x: 126, y: 86, label: "肩胛/肱骨侧" },
+          path: "M70 92 C88 78 108 78 126 86"
+        };
+      }
+      if (/背阔/.test(text)) {
+        return {
+          ...plan,
+          view: "背部后侧简图",
+          origin: { x: 76, y: 138, label: "胸腰/髂嵴" },
+          insertion: { x: 130, y: 82, label: "肱骨侧" },
+          path: "M76 138 C88 112 106 92 130 82"
+        };
+      }
+      if (/臀|髂腰|髋/.test(text)) {
+        return {
+          ...plan,
+          view: "骨盆髋部简图",
+          origin: { x: 82, y: 105, label: "骨盆侧" },
+          insertion: { x: 126, y: 135, label: "股骨侧" },
+          path: "M82 105 C98 112 124 135 126 135"
+        };
+      }
+      if (/腘绳|股四头|大腿/.test(text)) {
+        return {
+          ...plan,
+          view: "大腿前后侧简图",
+          origin: { x: 92, y: 92, label: "骨盆/股骨近端" },
+          insertion: { x: 110, y: 158, label: "胫腓骨近端" },
+          path: "M92 92 C98 114 104 138 110 158"
+        };
+      }
+      if (/腓肠|小腿/.test(text)) {
+        return {
+          ...plan,
+          view: "小腿后侧简图",
+          origin: { x: 96, y: 96, label: "股骨髁" },
+          insertion: { x: 112, y: 162, label: "跟骨" },
+          path: "M96 96 C106 118 112 140 112 162"
+        };
+      }
+      return plan;
+    }
+
+    function muscleDiagram(muscle) {
+      const key = muscleAssetKey(muscle);
+      const plan = getMuscleVisualPlan(muscle);
+      const assets = getMuscle3dAssets(muscle);
+      return `
+        <div class="muscle-svg-card" data-diagram-key="${key}" data-origin="${muscle.origin}" data-insertion="${muscle.insertion}" data-asset-source="3d-anatomy-software">
+          <div class="muscle-visual-title">
+            3D解剖图
+            <span>${muscle.name} · 起止点</span>
+          </div>
+          <div class="asset-frame" data-diagram-src="${assets.diagram}">
+            <span class="asset-source-tag">3D解剖软件</span>
+            <img class="asset-img" src="${assets.diagram}" alt="${muscle.name}3D起止点解剖图" loading="lazy" onload="this.closest('.asset-frame').classList.add('has-asset')" onerror="this.remove()">
+            <div class="asset-fallback">
+              <div>
+                <svg class="simple-body-svg" viewBox="0 0 200 190" role="img" aria-label="${muscle.name}起止点示意占位图">
+                  <rect x="48" y="18" width="104" height="154" rx="52" fill="#fbf9f2" stroke="#eadfca" stroke-width="2"></rect>
+                  <circle cx="100" cy="38" r="22" fill="#fff7e6" stroke="#eadfca" stroke-width="2"></circle>
+                  <path d="M74 68 C60 92 58 126 72 154" fill="none" stroke="#eadfca" stroke-width="8" stroke-linecap="round"></path>
+                  <path d="M126 68 C142 92 142 126 128 154" fill="none" stroke="#eadfca" stroke-width="8" stroke-linecap="round"></path>
+                  <path d="M86 126 L78 174" stroke="#eadfca" stroke-width="9" stroke-linecap="round"></path>
+                  <path d="M114 126 L122 174" stroke="#eadfca" stroke-width="9" stroke-linecap="round"></path>
+                  <path class="muscle-line" d="${plan.path}"></path>
+                  <circle class="muscle-origin" cx="${plan.origin.x}" cy="${plan.origin.y}" r="7"></circle>
+                  <circle class="muscle-insertion" cx="${plan.insertion.x}" cy="${plan.insertion.y}" r="7"></circle>
+                  <text x="${Math.max(8, plan.origin.x - 34)}" y="${Math.max(16, plan.origin.y - 12)}" fill="#6f4bd6" font-size="11" font-weight="800">${plan.origin.label}</text>
+                  <text x="${Math.min(142, plan.insertion.x - 24)}" y="${Math.min(182, plan.insertion.y + 20)}" fill="#2f9b65" font-size="11" font-weight="800">${plan.insertion.label}</text>
+                </svg>
+                <div class="asset-filename">请放入：${assetFilename(assets.diagram)}</div>
+              </div>
+            </div>
+          </div>
+          <div class="muscle-legend">
+            <b><i class="legend-dot" style="background:#8a62e6;"></i>起点：${muscle.origin}</b>
+            <b><i class="legend-dot" style="background:#52c889;"></i>止点：${muscle.insertion}</b>
+          </div>
+          <div class="exercise-caption">当前绑定 ${plan.view} 的 3D 软件导出图；未放入真实素材时显示占位。</div>
+        </div>
+      `;
+    }
+
+
+
     function renderMuscles() {
       const dailyMuscles = getDailyMuscles(5);
       const dailyIndexes = dailyMuscles.map(m => muscles.indexOf(m));
@@ -4183,6 +4775,9 @@
             <p class="row-sub">${m.position}</p>
           </div>
           <span class="status">${state.selectedMuscle === dayIndex(muscles.length, 12) ? "今日肌肉" : "肌肉资料"}</span>
+        </div>
+        <div class="muscle-visuals">
+          ${muscleDiagram(m)}
         </div>
         <div class="field-grid">
           <div class="field"><span>起点</span><strong>${m.origin}</strong></div>
@@ -4445,6 +5040,67 @@
       URL.revokeObjectURL(link.href);
     }
 
+    function buildStudyPackHtml() {
+      const today = new Date().toLocaleDateString("zh-CN");
+      const actItems = getDailyActItems(15);
+      const shenlunItems = getDailyShenlunItems(10);
+      const idiomItems = getDailyIdiomItems(5);
+      const section = (title, body) => `<h2>${title}</h2>${body}`;
+      const actHtml = actItems.map((item, i) => `
+        <h3>${i + 1}. ${item.module} · ${item.title}</h3>
+        <p><b>核心：</b>${item.core}</p>
+        <p><b>公式口诀：</b>${item.formula}</p>
+        <p><b>易混点：</b>${item.mix}</p>
+        <p><b>取舍策略：</b>${item.strategy}</p>
+      `).join("");
+      const shenlunHtml = shenlunItems.map((item, i) => `
+        <h3>热点${i + 1}：${item.title}</h3>
+        <p><b>摘要：</b>${item.summary}</p>
+        <p><b>标签：</b>${(item.tags || []).join("、")}</p>
+        <p><b>金句：</b>${[...(item.quotes?.general || []), ...(item.quotes?.ending || [])].join("；")}</p>
+        <p><b>分论点：</b>${(item.quotes?.["论点"] || []).join("；")}</p>
+      `).join("");
+      const idiomHtml = idiomItems.map((item, i) => `
+        <h3>${i + 1}. ${item.title}</h3>
+        <p><b>易错：</b>${item.wrong}</p>
+        <p><b>正解：</b>${item.meaning}</p>
+        <p><b>提醒：</b>${item.tip}</p>
+      `).join("");
+      return `
+        <html><head><meta charset="utf-8"><title>公考学习包</title>
+        <style>body{font-family:"Microsoft YaHei",Arial,sans-serif;line-height:1.75;color:#222;padding:28px;}h1{text-align:center;}h2{border-bottom:2px solid #8a62e6;padding-bottom:6px;}h3{margin-top:18px;}p{margin:6px 0;}</style>
+        </head><body>
+          <h1>公考每日学习包</h1>
+          <p style="text-align:center;">生成日期：${today}</p>
+          ${section("第一部分：行测核心知识点", actHtml)}
+          ${section("第二部分：申论热点素材", shenlunHtml)}
+          ${section("第三部分：易错成语积累", idiomHtml)}
+        </body></html>
+      `;
+    }
+
+    function exportStudyPackWord() {
+      const html = buildStudyPackHtml();
+      const blob = new Blob(["\ufeff" + html], { type: "application/msword;charset=utf-8" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = `公考学习包_${todayKey}.doc`;
+      link.click();
+      URL.revokeObjectURL(link.href);
+    }
+
+    function exportStudyPackPdf() {
+      const win = window.open("", "_blank");
+      if (!win) {
+        alert("浏览器拦截了打印窗口，请允许弹窗后重试。");
+        return;
+      }
+      win.document.write(buildStudyPackHtml());
+      win.document.close();
+      win.focus();
+      setTimeout(() => win.print(), 300);
+    }
+
     function startStudentInlineEdit(target) {
       if (!target || target.dataset.editing === "1") return;
       const studentId = target.dataset.editStudent;
@@ -4543,32 +5199,36 @@
       student.images = student.images || {};
       student.images[field] = Array.isArray(student.images[field]) ? student.images[field] : [];
       let loaded = 0;
+      const finishOne = () => {
+        loaded++;
+        if (loaded === fileList.length) {
+          saveStudents();
+          renderStudents();
+          renderOverview();
+          const pm = document.getElementById("studentProfileModal");
+          if (pm && pm.style.display === "flex") renderStudentProfile(student.id);
+        }
+      };
       fileList.forEach(file => {
-        if (!file.type.startsWith("image/")) {
-          loaded++;
+        const isImage = file.type.startsWith("image/");
+        const isPdf = file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf");
+        if (!isImage && !isPdf) {
+          finishOne();
           return;
         }
         const reader = new FileReader();
         reader.onload = () => {
-          student.images[field].push(reader.result);
-          loaded++;
-          if (loaded === fileList.length) {
-            saveStudents();
-            renderStudents();
-            renderOverview();
-            const pm = document.getElementById("studentProfileModal");
-            if (pm && pm.style.display === "flex") renderStudentProfile(student.id);
-          }
+          student.images[field].push({
+            type: isPdf ? "pdf" : "image",
+            mime: isPdf ? "application/pdf" : file.type,
+            name: file.name || (isPdf ? "康复方案.pdf" : "图片资料"),
+            data: reader.result,
+            uploadedAt: new Date().toISOString()
+          });
+          finishOne();
         };
         reader.onerror = () => {
-          loaded++;
-          if (loaded === fileList.length) {
-            saveStudents();
-            renderStudents();
-            renderOverview();
-            const pm = document.getElementById("studentProfileModal");
-            if (pm && pm.style.display === "flex") renderStudentProfile(student.id);
-          }
+          finishOne();
         };
         reader.readAsDataURL(file);
       });
@@ -4597,6 +5257,21 @@
       if (pm && pm.style.display === "flex") renderStudentProfile(studentId);
     }
 
+    function previewStudentFile(studentId, field, index) {
+      const student = state.students.find(s => s.id === studentId);
+      const raw = student?.images?.[field]?.[Number(index)];
+      if (!raw) return;
+      const item = typeof raw === "string"
+        ? { type: "image", name: "图片资料", data: raw, mime: "image/*" }
+        : raw;
+      const isPdf = item.type === "pdf" || item.mime === "application/pdf";
+      document.getElementById("studentFilePreviewTitle").textContent = item.name || (isPdf ? "PDF资料预览" : "图片资料预览");
+      document.getElementById("studentFilePreviewBody").innerHTML = isPdf
+        ? `<iframe class="student-preview-pdf" src="${item.data}" title="${safeText(item.name || "PDF资料")}"></iframe>`
+        : `<img class="student-preview-image" src="${item.data}" alt="${safeText(item.name || "图片资料")}" />`;
+      document.getElementById("studentFilePreviewModal").style.display = "flex";
+    }
+
     document.body.addEventListener("click", (event) => {
       const uploadImage = event.target.closest("[data-upload-student-image]");
       if (uploadImage) {
@@ -4609,6 +5284,13 @@
       if (deleteImage) {
         event.stopPropagation();
         deleteStudentImage(deleteImage.dataset.deleteStudentImage, deleteImage.dataset.imageField, deleteImage.dataset.imageIndex);
+        return;
+      }
+
+      const previewFile = event.target.closest("[data-preview-student-file]");
+      if (previewFile) {
+        event.stopPropagation();
+        previewStudentFile(previewFile.dataset.previewStudentFile, previewFile.dataset.imageField, previewFile.dataset.imageIndex);
         return;
       }
 
@@ -4632,14 +5314,40 @@
         return;
       }
 
-      const task = event.target.closest("[data-task]");
-      if (task) {
-        const id = task.dataset.task;
-        state.doneTasks = state.doneTasks.includes(id)
-          ? state.doneTasks.filter(item => item !== id)
-          : [...state.doneTasks, id];
+      const planTask = event.target.closest("[data-plan-task]");
+      if (planTask) {
+        if (event.target.closest(".task-actions")) return;
+        const task = state.planTasks.find(item => item.id === planTask.dataset.planTask);
+        if (!task) return;
+        task.done = !task.done;
         saveTasks();
         renderPlan();
+        renderOverview();
+        return;
+      }
+
+      const studyMark = event.target.closest("[data-study-mark]");
+      if (studyMark) {
+        event.stopPropagation();
+        const text = window.getSelection().toString().trim();
+        if (!text) {
+          alert("请先在素材文字中选中要标记的内容。");
+          return;
+        }
+        const annotation = getStudyAnnotation(studyMark.dataset.studyMark);
+        const listName = studyMark.dataset.studyType === "underline" ? "underlines" : "highlights";
+        if (!annotation[listName].includes(text)) annotation[listName].push(text);
+        saveStudyAnnotations();
+        renderExam();
+        return;
+      }
+
+      const clearDrawing = event.target.closest("[data-study-clear-drawing]");
+      if (clearDrawing) {
+        const annotation = getStudyAnnotation(clearDrawing.dataset.studyClearDrawing);
+        annotation.drawing = "";
+        saveStudyAnnotations();
+        renderExam();
         return;
       }
 
@@ -4737,6 +5445,53 @@
         renderStudents();
         renderOverview();
         renderStudentProfile(state.selectedStudent);
+      }
+
+      if (event.target.id === "addPlanTask") {
+        const titleInput = document.getElementById("newPlanTitle");
+        const timeInput = document.getElementById("newPlanTime");
+        const title = titleInput.value.trim();
+        const time = timeInput.value.trim();
+        if (!title) {
+          alert("请先输入每日计划内容。");
+          return;
+        }
+        state.planTasks.push({
+          id: "t" + Date.now(),
+          title,
+          time: time || "不限时",
+          reward: 10,
+          done: false
+        });
+        saveTasks();
+        renderPlan();
+        titleInput.value = "";
+        timeInput.value = "";
+      }
+
+      const planEdit = event.target.closest("[data-plan-edit]");
+      if (planEdit) {
+        const task = state.planTasks.find(item => item.id === planEdit.dataset.planEdit);
+        if (!task) return;
+        const title = prompt("修改任务内容：", task.title);
+        if (title === null) return;
+        const time = prompt("修改预计时间：", task.time || "不限时");
+        task.title = title.trim() || task.title;
+        task.time = (time || "").trim() || "不限时";
+        saveTasks();
+        renderPlan();
+        return;
+      }
+
+      const planDelete = event.target.closest("[data-plan-delete]");
+      if (planDelete) {
+        const task = state.planTasks.find(item => item.id === planDelete.dataset.planDelete);
+        if (!task) return;
+        if (!confirm(`确定删除任务「${task.title}」吗？`)) return;
+        state.planTasks = state.planTasks.filter(item => item.id !== task.id);
+        saveTasks();
+        renderPlan();
+        return;
       }
 
       if (event.target.id === "resetDemo") {
@@ -4924,6 +5679,14 @@
         exportIntegratedPack();
       }
 
+      if (event.target.id === "overviewExportWord") {
+        exportStudyPackWord();
+      }
+
+      if (event.target.id === "overviewExportPdf") {
+        exportStudyPackPdf();
+      }
+
       // 全局搜索结果点击跳转
       const searchItem = event.target.closest("[data-search-type]");
       if (searchItem) {
@@ -4972,7 +5735,7 @@
       if (event.target.id === "importTrueQuestions") {
         const text = document.getElementById("trueQuestionInput").value.trim();
         if (!text) {
-          alert("请先粘贴真题数据，或点击「加载内置真题」按钮。");
+          alert("请先粘贴真题数据，或点击「加载内置题库」按钮。");
           return;
         }
         importTrueQuestionsFromText(text);
@@ -5046,6 +5809,11 @@
       if (event.target.id === "closeStudentProfile") {
         document.getElementById("studentProfileModal").style.display = "none";
       }
+
+      if (event.target.id === "closeStudentFilePreview") {
+        document.getElementById("studentFilePreviewModal").style.display = "none";
+        document.getElementById("studentFilePreviewBody").innerHTML = "";
+      }
     });
 
     document.getElementById("excelFileInput").addEventListener("change", (e) => {
@@ -5071,6 +5839,12 @@
         saveShenlunState();
       }
 
+      if (event.target.matches("[data-study-note]")) {
+        const annotation = getStudyAnnotation(event.target.dataset.studyNote);
+        annotation.note = event.target.value;
+        saveStudyAnnotations();
+      }
+
       if (event.target.id === "chatImageInput") {
         readChatImage(event.target.files[0]);
       }
@@ -5085,6 +5859,12 @@
       if (event.target.matches("[data-shenlun-note]")) {
         state.shenlunNotes[event.target.dataset.shenlunNote] = event.target.value;
         saveShenlunState();
+      }
+
+      if (event.target.matches("[data-study-note]")) {
+        const annotation = getStudyAnnotation(event.target.dataset.studyNote);
+        annotation.note = event.target.value;
+        saveStudyAnnotations();
       }
     });
 
@@ -5171,7 +5951,7 @@
       state.trueQuestions = [...state.trueQuestions, ...newQuestions];
       saveExamPractice();
       renderExam();
-      alert(`成功加载 ${newQuestions.length} 道真题！题库现有 ${state.trueQuestions.length} 道题。`);
+      alert(`成功加载 ${newQuestions.length} 道内置精选题！题库现有 ${state.trueQuestions.length} 道题。`);
     }
 
     function importTrueQuestionsFromText(text) {
