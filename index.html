@@ -1678,7 +1678,7 @@
         <div class="profile">
           <div class="avatar">🐱</div>
           <div>
-            <strong>今日工作台 · 最终版 2026-07-30</strong><br />
+            <strong>今日工作台 · 最终版 2026-07-30 (学员列表优化)</strong><br />
             <small id="todayText"></small>
           </div>
         </div>
@@ -1759,17 +1759,15 @@
           <input type="file" id="excelFileInput" accept=".xlsx,.xls" style="display:none;" />
         </div>
 
-        <div class="layout-two">
-          <div class="card">
-            <div class="section-title">
-              <h3>学员列表</h3>
-              <button class="ghost-btn" id="resetDemo">恢复示例</button>
-            </div>
-            <div class="list" id="studentList"></div>
+        <div class="card">
+          <div class="section-title">
+            <h3>学员列表</h3>
+            <button class="ghost-btn" id="resetDemo">恢复示例</button>
           </div>
-
-          <div class="grid" id="studentDetail"></div>
+          <div class="list" id="studentList"></div>
         </div>
+
+        <div class="card" id="studentToolsArea"></div>
       </section>
 
       <section class="view" id="exam">
@@ -1899,6 +1897,16 @@
         <button class="ghost-btn" id="closeImportLog">关闭</button>
       </div>
       <div id="importLogBody" style="max-height:60vh;overflow-y:auto;"></div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="studentProfileModal" style="display:none;">
+    <div class="modal-card" style="max-width:680px;max-height:85vh;overflow-y:auto;">
+      <div class="section-title">
+        <h3>学员档案</h3>
+        <button class="ghost-btn" id="closeStudentProfile">返回列表</button>
+      </div>
+      <div id="studentProfileBody"></div>
     </div>
   </div>
 
@@ -3244,41 +3252,59 @@
       const keyword = document.getElementById("globalSearch").value.trim();
       const filtered = state.students.filter(s => !keyword || [s.name, s.issue, s.status, s.phone, s.job, s.body, s.film, s.plan, s.remark].join(" ").includes(keyword));
 
+      // 列表只显示姓名和费用
       document.getElementById("studentList").innerHTML = filtered.map(s => {
         const paid = calculatePaidFee(s);
+        const unpaid = Math.max(0, s.totalFee - paid);
         return `
-          <div class="student-row ${state.selectedStudent === s.id ? "active" : ""}" data-student="${s.id}">
+          <div class="student-row" data-student="${s.id}">
             <button class="student-delete-btn" data-student-delete="${s.id}">删除</button>
-            <div class="student-row-content">
+            <div class="student-row-content" style="cursor:pointer;">
               <div class="row-main">
-                <strong>${studentEditableValue(s, "name", s.name)}</strong>
-                ${studentEditableValue(s, "status", s.status, "status")}
+                <strong>${s.name}</strong>
+                <span class="status">${s.status}</span>
               </div>
-              <div class="row-sub">主诉：${studentEditableValue(s, "issue", s.issue)}</div>
-              <div class="student-mini-grid">
-                <span>电话：${studentEditableValue(s, "phone", s.phone)}</span>
-                <span>年龄：${studentEditableValue(s, "age", s.age || "")} · 职业：${studentEditableValue(s, "job", s.job || "")}</span>
-                <span>体态：${studentEditableValue(s, "body", s.body || "")}</span>
-                <span>片子：${studentEditableValue(s, "film", s.film || "")}</span>
-                <span>方案：${studentEditableValue(s, "plan", s.plan || "")}</span>
-                <span>记录：${studentEditableValue(s, "classRecord", s.classRecord || "")}</span>
-                <span>备注：${studentEditableValue(s, "remark", s.remark || "")}</span>
-              </div>
-              <div class="row-main">
-                <span class="row-sub">总费用 ${studentEditableValue(s, "totalFee", s.totalFee)}</span>
-                <span class="coin editable-value paid-fee-chip" data-edit-student="${s.id}" data-edit-field="paidFee" title="点击编辑已收费用">已收 ${money(paid)}</span>
-                <button type="button" class="paid-fee-edit-btn" data-edit-student="${s.id}" data-edit-field="paidFee">编辑</button>
+              <div class="row-main" style="margin-top:6px;">
+                <span class="row-sub">总费用 <strong>${money(s.totalFee)}</strong></span>
+                <span class="coin">已收 ${money(paid)}</span>
+                ${unpaid > 0 ? `<span class="pill" style="background:#fff3e0;color:#e65100;border-color:#ffe0b2;">待收 ${money(unpaid)}</span>` : `<span class="pill" style="background:#e8f5e9;color:#2e7d32;border-color:#c8e6c9;">已结清</span>`}
               </div>
             </div>
           </div>
         `;
       }).join("") || `<div class="empty">没有找到匹配的学员。</div>`;
 
-      const student = state.students.find(s => s.id === state.selectedStudent) || state.students[0];
-      if (!student) {
-        document.getElementById("studentDetail").innerHTML = `<div class="card"><div class="empty">暂无学员。可以先导入 Excel 或恢复示例数据。</div></div>`;
-        return;
+      // 数据导入与聊天识别区（放在列表下方）
+      const toolsArea = document.getElementById("studentToolsArea");
+      if (toolsArea) {
+        toolsArea.innerHTML = `
+          <div class="section-title">
+            <h3>数据导入与聊天识别</h3>
+            <span class="pill">自动匹配学员</span>
+          </div>
+          <div class="student-tools">
+            <div>
+              <h3 class="mini-title">学员数据由你导入</h3>
+              <textarea class="note-box" id="studentImportText" placeholder="一行一个学员，格式：姓名，年龄，电话，问题，总费用&#10;例如：赵敏，31，13600000000，颈椎酸痛圆肩，3200"></textarea>
+              <button class="primary-btn" id="importStudents" style="width:100%; margin-top:10px;">导入学员数据</button>
+            </div>
+            <div>
+              <h3 class="mini-title">聊天截图/文字识别</h3>
+              <input id="chatImageInput" type="file" accept="image/*" style="width:100%; margin-bottom:10px;" />
+              <textarea class="note-box" id="chatTextInput" placeholder="可以上传聊天截图；如果识别不出来，也可以把聊天文字粘贴到这里。系统会识别姓名、电话、金额、症状关键词并匹配学员。"></textarea>
+              <button class="primary-btn" id="analyzeChat" style="width:100%; margin-top:10px;">识别并匹配</button>
+            </div>
+          </div>
+          <div class="match-list" id="chatMatchList">${renderChatMatches()}</div>
+        `;
       }
+    }
+
+    // 渲染学员档案弹窗
+    function renderStudentProfile(studentId) {
+      const student = state.students.find(s => s.id === studentId);
+      if (!student) return;
+
       state.selectedStudent = student.id;
       localStorage.setItem("workbench_selected_student", student.id);
 
@@ -3294,7 +3320,7 @@
         </tr>
       `).join("");
 
-      document.getElementById("studentDetail").innerHTML = `
+      document.getElementById("studentProfileBody").innerHTML = `
         <div class="card">
           <div class="detail-head">
             <div>
@@ -3322,27 +3348,6 @@
             <div class="image-slot">体态正面照</div>
             <div class="image-slot">体态侧面/背面照</div>
           </div>
-        </div>
-
-        <div class="card">
-          <div class="section-title">
-            <h3>数据导入与聊天识别</h3>
-            <span class="pill">自动匹配学员</span>
-          </div>
-          <div class="student-tools">
-            <div>
-              <h3 class="mini-title">学员数据由你导入</h3>
-              <textarea class="note-box" id="studentImportText" placeholder="一行一个学员，格式：姓名，年龄，电话，问题，总费用&#10;例如：赵敏，31，13600000000，颈椎酸痛圆肩，3200"></textarea>
-              <button class="primary-btn" id="importStudents" style="width:100%; margin-top:10px;">导入学员数据</button>
-            </div>
-            <div>
-              <h3 class="mini-title">聊天截图/文字识别</h3>
-              <input id="chatImageInput" type="file" accept="image/*" style="width:100%; margin-bottom:10px;" />
-              <textarea class="note-box" id="chatTextInput" placeholder="可以上传聊天截图；如果识别不出来，也可以把聊天文字粘贴到这里。系统会识别姓名、电话、金额、症状关键词并匹配学员。"></textarea>
-              <button class="primary-btn" id="analyzeChat" style="width:100%; margin-top:10px;">识别并匹配</button>
-            </div>
-          </div>
-          <div class="match-list" id="chatMatchList">${renderChatMatches()}</div>
         </div>
 
         <div class="card">
@@ -3387,6 +3392,8 @@
           </div>
         </div>
       `;
+
+      document.getElementById("studentProfileModal").style.display = "flex";
     }
 
     function renderChatMatches() {
@@ -4491,6 +4498,10 @@
         saveStudents();
         renderStudents();
         renderOverview();
+        const profileModal = document.getElementById("studentProfileModal");
+        if (profileModal && profileModal.style.display === "flex") {
+          renderStudentProfile(student.id);
+        }
       };
 
       control.addEventListener("blur", saveInlineValue);
@@ -4521,6 +4532,7 @@
       saveStudents();
       renderStudents();
       renderOverview();
+      document.getElementById("studentProfileModal").style.display = "none";
     }
 
     function handleStudentImageFiles(studentId, field, files) {
@@ -4544,6 +4556,8 @@
             saveStudents();
             renderStudents();
             renderOverview();
+            const pm = document.getElementById("studentProfileModal");
+            if (pm && pm.style.display === "flex") renderStudentProfile(student.id);
           }
         };
         reader.onerror = () => {
@@ -4552,6 +4566,8 @@
             saveStudents();
             renderStudents();
             renderOverview();
+            const pm = document.getElementById("studentProfileModal");
+            if (pm && pm.style.display === "flex") renderStudentProfile(student.id);
           }
         };
         reader.readAsDataURL(file);
@@ -4577,6 +4593,8 @@
       saveStudents();
       renderStudents();
       renderOverview();
+      const pm = document.getElementById("studentProfileModal");
+      if (pm && pm.style.display === "flex") renderStudentProfile(studentId);
     }
 
     document.body.addEventListener("click", (event) => {
@@ -4628,9 +4646,8 @@
       const student = event.target.closest("[data-student]");
       if (student) {
         if (event.target.closest("[data-inline-edit]")) return;
-        state.selectedStudent = student.dataset.student;
-        renderStudents();
-        renderOverview();
+        if (event.target.closest("[data-student-delete]")) return;
+        renderStudentProfile(student.dataset.student);
         return;
       }
 
@@ -4697,6 +4714,7 @@
         saveStudents();
         renderStudents();
         renderOverview();
+        renderStudentProfile(state.selectedStudent);
         return;
       }
     });
@@ -4718,6 +4736,7 @@
         saveStudents();
         renderStudents();
         renderOverview();
+        renderStudentProfile(state.selectedStudent);
       }
 
       if (event.target.id === "resetDemo") {
@@ -5022,6 +5041,10 @@
 
       if (event.target.id === "closeImportLog") {
         document.getElementById("importLogModal").style.display = "none";
+      }
+
+      if (event.target.id === "closeStudentProfile") {
+        document.getElementById("studentProfileModal").style.display = "none";
       }
     });
 
