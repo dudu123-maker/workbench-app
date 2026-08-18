@@ -1093,6 +1093,79 @@
       z-index: 2;
     }
 
+    .compare-table-detailed td {
+      font-size: 12.5px;
+      vertical-align: top;
+    }
+
+    .compare-table-detailed .compare-label {
+      background: var(--purple-soft);
+      color: var(--purple);
+      font-weight: 800;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .compare-highlight {
+      display: inline-block;
+      margin-top: 4px;
+      padding: 2px 6px;
+      border-radius: 6px;
+      background: rgba(255, 198, 41, 0.16);
+      color: #b98600;
+      font-size: 11.5px;
+      font-weight: 700;
+      line-height: 1.5;
+    }
+
+    .yanyan-practice-section {
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 2px solid var(--line);
+    }
+
+    .yanyan-section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 4px 0 8px;
+    }
+
+    .yanyan-section-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .yanyan-section-icon {
+      font-size: 20px;
+    }
+
+    .yanyan-section-title h3 {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--ink);
+      margin: 0;
+    }
+
+    .quiz-section-divider {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 0 6px;
+      border-bottom: 2px solid var(--purple-soft);
+      margin-bottom: 8px;
+    }
+
+    .quiz-section-divider h3 {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--purple);
+      margin: 0;
+    }
+
     .note-box {
       width: 100%;
       border: 1px solid var(--line);
@@ -1113,6 +1186,207 @@
       display: flex;
       align-items: center;
       gap: 6px;
+    }
+
+    /* ===== 时政热点卡片流 ===== */
+    .hotnews-wrap {
+      grid-column: 1 / -1;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .hotnews-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .hotnews-date {
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .countdown-tag {
+      display: inline-block;
+      padding: 5px 12px;
+      border-radius: 999px;
+      background: rgba(138, 98, 230, 0.12);
+      color: #6f4bd6;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .hotnews-title-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 4px 0 8px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .hotnews-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .hotnews-title-icon {
+      font-size: 20px;
+    }
+
+    .hotnews-title h3 {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--ink);
+      margin: 0;
+    }
+
+    .hotnews-progress {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted);
+    }
+
+    .hotnews-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .hotnews-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 16px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .hotnews-card:hover {
+      border-color: rgba(138, 98, 230, 0.4);
+      transform: translateY(-1px);
+    }
+
+    .hotnews-card.learned {
+      background: rgba(82, 200, 137, 0.06);
+      border-color: rgba(82, 200, 137, 0.4);
+    }
+
+    .hotnews-card-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .hotnews-card-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--ink);
+      line-height: 1.5;
+      flex: 1;
+    }
+
+    .hotnews-time-tag {
+      flex-shrink: 0;
+      font-size: 11px;
+      font-weight: 700;
+      color: #b98600;
+      background: rgba(255, 198, 41, 0.16);
+      padding: 3px 8px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    .hotnews-summary {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 10px;
+    }
+
+    .hotnews-points {
+      background: rgba(255, 248, 225, 0.7);
+      border: 1px solid rgba(255, 198, 41, 0.3);
+      border-radius: 12px;
+      padding: 10px 12px;
+      margin-bottom: 10px;
+    }
+
+    .hotnews-points-label {
+      font-size: 12px;
+      font-weight: 800;
+      color: #b98600;
+      margin-bottom: 4px;
+    }
+
+    .hotnews-points ul {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    .hotnews-points li {
+      font-size: 12px;
+      color: var(--ink);
+      line-height: 1.7;
+    }
+
+    .hotnews-card-foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .hotnews-tags {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .hotnews-region {
+      font-size: 11px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .hotnews-pill {
+      font-size: 11px;
+      font-weight: 700;
+      color: #6f4bd6;
+      background: rgba(138, 98, 230, 0.1);
+      padding: 3px 8px;
+      border-radius: 999px;
+    }
+
+    .hotnews-learn-btn {
+      font-size: 12px;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--ink);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .hotnews-learn-btn:hover {
+      border-color: rgba(82, 200, 137, 0.6);
+      color: #2f9b65;
+    }
+
+    .hotnews-learn-btn.done {
+      background: rgba(82, 200, 137, 0.14);
+      border-color: rgba(82, 200, 137, 0.5);
+      color: #2f9b65;
     }
 
     .compare-scroll table.compare-table {
@@ -2189,6 +2463,9 @@
     </div>
   </div>
 
+  <script src="yanyu-questions.js"></script>
+  <script src="panduan-questions.js"></script>
+  <script src="shuliang-ziliao-questions.js"></script>
   <script>
     const money = (value) => "¥" + Number(value || 0).toLocaleString("zh-CN");
 
@@ -2554,11 +2831,166 @@
         }
       ],
       "热点新闻": [
-        "城市更新：老旧小区改造与社区治理结合。",
-        "银发经济：养老服务、康复护理和适老化改造。",
-        "就业优先：高校毕业生就业服务和基层岗位扩容。",
-        "数字政府：政务服务一网通办和数据共享。",
-        "健康中国：运动康复、慢病管理和基层医疗能力提升。"
+        {
+          title: "城市更新行动推进 老旧小区改造与社区治理深度融合",
+          summary: "各地将老旧小区改造作为城市更新重要抓手，同步推进加装电梯、无障碍设施、适老化改造和社区治理机制建设，实现“硬件焕新”与“治理升级”并行。",
+          points: ["城市更新是新型城镇化重要内容", "改造与治理并重，避免重建设轻管理", "可联系基层治理、民生改善命题"],
+          tags: ["民生", "城市更新"],
+          region: "全国",
+          timeliness: "当日热点"
+        },
+        {
+          title: "银发经济政策持续加码 养老服务与康复护理协同发展",
+          summary: "围绕积极应对人口老龄化，各地推动养老服务体系建设，发展康复护理、适老化改造、智慧养老等业态，培育银发经济新增长点。",
+          points: ["积极应对人口老龄化国家战略", "康复护理与养老服务衔接", "可联系健康中国、民生保障命题"],
+          tags: ["民生", "银发经济"],
+          region: "全国",
+          timeliness: "当日热点"
+        },
+        {
+          title: "就业优先战略落地 高校毕业生与基层岗位双向扩容",
+          summary: "各地落实就业优先政策，开展高校毕业生就业服务、基层岗位扩容和技能培训，推动青年就业与基层治理人才补充相结合。",
+          points: ["就业是民生之本", "基层岗位扩容缓解青年就业压力", "可联系青年担当、基层治理命题"],
+          tags: ["民生", "就业"],
+          region: "全国",
+          timeliness: "近7天热点"
+        },
+        {
+          title: "数字政府建设提速 政务服务一网通办与数据共享深化",
+          summary: "各地深化“放管服”改革，推进政务服务“一网通办”“跨省通办”，以数据共享打破部门壁垒，提升行政效能和群众办事体验。",
+          points: ["数字政府是治理现代化重要抓手", "数据共享打破信息孤岛", "可联系优化营商环境、法治政府命题"],
+          tags: ["法治", "民生"],
+          region: "全国",
+          timeliness: "近7天热点"
+        },
+        {
+          title: "健康中国行动推进 慢病管理与基层医疗能力双提升",
+          summary: "围绕健康中国战略，各地加强慢病管理、运动康复指导和基层医疗能力建设，推动以治病为中心向以健康为中心转变。",
+          points: ["健康中国是全面小康重要支撑", "基层医疗能力提升是关键", "可联系运动康复、民生保障命题"],
+          tags: ["民生", "健康中国"],
+          region: "全国",
+          timeliness: "当日热点"
+        },
+        {
+          title: "新质生产力加快培育 科技创新引领产业升级",
+          summary: "各地以科技创新推动产业创新，发展新质生产力，布局人工智能、新能源、生物制造等前沿领域，加快构建现代化产业体系。",
+          points: ["新质生产力是高质量发展核心驱动", "科技创新与产业创新深度融合", "可联系创新驱动、高质量发展命题"],
+          tags: ["经济", "科技"],
+          region: "全国",
+          timeliness: "当日热点"
+        },
+        {
+          title: "粮食安全责任制落实 耕地保护与种业振兴协同推进",
+          summary: "各地严守耕地保护红线，推进高标准农田建设，实施种业振兴行动，确保粮食和重要农产品稳定安全供给。",
+          points: ["粮食安全是国之大者", "耕地保护和种业振兴是两大关键", "可联系乡村振兴、国家安全命题"],
+          tags: ["民生", "乡村振兴"],
+          region: "全国",
+          timeliness: "近7天热点"
+        },
+        {
+          title: "生态文明建设深化 碳达峰碳中和稳妥推进",
+          summary: "各地统筹推进减污降碳协同增效，发展绿色低碳产业，完善碳排放交易市场，推动经济社会发展全面绿色转型。",
+          points: ["双碳目标是重大战略决策", "减污降碳协同增效是路径", "可联系绿色发展、美丽中国命题"],
+          tags: ["生态", "经济"],
+          region: "全国",
+          timeliness: "当日热点"
+        },
+        {
+          title: "乡村全面振兴推进 产业人才文化生态组织五大振兴",
+          summary: "各地扎实推进乡村产业、人才、文化、生态、组织振兴，巩固拓展脱贫攻坚成果，推动农业农村现代化。",
+          points: ["五大振兴是乡村全面振兴核心框架", "巩固脱贫攻坚成果是底线任务", "可联系共同富裕、基层治理命题"],
+          tags: ["民生", "乡村振兴"],
+          region: "全国",
+          timeliness: "当日热点"
+        },
+        {
+          title: "全国统一大市场建设加速 破除地方保护和市场壁垒",
+          summary: "各地落实建设全国统一大市场部署，清理废除妨碍统一市场和公平竞争的规定，打通制约经济循环的关键堵点。",
+          points: ["统一大市场是构建新发展格局基础", "破除地方保护和市场分割", "可联系营商环境、高质量发展命题"],
+          tags: ["经济", "法治"],
+          region: "全国",
+          timeliness: "近7天热点"
+        },
+        {
+          title: "文化传承发展工程实施 中华优秀传统文化创造性转化",
+          summary: "各地推进文化遗产保护传承，实施中华优秀传统文化传承发展工程，推动传统文化与现代生活融合发展。",
+          points: ["文化自信是更基础更深厚的自信", "创造性转化和创新性发展", "可联系文化强国、精神共富命题"],
+          tags: ["文化"],
+          region: "全国",
+          timeliness: "当日热点"
+        },
+        {
+          title: "基层治理效能提升 党建引领与数字赋能双轮驱动",
+          summary: "各地深化党建引领基层治理，运用数字化手段提升治理精细化水平，推动治理重心下移、资源下沉、服务下倾。",
+          points: ["党建引领是基层治理根本保证", "数字赋能提升治理精准度", "可联系治理现代化、民生服务命题"],
+          tags: ["民生", "基层治理"],
+          region: "全国",
+          timeliness: "近7天热点"
+        },
+        {
+          title: "高标准市场体系建设提速 要素市场化配置改革深化",
+          summary: "各地推进土地、劳动力、资本、技术、数据等要素市场化配置改革，完善产权保护制度，激发各类要素活力。",
+          points: ["要素市场化是经济体制改革重点", "数据要素是新型生产要素", "可联系数字经济、高质量发展命题"],
+          tags: ["经济", "科技"],
+          region: "全国",
+          timeliness: "近7天热点"
+        },
+        {
+          title: "教育强国建设推进 基础教育扩优提质与职业教育改革",
+          summary: "各地推进基础教育扩优提质，深化职业教育产教融合、校企合作，加快建设高质量教育体系。",
+          points: ["教育强国是民族复兴基础工程", "职教改革服务产业升级", "可联系人才强国、青年发展命题"],
+          tags: ["民生", "文化"],
+          region: "全国",
+          timeliness: "当日热点"
+        },
+        {
+          title: "法治政府建设全面提速 综合行政执法体制改革深化",
+          summary: "各地推进法治政府建设，深化综合行政执法体制改革，完善行政执法程序，提升依法行政水平。",
+          points: ["法治政府是法治国家建设主体工程", "执法体制改革保障公正文明执法", "可联系依法治国、营商环境命题"],
+          tags: ["法治"],
+          region: "全国",
+          timeliness: "近7天热点"
+        },
+        {
+          title: "新型城镇化建设推进 以县城为载体的城镇化加快",
+          summary: "各地推进以县城为重要载体的城镇化建设，补齐县城基础设施和公共服务短板，促进农业转移人口市民化。",
+          points: ["县城城镇化是新型城镇化重要方向", "公共服务均等化是关键", "可联系城乡融合、共同富裕命题"],
+          tags: ["民生", "经济"],
+          region: "全国",
+          timeliness: "当日热点"
+        },
+        {
+          title: "科技自立自强加快突破 关键核心技术攻关持续推进",
+          summary: "各地加大基础研究投入，组织实施关键核心技术攻关，强化企业科技创新主体地位，加快实现高水平科技自立自强。",
+          points: ["科技自立自强是国家强盛之基", "关键核心技术攻关是突破重点", "可联系新质生产力、人才强国命题"],
+          tags: ["科技", "经济"],
+          region: "全国",
+          timeliness: "当日热点"
+        },
+        {
+          title: "社会保障体系完善 兜底保障与分层分类社会救助",
+          summary: "各地健全分层分类社会救助体系，完善兜底保障机制，推进社保扩面提质，织密扎牢社会保障安全网。",
+          points: ["社会保障是民生安全网", "分层分类救助提升精准度", "可联系共同富裕、民生保障命题"],
+          tags: ["民生"],
+          region: "全国",
+          timeliness: "近7天热点"
+        },
+        {
+          title: "扩大内需战略实施 消费恢复与有效投资双发力",
+          summary: "各地实施扩大内需战略，促进消费持续恢复，扩大有效投资，发挥消费对经济循环的牵引带动作用。",
+          points: ["扩大内需是构建新发展格局战略基点", "消费和投资双轮驱动", "可联系高质量发展、经济恢复命题"],
+          tags: ["经济"],
+          region: "全国",
+          timeliness: "当日热点"
+        },
+        {
+          title: "国家安全体系完善 防范化解重大风险能力提升",
+          summary: "各地贯彻总体国家安全观，完善国家安全体系，提升防范化解重大风险能力，统筹发展和安全。",
+          points: ["总体国家安全观是指导思想", "统筹发展和安全是治国理政原则", "可联系粮食安全、网络安全、基层治理命题"],
+          tags: ["法治", "民生"],
+          region: "全国",
+          timeliness: "近7天热点"
+        }
       ]
     };
 
@@ -2566,28 +2998,48 @@
     const actTeachers = ["花生十三", "刘文超", "刘文波", "粉笔"];
     const teacherProfiles = {
       "花生十三": {
-        style: "重模型、重题型归类，强调先识别题型再套方法。",
-        speed: "用固定模板和秒杀口径压缩读题时间。",
-        weakness: "前期需要背框架，零基础容易觉得体系密。",
-        avoid: "不要只背口诀，要先判断题型边界。"
+        style: "重模型、重题型归类，强调先识别题型再套方法。讲解节奏快，适合短期冲刺。",
+        speed: "用固定模板和秒杀口径压缩读题时间，强调'识别题型→套模板→验证'三步走。",
+        weakness: "前期需要背框架，零基础容易觉得体系密；模板覆盖不到的变型题容易卡壳。",
+        avoid: "不要只背口诀，要先判断题型边界。遇到不熟悉的变型不要硬套模板。",
+        audience: "有基础、追求短期提分的考生；理科思维较强的人。",
+        training: "先背框架卡片，再按题型刷题，每类题型集中突破50道以上。",
+        order: "先做自己最熟练的题型模块，难题留最后；每题严格控时。",
+        review: "按题型归类错题，标注'识别错误'还是'计算错误'，定期重做。",
+        advantage: "模板化输出稳定，考场时间控制强，适合量大题多的模块。"
       },
       "刘文超": {
-        style: "重底层逻辑和题干关系，适合把题讲透。",
-        speed: "用关键词、条件拆分和选项对比提速。",
-        weakness: "讲法偏细，临场需要自己提炼成步骤。",
-        avoid: "不要在考场过度推理，先排除明显错误项。"
+        style: "重底层逻辑和题干关系，追求把题讲透，强调理解而非记忆。适合打实功底。",
+        speed: "用关键词定位、条件拆分和选项对比提速，不依赖固定模板。",
+        weakness: "讲法偏细，临场需要自己提炼成步骤；理解型方法初期速度偏慢。",
+        avoid: "不要在考场过度推理，先排除明显错误项。不要每题都从底层逻辑推起。",
+        audience: "零基础、时间充裕、追求理解透彻的考生；文科思维较强的人。",
+        training: "逐题精讲精练，先吃透每道题的逻辑链，再逐步提速。",
+        order: "按题号顺序做，遇到卡壳的先标记跳过，第二轮再回来。",
+        review: "逐题分析错因，重点看'逻辑链断在哪一步'，写详细解析。",
+        advantage: "理解深度强，遇到变型题和难题不慌，适合正确率要求高的模块。"
       },
       "刘文波": {
-        style: "重实战步骤和考场节奏，强调可复制动作。",
-        speed: "用标记法、取舍法和高频陷阱快速定位。",
-        weakness: "适合有基础后提速，初学要补概念。",
-        avoid: "不要为了快跳过必要条件。"
+        style: "重实战步骤和考场节奏，强调可复制动作，每类题给明确的操作流程。",
+        speed: "用标记法、取舍法和高频陷阱快速定位，强调'标记→排除→验证'。",
+        weakness: "适合有基础后提速，初学要补概念；步骤偏多时容易忘步骤。",
+        avoid: "不要为了快跳过必要条件。标记要准，排除要狠，但验证不能省。",
+        audience: "有一定基础、卡在瓶颈期的考生；需要提升考场实战能力的人。",
+        training: "模拟考场限时训练，每套题严格计时，重点练标记和取舍节奏。",
+        order: "先做标记题（一眼能定的），再做排除题，最后做需要计算的题。",
+        review: "错题按'陷阱类型'分类（偷换、无中生有、程度不符等），针对性突破。",
+        advantage: "实战导向强，考场取舍决策清晰，适合提升做题效率和时间分配。"
       },
       "粉笔": {
-        style: "体系完整、适合打基础，知识点覆盖全面。",
-        speed: "用标准公式、标准题型和题库训练稳定输出。",
-        weakness: "方法较稳，极限提速需要再做专项压缩。",
-        avoid: "不要平均用力，要按自己的错题集中突破。"
+        style: "体系完整、适合打基础，知识点覆盖全面，讲解规范、循序渐进。",
+        speed: "用标准公式、标准题型和题库训练稳定输出，强调'方法+练习'双轨。",
+        weakness: "方法较稳，极限提速需要再做专项压缩；体系庞大，重点不够突出。",
+        avoid: "不要平均用力，要按自己的错题集中突破。不要只听课不刷题。",
+        audience: "零基础小白、需要系统学习的考生；自学能力强、能跟完课程的人。",
+        training: "按课程体系从头到尾学，每章配套题库练习，阶段模考检验。",
+        order: "按模块顺序做，先易后难，每个模块分配固定时间。",
+        review: "用错题本功能记录，按知识点分类，定期回顾和重做。",
+        advantage: "知识体系最完整，覆盖面广，适合打牢基础和查漏补缺。"
       }
     };
 
@@ -2629,110 +3081,79 @@
       ]
     };
 
-    const questionSeeds = [
-      {
-        module: "言语理解",
-        point: "主旨概括",
-        errorType: "把细节当主旨",
-        stem: "某段材料先介绍社区治理中的具体案例，最后强调基层治理要以群众需求为导向。最适合作为主旨的是：",
-        options: ["社区治理只需要宣传案例", "基层治理应坚持需求导向", "群众需求难以被准确识别", "基层工作主要依靠经验"],
-        answer: "B",
-        explanation: "材料落脚点是“以群众需求为导向”，案例只是铺垫。",
-        trap: "看到前面的案例就选局部内容，忽略最后的总结句。"
-      },
-      {
-        module: "言语理解",
-        point: "成语辨析",
-        errorType: "望文生义",
-        stem: "“这次调研结果虽然还有不足，但整体上____。”填入最恰当的是：",
-        options: ["差强人意", "首当其冲", "万人空巷", "七月流火"],
-        answer: "A",
-        explanation: "差强人意指大体还能令人满意，符合“虽然有不足但整体尚可”。",
-        trap: "把“差强人意”误解成很差。"
-      },
-      {
-        module: "判断推理",
-        point: "定义判断",
-        errorType: "漏看限定条件",
-        stem: "定义要求同时满足“公共资源”“政府主导”“群众参与”。下列最符合定义的是：",
-        options: ["个人健身计划", "企业内部培训", "社区共建停车规则", "私人康复课程"],
-        answer: "C",
-        explanation: "社区共建停车规则同时涉及公共资源、政府或社区组织推动、群众参与。",
-        trap: "只看到“参与”就选，忽略公共资源和政府主导。"
-      },
-      {
-        module: "判断推理",
-        point: "加强削弱",
-        errorType: "没有围绕论点",
-        stem: "论点：开展运动康复课程能减少久坐人群肩颈疼痛。最能加强的是：",
-        options: ["久坐人群很多", "肩颈疼痛会影响心情", "参与课程者疼痛评分明显下降", "课程场地比较宽敞"],
-        answer: "C",
-        explanation: "C直接证明课程和疼痛改善之间的关系。",
-        trap: "选择背景信息或无关好处，没有加强核心因果。"
-      },
-      {
-        module: "数量关系",
-        point: "工程问题",
-        errorType: "单位量混乱",
-        stem: "甲单独完成需10天，乙单独完成需15天，二人合作完成需要：",
-        options: ["5天", "6天", "8天", "12天"],
-        answer: "B",
-        explanation: "甲效率1/10，乙效率1/15，合计1/6，所以6天完成。",
-        trap: "直接平均10和15，忽略效率相加。"
-      },
-      {
-        module: "资料分析",
-        point: "增长率",
-        errorType: "基期现期混淆",
-        stem: "某指标去年100，今年120，则同比增长率为：",
-        options: ["16.7%", "20%", "25%", "120%"],
-        answer: "B",
-        explanation: "增长率=增长量/基期量=(120-100)/100=20%。",
-        trap: "把现期120当分母，或把现期值当增长率。"
-      },
-      {
-        module: "常识判断",
-        point: "行政法常识",
-        errorType: "概念混淆",
-        stem: "行政处罚通常不包括下列哪一项：",
-        options: ["警告", "罚款", "行政拘留", "民事赔偿"],
-        answer: "D",
-        explanation: "民事赔偿属于民事责任，不是行政处罚种类。",
-        trap: "看到“赔偿”就误以为也是处罚。"
-      },
-      {
-        module: "申论",
-        point: "对策表达",
-        errorType: "对策空泛",
-        stem: "针对基层服务不精准，最适合的对策表达是：",
-        options: ["进一步高度重视", "加强宣传教育", "建立需求台账并分类服务", "全面提升思想认识"],
-        answer: "C",
-        explanation: "C有对象、有动作、有落地方式，更符合申论对策要求。",
-        trap: "只写口号，没有具体抓手。"
-      },
-      {
-        module: "言语理解",
-        point: "语句排序",
-        errorType: "忽略指代关系",
-        stem: "排序题中出现“这种做法”，通常应优先寻找：",
-        options: ["前文具体做法", "后文总结句", "无关背景", "数字信息"],
-        answer: "A",
-        explanation: "指代词一般指向前文已经出现的具体内容。",
-        trap: "没有抓住指代词，导致句序错位。"
-      },
-      {
-        module: "资料分析",
-        point: "比重变化",
-        errorType: "公式套错",
-        stem: "部分增长率大于整体增长率，则部分占整体的比重通常：",
-        options: ["上升", "下降", "不变", "无法判断"],
-        answer: "A",
-        explanation: "部分增长更快，所占比重通常上升。",
-        trap: "只看部分或整体一个数据，忘记比较两个增长率。"
-      }
+    // ===== 言语模块：每日成语辨析数据池 =====
+    const dailyIdiomPool = [
+      { title: "不以为然", wrong: "常被误解为'不放在心上、无所谓'，实际是'不认为是对的、不同意'。", meaning: "然：对、正确。不认为是对的，表示不同意或否定。", tip: "'然'是对的意思，不是'在意'。与'不以为意'区分。", examples: ["他提出这个方案，大家不以为然。", "对于这种观点，我是不以为然的。", "老师批评了他，他却摆出不以为然的样子。"] },
+      { title: "不以为意", wrong: "常被误解为'不同意'，实际是'不放在心上、不理会'。", meaning: "不放在心上，不加理会。", tip: "'意'是介意、在意。与'不以为然'区分。", examples: ["他只是随口一说，你不必不以为意。", "别人怎么评价，他从不以为意。", "这点小挫折，他不以为意，继续前行。"] },
+      { title: "文不加点", wrong: "常被误解为'文章没有标点'，实际是'写文章一气呵成，不用修改'。", meaning: "点：修改。形容文思敏捷，文章一气呵成，无需修改。", tip: "'点'是涂改、修改的意思，不是标点符号。", examples: ["他才思敏捷，作文文不加点。", "这篇赋文不加点，一气呵成。", "李白斗酒诗百篇，文不加点。"] },
+      { title: "望其项背", wrong: "常被误用于否定句表示'赶得上'，实际应只在否定句中使用表示'赶不上'。", meaning: "项背：脖子和背。望见别人的脖子和背，表示赶得上或比得上（只用于否定式）。", tip: "必须和'不能'连用：不能望其项背=赶不上。", examples: ["他的成绩令人不能望其项背。", "这家公司的技术实力，同行业难以望其项背。", "她的钢琴技艺，让同学们无法望其项背。"] },
+      { title: "差强人意", wrong: "常被误解为'不满意、差劲'，实际是'大体上还能使人满意'。", meaning: "差：稍微。强：振奋。大体上还能使人满意。", tip: "'差'是稍微，不是差劲。这是褒义/中性词，不是贬义。", examples: ["这次考试发挥一般，成绩还算差强人意。", "虽然方案有瑕疵，但总体差强人意。", "新出的手机功能差强人意，但价格偏高。"] },
+      { title: "首当其冲", wrong: "常被误解为'第一个做某事/冲在最前面'，实际是'最先受到冲击或灾难'。", meaning: "当：承受。冲：要冲、交通要道。比喻最先受到攻击或遭到灾难。", tip: "是'受灾'不是'领先'，含贬义色彩。", examples: ["台风登陆，沿海城市首当其冲。", "经济危机来临，中小企业首当其冲。", "战争爆发，平民百姓首当其冲。"] },
+      { title: "罪不容诛", wrong: "常被误解为'罪行不够死刑'，实际是'罪恶极大，杀了都抵不了罪'。", meaning: "诛：处死。罪恶极大，即使处死刑也抵偿不了。", tip: "'不容'是不容许、不够的意思，不是'不能'。", examples: ["这个杀人犯罪行累累，罪不容诛。", "他卖国求荣，罪不容诛。", "此等恶行，罪不容诛，死有余辜。"] },
+      { title: "炙手可热", wrong: "常被误解为'热门、抢手'，实际是'权势大、气焰盛'，含贬义。", meaning: "炙：烤。手一靠近就烫。比喻权势大，气焰盛。", tip: "原指权贵气焰嚣张，不是'受欢迎'。", examples: ["他当上局长后炙手可热，无人敢惹。", "那个权臣炙手可热，朝中人人畏惧。", "此人仗势欺人，炙手可热，终被查处。"] },
+      { title: "洛阳纸贵", wrong: "常被误解为'纸张涨价'，实际是'作品广为流传、风行一时'。", meaning: "比喻著作广泛流传，风行一时。", tip: "出自左思写《三都赋》引得洛阳人争相抄写，纸价上涨。", examples: ["这部小说出版后洛阳纸贵，人人争读。", "他的论文发表后洛阳纸贵，学界轰动。", "这本书一经上市便洛阳纸贵，多次加印。"] },
+      { title: "空穴来风", wrong: "常被误解为'毫无根据的传言'，实际是'事出有因、有根据'。", meaning: "空穴：孔洞。来风：引来风。比喻传言有根据、有原因。", tip: "'空穴来风，未必无因'，强调的是'有因'。", examples: ["这个消息并非空穴来风，确实有据可查。", "他的传闻空穴来风，事出有因。", "所谓无风不起浪，空穴来风必有因。"] },
+      { title: "一文不名", wrong: "常被误解为'一文不值、没有价值'，实际是'一分钱也没有'。", meaning: "名：占有。一文钱也没有，形容极其贫困。", tip: "'名'是占有的意思，不是'值'。", examples: ["他破产后来到街头，一文不名。", "这个流浪汉一文不名，靠乞讨度日。", "他花光了所有积蓄，如今一文不名。"] },
+      { title: "如履薄冰", wrong: "常被误解为'处境危险'（虽然相关，但核心是'小心谨慎的态度'）。", meaning: "履：踩。像走在薄冰上一样，比喻行事极为小心谨慎。", tip: "强调的是'小心谨慎'的心理状态，不单纯指危险。", examples: ["新官上任，如履薄冰，生怕出错。", "他在职场上如履薄冰，步步为营。", "面对复杂局势，他如履薄冰地处理每个细节。"] },
+      { title: "不足为训", wrong: "常被误解为'不值得作为教训'，实际是'不值得作为准则、不能当做典范'。", meaning: "训：准则、典范。不值得作为效法的准则。", tip: "'训'是准则/典范，不是'教训'。", examples: ["这种做法虽有效，但不足为训。", "他的成功经验不足为训，不可照搬。", "此事虽属个别，但不足为训，应引以为戒。"] },
+      { title: "危言危行", wrong: "常被误解为'危险的言论和行为'，实际是'正直的言论和行为'。", meaning: "危：正直。说正直的话，做正直的事。", tip: "'危'是正直的意思，不是'危险'。", examples: ["他为官清廉，危言危行，深受百姓爱戴。", "古人讲究危言危行，不畏权贵。", "在乱世中危言危行，需要极大勇气。"] },
+      { title: "明日黄花", wrong: "常被误写为'昨日黄花'，正确写法是'明日黄花'。", meaning: "明日：重阳节后。黄花：菊花。比喻已过时的、失去意义的事物。", tip: "出自苏轼诗'明日黄花蝶也愁'，是'明日'不是'昨日'。", examples: ["这些旧规则早已是明日黄花，该淘汰了。", "那种老旧的观念已是明日黄花。", "曾经风靡一时的产品，如今成了明日黄花。"] },
+      { title: "无所不为", wrong: "常被误用于褒义表示'什么都能做'，实际是'什么坏事都干'，含贬义。", meaning: "没有不干的事，指什么坏事都干。", tip: "贬义词！不是'无所不能'的褒义。", examples: ["这伙歹徒无恶不作，无所不为。", "他品行恶劣，无所不为。", "此贼无所不为，偷盗抢劫样样都来。"] },
+      { title: "下里巴人", wrong: "常被误解为'乡下人'，实际是'通俗的、普及的文学艺术'。", meaning: "战国时楚国流行的民间歌曲，比喻通俗的文学艺术。", tip: "与'阳春白雪'相对，不指人。", examples: ["这首歌曲通俗易懂，堪称下里巴人。", "下里巴人也有其独特的艺术魅力。", "不要只看阳春白雪，下里巴人同样值得关注。"] },
+      { title: "万人空巷", wrong: "常被误解为'街巷空无一人'，实际是'人们都从巷子里出来聚集，形容热闹'。", meaning: "家家户户的人都从巷子里出来观看，形容庆祝、欢迎等盛况。", tip: "是'人都出来了'很热闹，不是'人都走光了'很冷清。", examples: ["明星到访，万人空巷，争相一睹风采。", "游行队伍经过，万人空巷，盛况空前。", "奥运冠军归来，家乡万人空巷。"] },
+      { title: "久假不归", wrong: "常被误解为'请假很久不回来'，实际是'长期借用不归还'。", meaning: "假：借。长期借用不归还。", tip: "'假'是借的意思，不是请假。", examples: ["这本书他久假不归，我只好去讨要。", "借出的东西久假不归，令人无奈。", "他借了朋友的相机久假不归。"] },
+      { title: "望洋兴叹", wrong: "常被误解为'望着海洋感叹'，实际是'能力不够而感到无可奈何'。", meaning: "望洋：仰视的样子。比喻做事力量不够或没有条件而感到无可奈何。", tip: "'望洋'是仰视的样子，不是'看海洋'。", examples: ["面对高额学费，他只能望洋兴叹。", "技术差距太大，对手望洋兴叹。", "望着天价楼盘，购房者望洋兴叹。"] },
+      { title: "细大不捐", wrong: "常被误解为'大大小小都不捐献'，实际是'大小都不抛弃、什么都收'。", meaning: "细：小。捐：舍弃。小的大的都不舍弃，表示兼收并蓄。", tip: "'捐'是舍弃，不是捐献。", examples: ["做学问要细大不捐，才能融会贯通。", "收藏家细大不捐，藏品极为丰富。", "整理资料时细大不捐，力求完整。"] },
+      { title: "曾几何时", wrong: "常被误解为'很久以前'，实际是'时间没过去多久'。", meaning: "曾：曾经。几何：多少。才过了多少时间，指时间没过多久。", tip: "强调'时间短'，不是'时间长'。", examples: ["曾几何时，这里还是一片荒地，如今高楼林立。", "曾几何时，他还是个穷学生，现在已是企业家。", "曾几何时，手机还是奢侈品。"] },
+      { title: "师心自用", wrong: "常被误解为'向老师学习自己使用'，实际是'固执己见、自以为是'。", meaning: "师心：以心为师。形容固执己见，自以为是。", tip: "'师心'是'以自己的心为师'，不是'向老师学习'。贬义。", examples: ["他师心自用，听不进任何建议。", "做学问切忌师心自用，要虚心求教。", "领导师心自用，导致决策失误。"] },
+      { title: "素昧平生", wrong: "常被误解为'平时不了解'，实际是'从来不相识'。", meaning: "素：从来。昧：不了解。平生：一生。从来不相识。", tip: "强调'从未见过面'，不是'不太了解'。", examples: ["我们素昧平生，他却热情相助。", "他与对方素昧平生，却一见如故。", "素昧平生的陌生人给了我很大帮助。"] },
+      { title: "高山仰止", wrong: "常被误解为'仰望高山'，实际是'对崇高品德的仰慕'。", meaning: "高山：比喻崇高道德。仰：仰慕。比喻对崇高品德的仰慕。", tip: "'止'是语助词，不是'停止'。", examples: ["先生品德高尚，令人高山仰止。", "面对先贤，我们高山仰止，景行行止。", "他的学术成就令人高山仰止。"] },
+      { title: "噤若寒蝉", wrong: "常被误解为'像蝉一样安静'，实际是'因害怕而不敢说话'。", meaning: "噤：闭口。寒蝉：深秋的蝉不再鸣叫。比喻因害怕有所顾虑而不敢说话。", tip: "强调'不敢说'，不是'安静'。贬义。", examples: ["在严厉的家长面前，孩子们噤若寒蝉。", "会上无人敢发言，个个噤若寒蝉。", "面对权势，百姓噤若寒蝉。"] },
+      { title: "不忍卒读", wrong: "常被误解为'文章太差读不下去'，实际是'文章悲惨使人不忍心读完'。", meaning: "卒：完毕。不忍心读完，形容文章内容悲惨动人。", tip: "'卒'是完毕，不是'突然'。用于悲惨动人的文章。", examples: ["这封遗书字字血泪，令人不忍卒读。", "日记记录了那段苦难，不忍卒读。", "这篇报道描述了灾区的惨状，不忍卒读。"] },
+      { title: "信笔涂鸦", wrong: "常被误解为'画乌鸦'，实际是'随意写字画画，形容字写得很差'。", meaning: "信笔：随意书写。涂鸦：比喻字写得很差。形容随手乱写乱画。", tip: "是谦虚说法，不是真的画乌鸦。", examples: ["我不过信笔涂鸦，让您见笑了。", "小时候喜欢信笔涂鸦，画得乱七八糟。", "这几行字只是信笔涂鸦，不成体统。"] },
+      { title: "登堂入室", wrong: "常被误解为'进入室内'，实际是'学问或技能达到很高水平'。", meaning: "堂：厅堂。室：内室。比喻学问或技能由浅入深，达到很高水平。", tip: "强调'由浅入深达到高水平'，不是简单地'进入'。", examples: ["他的书法已登堂入室，颇具大家风范。", "经过多年苦练，他的琴艺登堂入室。", "研究宋词，他已登堂入室，见解独到。"] },
+      { title: "目无全牛", wrong: "常被误解为'看不到整头牛/以偏概全'，实际是'技艺极其纯熟'。", meaning: "眼中没有完整的牛，比喻技艺到了纯熟的地步。", tip: "出自庖丁解牛，是褒义，形容技艺高超。", examples: ["他从事修理工作三十年，技艺已目无全牛。", "这位老厨师刀工目无全牛，游刃有余。", "练习到目无全牛的境界，方为高手。"] }
     ];
 
-    const dailyQuestions = [];
+    // ===== 言语模块：每日词语辨析数据池 =====
+    const dailyWordPool = [
+      { title: "遏制 / 遏止", wrong: "'遏制'是去阻止、控制（动作），'遏止'是使其停止（结果），常混用。", meaning: "遏制：用力控制、压制。遏止：使停止、阻止。", tip: "遏制重在'控制'，遏止重在'停止'。", examples: ["政府采取措施遏制房价上涨。", "我们必须遏止这种不良风气的蔓延。", "他的怒火难以遏制，但最终没有爆发。"] },
+      { title: "收集 / 搜集", wrong: "'收集'是聚集分散的东西，'搜集'是到处寻找聚集，常混用。", meaning: "收集：把分散的东西聚拢。搜集：到处寻找并收集。", tip: "收集重在'聚'，搜集重在'找'。", examples: ["他喜欢收集邮票。", "警方搜集了大量证据。", "学者花十年时间搜集民间故事。"] },
+      { title: "表现 / 体现", wrong: "'表现'是显示出来（人或事物），'体现'是某种性质通过具体形式显现，常混用。", meaning: "表现：表示出来、显示。体现：某种性质、精神通过具体形式表现出来。", tip: "表现侧重'展示'，体现侧重'折射本质'。", examples: ["他在比赛中表现出色。", "这部电影体现了人文关怀。", "她的表现体现了良好的职业素养。"] },
+      { title: "制定 / 制订", wrong: "'制定'是定出、确定（已完成），'制订'是草拟、创制（过程），常混用。", meaning: "制定：定出、确定（法律、政策等）。制订：草拟、创制（方案、计划等）。", tip: "制定重在'定下来'（结果），制订重在'起草'（过程）。", examples: ["国家制定了新的法律法规。", "我们正在制订明年的工作计划。", "这份方案是由专家组制订的。"] },
+      { title: "截止 / 截至", wrong: "'截止'是不及物动词（到某时停止），'截至'是及物动词（到某时为止），常混用。", meaning: "截止：到一定期限停止。截至：截止到某个时候。", tip: "截止后不加时间，截至后必须加时间。", examples: ["报名明天截止。", "截至本月底，已有500人报名。", "活动截止日期为周五。"] },
+      { title: "权利 / 权力", wrong: "'权利'是公民享受的利益（可放弃），'权力'是支配力量（不可放弃），常混用。", meaning: "权利：公民依法享受的利益。权力：政治上的强制力量或职责范围内的支配力量。", tip: "权利对应'义务'，权力对应'职责'。", examples: ["公民有言论自由的权利。", "国家权力属于人民。", "他滥用职权，超越了自己的权力范围。"] },
+      { title: "反映 / 反应", wrong: "'反映'是把情况告诉上级（动词），'反应'是由刺激引起的现象（名词），常混用。", meaning: "反映：把客观情况告诉上级。反应：由刺激引起的现象或回应。", tip: "反映是动词（向上报告），反应是名词（回应）。", examples: ["群众反映了社区的问题。", "他的反应很快。", "这件事在社会上引起了强烈反应。"] },
+      { title: "必须 / 必需", wrong: "'必须'是副词（一定要），'必需'是动词（不可缺少），常混用。", meaning: "必须：副词，表示一定要。必需：动词，表示不可缺少。", tip: "必须修饰动词，必需修饰名词。", examples: ["你必须按时完成作业。", "水是生命必需的物质。", "考试前必须复习，这是必需的步骤。"] },
+      { title: "启发 / 启迪", wrong: "'启发'是引导使其领悟（较浅），'启迪'是开导启发（较深、书面语），常混用。", meaning: "启发：阐明事理使对方领悟。启迪：开导、启发，多用于书面。", tip: "启发偏口语、较浅，启迪偏书面、较深。", examples: ["老师的提问启发了我。", "这本书启迪了我对人生的思考。", "好老师善于启发学生。"] },
+      { title: "审定 / 审订", wrong: "'审定'是审查决定，'审订'是审阅修订，常混用。", meaning: "审定：审查决定。审订：审阅修订。", tip: "审定重在'定'（拍板），审订重在'订'（修改）。", examples: ["委员会审定了明年的预算方案。", "编辑审订了书稿中的错误。", "方案已经审定，可以执行了。"] },
+      { title: "简朴 / 俭朴", wrong: "'简朴'是简单朴素（侧重不奢华），'俭朴'是节俭朴素（侧重不浪费），常混用。", meaning: "简朴：简单朴素。俭朴：节俭朴素。", tip: "简朴指生活简单，俭朴指生活节约。", examples: ["他的衣着十分简朴。", "老一辈人生活俭朴，从不浪费。", "这间书房布置简朴而雅致。"] },
+      { title: "界限 / 限界", wrong: "'界限'是不同事物的分界（抽象），'限界'是具体范围的边界，常混用。", meaning: "界限：不同事物的分界。限界：一定范围内的边界。", tip: "界限偏抽象（如道德界限），限界偏具体。", examples: ["法律和道德之间没有明确的界限。", "科学有它的限界，不能解释一切。", "不要突破做人的界限。"] },
+      { title: "施行 / 实行", wrong: "'施行'是法令规章开始执行，'实行'是实际施行（行动），常混用。", meaning: "施行：法令、规章等开始执行。实行：用行动来实现。", tip: "施行用于法规制度，实行用于纲领政策。", examples: ["新法律自即日起施行。", "我们要实行改革开放政策。", "这项制度施行以来效果显著。"] },
+      { title: "推托 / 推脱", wrong: "'推托'是借故拒绝（不接受），'推脱'是推卸责任，常混用。", meaning: "推托：借故拒绝。推脱：推卸责任。", tip: "推托是拒绝别人，推脱是推卸责任。", examples: ["他推托说身体不适，没有参加聚会。", "出了问题不能推脱责任。", "她推托有事，提前离开了。"] },
+      { title: "融化 / 溶化 / 熔化", wrong: "三个词读音相近但意思不同：融化（冰雪变水）、溶化（固体溶于液体）、熔化（固体受热变液体），常混用。", meaning: "融化：冰雪等变水。溶化：固体在液体中溶解。熔化：金属等受热变成液体。", tip: "冰用融化，盐用溶化，铁用熔化。", examples: ["春天来了，冰雪融化了。", "糖在水中溶化了。", "高温下铁块熔化为铁水。"] },
+      { title: "截至 / 截止", wrong: "与第5条对应，这里强调用法：'截止'不能带宾语，'截至'必须带宾语。", meaning: "截至：到某时为止（带宾语）。截止：到某时停止（不带宾语）。", tip: "记住：截至+时间，截止不带时间。", examples: ["截至2024年底，项目已完成80%。", "报名时间将于本周五截止。", "截至发稿时，伤亡人数仍在统计中。"] },
+      { title: "爆发 / 暴发", wrong: "'爆发'是突然发作（火山、战争、情绪），'暴发'是突然发财或得病，常混用。", meaning: "爆发：突然发作。暴发：突然发财或突然发作（疾病）。", tip: "爆发用于能量/情绪/战争，暴发用于发财/疾病。", examples: ["战争终于爆发了。", "他靠炒股暴发致富。", "人群中爆发出热烈的掌声。"] },
+      { title: "贯穿 / 贯串", wrong: "'贯穿'是穿过、连通（具体），'贯串'是首尾连接（抽象），常混用。", meaning: "贯穿：穿过、通过。贯串：从头到尾连接起来。", tip: "贯穿偏具体（穿过），贯串偏抽象（串联）。", examples: ["这条铁路贯穿南北。", "贯串全文的中心思想是爱与希望。", "一条小溪贯穿整个村庄。"] },
+      { title: "抑制 / 压制", wrong: "'抑制'是控制住不发作（内心），'压制'是用力限制（外部），常混用。", meaning: "抑制：控制住（情绪、冲动等）。压制：竭力限制或制止。", tip: "抑制偏自我控制，压制偏外部施压。", examples: ["他抑制住内心的激动。", "不要压制群众的意见。", "药物可以抑制病毒复制。"] },
+      { title: "审查 / 审察", wrong: "'审查'是检查核对是否正确/合法，'审察'是仔细观察了解，常混用。", meaning: "审查：检查核对（是否正确、合法）。审察：仔细观察了解。", tip: "审查重在'查核'，审察重在'观察'。", examples: ["纪委审查了他的账目。", "他审察了地形，制定了作战方案。", "论文需要经过同行审查。"] },
+      { title: "终身 / 终生", wrong: "'终身'是一生（侧重切身的事），'终生'是一生（侧重事业），常混用。", meaning: "终身：一生、一辈子（侧重切身利益）。终生：一生（侧重事业）。", tip: "终身用于切身事（如终身大事），终生用于事业（如终生奋斗）。", examples: ["这是影响他终身的大事。", "他为科学事业奋斗终生。", "终身教育是未来的趋势。"] },
+      { title: "委曲 / 委屈", wrong: "'委曲'是曲意迁就/事情的底细，'委屈'是受到不公的对待而心里难受，常混用。", meaning: "委曲：曲意迁就、事情的底细。委屈：受到不应有的指责或待遇而心里难受。", tip: "委曲求全用'委曲'，受委屈用'委屈'。", examples: ["为了大局，他只好委曲求全。", "孩子受了委屈，哭了起来。", "此事的委曲我已了解清楚。"] },
+      { title: "退化 / 蜕化", wrong: "'退化'是功能减退/倒退（生物学），'蜕化'是变质变坏（贬义），常混用。", meaning: "退化：功能减退、倒退。蜕化：变质、变坏（指人的思想品质）。", tip: "退化是生理/功能变差，蜕化是思想变质。", examples: ["长期不运动，肌肉会退化。", "个别干部蜕化变质，走上犯罪道路。", "这种鸟类翅膀已退化。"] },
+      { title: "淹没 / 湮没", wrong: "'淹没'是被水盖过（具体），'湮没'是埋没、默默无闻（抽象），常混用。", meaning: "淹没：（大水）漫过、盖过。湮没：埋没、不为人所知。", tip: "淹没用水（具体），湮没用土/时间（抽象）。", examples: ["洪水淹没了整个村庄。", "这位诗人的才华被湮没了。", "他的声音被掌声淹没。"] },
+      { title: "品味 / 品位", wrong: "'品味'是动词（品尝/体味），'品位'是名词（品质/档次），常混用。", meaning: "品味：品尝、体味。品位：品质、档次、水平。", tip: "品味是动词，品位是名词。", examples: ["这首诗值得细细品味。", "这家餐厅很有品位。", "他穿着有品位，品味也不错。"] },
+      { title: "化妆 / 化装", wrong: "'化妆'是用化妆品装饰容貌，'化装'是假扮成另一种身份，常混用。", meaning: "化妆：用脂粉等修饰容貌。化装：假扮成某种角色或身份。", tip: "化妆是美容，化装是伪装。", examples: ["她每天早上花半小时化妆。", "侦察兵化装成农民潜入敌区。", "演员化装成老人上台表演。"] },
+      { title: "公布 / 发布", wrong: "'公布'是公开宣布让大家知道，'发布'是发出命令/新闻等，常混用。", meaning: "公布：公开发布使大家知道。发布：宣布发出（命令、新闻等）。", tip: "公布重在'让人知道'，发布重在'发出'。", examples: ["学校公布了录取名单。", "政府发布了新的政策通知。", "新闻发布会上公布了最新数据。"] },
+      { title: "纵容 / 怂恿", wrong: "'纵容'是对错误行为不加制止（贬义），'怂恿'是鼓动别人去做（可中性可贬义），常混用。", meaning: "纵容：对错误行为不加制止、放任。怂恿：鼓动别人去做某事。", tip: "纵容是放任不管，怂恿是主动鼓动。", examples: ["家长不能纵容孩子的坏习惯。", "朋友怂恿他去参加比赛。", "他纵容下属违规操作。"] },
+      { title: "侦查 / 侦察", wrong: "'侦查'是法律用语（司法机关调查），'侦察'是军事用语（军队探查敌情），常混用。", meaning: "侦查：司法机关调查犯罪。侦察：军队探查敌情。", tip: "侦查用于法律，侦察用于军事。", examples: ["警方正在侦查此案。", "侦察兵深入敌后侦察敌情。", "检察院对案件进行了侦查。"] },
+      { title: "树立 / 竖立", wrong: "'树立'是建立（抽象事物），'竖立'是使物体纵向立着（具体），常混用。", meaning: "树立：建立（多用于抽象事物）。竖立：使物体一端着地直立。", tip: "树立用于抽象（树立榜样），竖立用于具体（竖立旗杆）。", examples: ["我们要树立远大理想。", "广场上竖立着一座纪念碑。", "他树立了良好的榜样。"] }
+    ];
+
+    const questionSeeds = [
+      ...(yanyuQuestions || []),
+      ...(panduanQuestions || []),
+      ...(shuliangZiliaoQuestions || [])
+    ];
 
     const editingTips = [
       { title: "黄金3秒开头", hot: 98, practical: 96, scene: "适合康复知识、动作纠错、疼痛科普类短视频。", steps: ["第一秒直接说痛点，例如“圆肩不是只拉胸就行”。", "第二秒给反差结论，例如“很多人练错了发力位置”。", "第三秒露出今天要解决的动作或对比画面。"], mistake: "不要用“大家好，今天分享一下”开头，信息太慢，容易被划走。", tip: "开头字幕控制在12字以内，最好包含“错误、改善、别再、3步”这类高点击词。", tags: ["热门", "完播率", "开头"] },
@@ -2973,14 +3394,41 @@
     }
 
     function getDailyQuestions(count = 5) {
+      // 按模块分配题量：言语40 + 判断推理30 + 图推20 + 数量10 + 资料2套(10题)
+      const modulePlan = [
+        { module: "言语理解", count: 40, step: 7 },
+        { module: "判断推理", count: 30, step: 11, exclude: "图形推理" },
+        { module: "图形推理", count: 20, step: 13 },
+        { module: "数量关系", count: 10, step: 17 },
+        { module: "资料分析", count: 10, step: 19 }
+      ];
+
       const source = state && state.trueQuestions && state.trueQuestions.length ? state.trueQuestions : questionSeeds;
-      return dailyWindow(source, count, 9).map((question, index) => ({
-        ...question,
-        id: question.id || `daily-seed-${todayKey}-${index}`,
-        no: question.no || index + 1,
-        year: question.year || "每日练习",
-        source: question.source || "内置练习"
-      }));
+      let allQuestions = [];
+      let no = 1;
+
+      modulePlan.forEach(plan => {
+        let pool;
+        if (plan.exclude) {
+          pool = source.filter(q => q.module === plan.module && q.point !== plan.exclude);
+        } else {
+          pool = source.filter(q => q.module === plan.module || (plan.module === "图形推理" && q.module === "判断推理" && q.point === "图形推理"));
+        }
+        if (pool.length === 0) return;
+        const items = dailyWindow(pool, plan.count, plan.step);
+        items.forEach(q => {
+          allQuestions.push({
+            ...q,
+            id: q.id || `daily-${plan.module}-${todayKey}-${no}`,
+            no: no++,
+            year: q.year || "每日练习",
+            source: q.source || "内置练习",
+            section: plan.module === "图形推理" ? "图形推理" : plan.module
+          });
+        });
+      });
+
+      return allQuestions;
     }
 
     function getDailyMuscles(count = 5) {
@@ -3919,6 +4367,11 @@
         return;
       }
 
+      if (state.examTab === "易错成语积累") {
+        renderIdioms();
+        return;
+      }
+
       const list = dailyOrder(examData[state.examTab] || [], 6);
       document.getElementById("examContent").innerHTML = list.map((item, index) => `
         <div class="card">
@@ -3944,37 +4397,147 @@
 
 
     function renderHotNews() {
-      const items = getDailyShenlunItems(10);
+      const pool = examData["热点新闻"] || [];
+      const items = dailyWindow(pool, 5, 18);
+      const learnedKey = "workbench_hotnews_learned_" + todayKey;
+      const learned = JSON.parse(localStorage.getItem(learnedKey) || "[]");
+      const learnedCount = items.filter((_, i) => learned.includes(i)).length;
+
       document.getElementById("examContent").innerHTML = `
-        <div class="card" style="grid-column:1/-1;">
-          <div class="section-title">
-            <h3>公考热点新闻深度版</h3>
-            <span class="pill">每日轮换10条 · ${todayKey}</span>
+        <div class="hotnews-wrap">
+          <div class="hotnews-header">
+            <div class="hotnews-date">${new Date().toLocaleDateString("zh-CN", { year: "numeric", month: "long", day: "numeric", weekday: "long" })}</div>
+            <div class="hotnews-countdown">
+              <span class="countdown-tag">📌 每日轮换 · 共${pool.length}条 · 今日更新${items.length}条</span>
+            </div>
           </div>
-          <div class="empty">每条热点都包含新闻背景、申论考点、答题角度和金句，不再是一句话素材。</div>
+
+          <div class="hotnews-title-bar">
+            <div class="hotnews-title">
+              <span class="hotnews-title-icon">📰</span>
+              <h3>每日时政热点学习</h3>
+            </div>
+            <div class="hotnews-progress">今日已学 ${learnedCount}/${items.length}</div>
+          </div>
+
+          <div class="hotnews-list">
+            ${items.map((item, index) => {
+              const isLearned = learned.includes(index);
+              return `
+              <div class="hotnews-card ${isLearned ? "learned" : ""}" data-hotnews-index="${index}">
+                <div class="hotnews-card-head">
+                  <div class="hotnews-card-title">${item.title}</div>
+                  <span class="hotnews-time-tag">${item.timeliness || "当日热点"}</span>
+                </div>
+                <div class="hotnews-summary">${item.summary}</div>
+                <div class="hotnews-points">
+                  <div class="hotnews-points-label">💡 考点提炼</div>
+                  <ul>${(item.points || []).map(p => `<li>${p}</li>`).join("")}</ul>
+                </div>
+                <div class="hotnews-card-foot">
+                  <div class="hotnews-tags">
+                    <span class="hotnews-region">📍 ${item.region || "全国"}</span>
+                    ${(item.tags || []).map(t => `<span class="hotnews-pill">${t}</span>`).join("")}
+                  </div>
+                  <button class="hotnews-learn-btn ${isLearned ? "done" : ""}" data-hotnews-learn="${index}">
+                    ${isLearned ? "✅ 已学" : "标记已学"}
+                  </button>
+                </div>
+              </div>
+              `;
+            }).join("")}
+          </div>
         </div>
-        ${items.map(item => `
-          <details class="card knowledge-card" open>
-            <summary>
-              <div class="row-main"><strong>${item.title}</strong><span class="coin">${item.timeliness}</span></div>
-              <div class="row-sub">${item.summary}</div>
-              <div class="card-tags">${(item.tags || []).map(t => `<span class="pill">${t}</span>`).join("")}</div>
-            </summary>
-            <div class="shenlun-section">
-              <h4>申论可考角度</h4>
-              <p class="row-sub">${item.思路?.分析 || ""}</p>
-            </div>
-            <div class="shenlun-section">
-              <h4>可直接背的金句</h4>
-              <ul>${[...(item.quotes?.general || []), ...(item.quotes?.ending || [])].map(q => `<li>${q}</li>`).join("")}</ul>
-            </div>
-            <div class="shenlun-section">
-              <h4>大作文分论点</h4>
-              <ul>${(item.思路?.作文 || []).map(q => `<li>${q}</li>`).join("")}</ul>
-            </div>
-          </details>
-        `).join("")}
       `;
+
+      document.querySelectorAll("[data-hotnews-learn]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const idx = parseInt(btn.dataset.hotnewsLearn, 10);
+          const list = JSON.parse(localStorage.getItem(learnedKey) || "[]");
+          if (list.includes(idx)) {
+            const i = list.indexOf(idx);
+            list.splice(i, 1);
+          } else {
+            list.push(idx);
+          }
+          localStorage.setItem(learnedKey, JSON.stringify(list));
+          renderHotNews();
+        });
+      });
+    }
+
+    function renderIdioms() {
+      const pool = examData["易错成语积累"] || [];
+      const items = dailyWindow(pool, 6, 6);
+      const learnedKey = "workbench_idioms_learned_" + todayKey;
+      const learned = JSON.parse(localStorage.getItem(learnedKey) || "[]");
+      const learnedCount = items.filter((_, i) => learned.includes(i)).length;
+
+      document.getElementById("examContent").innerHTML = `
+        <div class="hotnews-wrap">
+          <div class="hotnews-header">
+            <div class="hotnews-date">${new Date().toLocaleDateString("zh-CN", { year: "numeric", month: "long", day: "numeric", weekday: "long" })}</div>
+            <div class="hotnews-countdown">
+              <span class="countdown-tag">📌 每日轮换 · 共${pool.length}条 · 今日${items.length}条</span>
+            </div>
+          </div>
+          <div class="hotnews-title-bar">
+            <div class="hotnews-title">
+              <span class="hotnews-title-icon">📝</span>
+              <h3>易错成语积累</h3>
+            </div>
+            <div class="hotnews-progress">今日已学 ${learnedCount}/${items.length}</div>
+          </div>
+          <div class="hotnews-list">
+            ${items.map((item, index) => {
+              const isLearned = learned.includes(index);
+              return `
+              <div class="hotnews-card ${isLearned ? "learned" : ""}" data-idiom-index="${index}">
+                <div class="hotnews-card-head">
+                  <div class="hotnews-card-title">${item.title}</div>
+                  <span class="hotnews-time-tag">易错辨析</span>
+                </div>
+                <div class="hotnews-summary"><strong>易错原因：</strong>${item.wrong}</div>
+                <div class="hotnews-points">
+                  <div class="hotnews-points-label">💡 正确辨析</div>
+                  <ul>
+                    <li><strong>正确意思：</strong>${item.meaning}</li>
+                    <li><strong>使用提醒：</strong>${item.tip}</li>
+                  </ul>
+                </div>
+                <div class="hotnews-card-foot">
+                  <div class="hotnews-tags">
+                    <span class="hotnews-pill">成语</span>
+                    <span class="hotnews-pill">言语理解</span>
+                  </div>
+                  <div style="display:flex;gap:8px;align-items:center;">
+                    <button class="hotnews-learn-btn ${isLearned ? "done" : ""}" data-idiom-learn="${index}">
+                      ${isLearned ? "✅ 已学" : "标记已学"}
+                    </button>
+                  </div>
+                </div>
+                ${studyTools(`idiom-${item.title}`, "记录这个成语的易错点、例句和自己的记忆方法。")}
+              </div>
+              `;
+            }).join("")}
+          </div>
+        </div>
+      `;
+
+      document.querySelectorAll("[data-idiom-learn]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const idx = parseInt(btn.dataset.idiomLearn, 10);
+          const list = JSON.parse(localStorage.getItem(learnedKey) || "[]");
+          if (list.includes(idx)) {
+            list.splice(list.indexOf(idx), 1);
+          } else {
+            list.push(idx);
+          }
+          localStorage.setItem(learnedKey, JSON.stringify(list));
+          renderIdioms();
+        });
+      });
+      setTimeout(initStudyCanvases, 0);
     }
 
     function renderActFocus() {
@@ -3996,10 +4559,19 @@
       });
 
       document.getElementById("examContent").innerHTML = `
-        <div class="card" style="grid-column: 1 / -1;">
-          <div class="section-title">
-            <h3>行测重点升级版</h3>
-            <span class="pill">每日轮换 · ${todayKey}</span>
+        <div class="hotnews-wrap">
+          <div class="hotnews-header">
+            <div class="hotnews-date">${new Date().toLocaleDateString("zh-CN", { year: "numeric", month: "long", day: "numeric", weekday: "long" })}</div>
+            <div class="hotnews-countdown">
+              <span class="countdown-tag">📌 每日轮换 · ${state.actModule} · 共${cards.length}条</span>
+            </div>
+          </div>
+          <div class="hotnews-title-bar">
+            <div class="hotnews-title">
+              <span class="hotnews-title-icon">📊</span>
+              <h3>行测重点</h3>
+            </div>
+            <div class="hotnews-progress">${state.actModule}</div>
           </div>
           <div class="sub-tabs">
             ${actModules.map(module => `<button class="sub-tab ${state.actModule === module ? "active" : ""}" data-act-module="${module}">${module}</button>`).join("")}
@@ -4009,15 +4581,139 @@
             <button class="ghost-btn" data-switch-exam="错题本">看错题本</button>
             <button class="primary-btn" id="exportActPack">导出行测学习包</button>
           </div>
-          <div class="empty">当前模块：${state.actModule}。每天会把不同知识点排到前面；卡片仍可点开/收起，并保留四大体系对比。</div>
+          <div class="hotnews-list">
+            ${
+              cards.length
+                ? cards.map(actKnowledgeCard).join("")
+                : `<div class="empty">没有搜到对应考点、讲师或题型。</div>`
+            }
+          </div>
+          ${state.actModule === "言语" ? renderDailyYanyanPractice() : ""}
         </div>
-        ${
-          cards.length
-            ? cards.map(actKnowledgeCard).join("")
-            : `<div class="card" style="grid-column: 1 / -1;"><div class="empty">没有搜到对应考点、讲师或题型。</div></div>`
-        }
       `;
       setTimeout(initStudyCanvases, 0);
+    }
+
+    function renderDailyYanyanPractice() {
+      const idiomItems = dailyWindow(dailyIdiomPool, 20, 10);
+      const wordItems = dailyWindow(dailyWordPool, 20, 10);
+      const idiomLearnedKey = "workbench_yanyan_idiom_learned_" + todayKey;
+      const wordLearnedKey = "workbench_yanyan_word_learned_" + todayKey;
+      const idiomLearned = JSON.parse(localStorage.getItem(idiomLearnedKey) || "[]");
+      const wordLearned = JSON.parse(localStorage.getItem(wordLearnedKey) || "[]");
+      const idiomLearnedCount = idiomLearned.length;
+      const wordLearnedCount = wordLearned.length;
+
+      setTimeout(() => {
+        document.querySelectorAll("[data-yanyan-idiom-learn]").forEach(btn => {
+          btn.addEventListener("click", () => {
+            const idx = parseInt(btn.dataset.yanyanIdiomLearn, 10);
+            const list = JSON.parse(localStorage.getItem(idiomLearnedKey) || "[]");
+            if (list.includes(idx)) {
+              list.splice(list.indexOf(idx), 1);
+            } else {
+              list.push(idx);
+            }
+            localStorage.setItem(idiomLearnedKey, JSON.stringify(list));
+            renderActFocus();
+          });
+        });
+        document.querySelectorAll("[data-yanyan-word-learn]").forEach(btn => {
+          btn.addEventListener("click", () => {
+            const idx = parseInt(btn.dataset.yanyanWordLearn, 10);
+            const list = JSON.parse(localStorage.getItem(wordLearnedKey) || "[]");
+            if (list.includes(idx)) {
+              list.splice(list.indexOf(idx), 1);
+            } else {
+              list.push(idx);
+            }
+            localStorage.setItem(wordLearnedKey, JSON.stringify(list));
+            renderActFocus();
+          });
+        });
+      }, 100);
+
+      return `
+        <div class="yanyan-practice-section">
+          <div class="yanyan-section-header">
+            <div class="yanyan-section-title">
+              <span class="yanyan-section-icon">📖</span>
+              <h3>每日成语辨析</h3>
+            </div>
+            <div class="hotnews-progress">今日已学 ${idiomLearnedCount}/${idiomItems.length}</div>
+          </div>
+          <div class="hotnews-list">
+            ${idiomItems.map((item, index) => {
+              const isLearned = idiomLearned.includes(index);
+              return `
+              <div class="hotnews-card ${isLearned ? "learned" : ""}">
+                <div class="hotnews-card-head">
+                  <div class="hotnews-card-title">${item.title}</div>
+                  <span class="hotnews-time-tag">成语</span>
+                </div>
+                <div class="hotnews-summary"><strong>⚠️ 易错点：</strong>${item.wrong}</div>
+                <div class="hotnews-points">
+                  <div class="hotnews-points-label">💡 正确意思</div>
+                  <ul><li>${item.meaning}</li></ul>
+                </div>
+                <div class="hotnews-points" style="background:rgba(138,98,230,0.06);border-color:rgba(138,98,230,0.2);">
+                  <div class="hotnews-points-label" style="color:#6f4bd6;">📝 3句例句</div>
+                  <ul>${(item.examples || []).map((ex, i) => `<li><strong>例${i + 1}：</strong>${ex}</li>`).join("")}</ul>
+                </div>
+                <div class="hotnews-card-foot">
+                  <div class="hotnews-tags">
+                    <span class="hotnews-pill">${item.tip}</span>
+                  </div>
+                  <button class="hotnews-learn-btn ${isLearned ? "done" : ""}" data-yanyan-idiom-learn="${index}">
+                    ${isLearned ? "✅ 已学" : "标记已学"}
+                  </button>
+                </div>
+              </div>
+              `;
+            }).join("")}
+          </div>
+        </div>
+
+        <div class="yanyan-practice-section" style="margin-top:20px;">
+          <div class="yanyan-section-header">
+            <div class="yanyan-section-title">
+              <span class="yanyan-section-icon">🔤</span>
+              <h3>每日词语辨析</h3>
+            </div>
+            <div class="hotnews-progress">今日已学 ${wordLearnedCount}/${wordItems.length}</div>
+          </div>
+          <div class="hotnews-list">
+            ${wordItems.map((item, index) => {
+              const isLearned = wordLearned.includes(index);
+              return `
+              <div class="hotnews-card ${isLearned ? "learned" : ""}">
+                <div class="hotnews-card-head">
+                  <div class="hotnews-card-title">${item.title}</div>
+                  <span class="hotnews-time-tag">词语</span>
+                </div>
+                <div class="hotnews-summary"><strong>⚠️ 易错点：</strong>${item.wrong}</div>
+                <div class="hotnews-points">
+                  <div class="hotnews-points-label">💡 正确意思</div>
+                  <ul><li>${item.meaning}</li></ul>
+                </div>
+                <div class="hotnews-points" style="background:rgba(138,98,230,0.06);border-color:rgba(138,98,230,0.2);">
+                  <div class="hotnews-points-label" style="color:#6f4bd6;">📝 3句例句</div>
+                  <ul>${(item.examples || []).map((ex, i) => `<li><strong>例${i + 1}：</strong>${ex}</li>`).join("")}</ul>
+                </div>
+                <div class="hotnews-card-foot">
+                  <div class="hotnews-tags">
+                    <span class="hotnews-pill">${item.tip}</span>
+                  </div>
+                  <button class="hotnews-learn-btn ${isLearned ? "done" : ""}" data-yanyan-word-learn="${index}">
+                    ${isLearned ? "✅ 已学" : "标记已学"}
+                  </button>
+                </div>
+              </div>
+              `;
+            }).join("")}
+          </div>
+        </div>
+      `;
     }
 
     function actKnowledgeCard(item) {
@@ -4025,17 +4721,19 @@
       const expanded = state.actExpanded[key] !== false;
       const note = state.actNotes[key] || "";
       return `
-        <details class="card knowledge-card" ${expanded ? "open" : ""} data-act-card="${key}">
+        <details class="hotnews-card knowledge-card" ${expanded ? "open" : ""} data-act-card="${key}">
           <summary>
-            <div class="row-main">
-              <strong>${item.title}</strong>
-              <span class="coin">+10</span>
+            <div class="hotnews-card-head">
+              <div class="hotnews-card-title">${item.title}</div>
+              <span class="hotnews-time-tag">${item.type}</span>
             </div>
-            <div class="row-sub">${item.core}</div>
-            <div class="card-tags">
-              <span class="status">${state.actModule}</span>
-              <span class="pill">${item.type}</span>
-              <span class="pill">易混：${item.mix}</span>
+            <div class="hotnews-summary">${item.core}</div>
+            <div class="hotnews-card-foot">
+              <div class="hotnews-tags">
+                <span class="hotnews-pill">${state.actModule}</span>
+                <span class="hotnews-pill">易混：${item.mix}</span>
+              </div>
+              <span class="hotnews-time-tag" style="background:rgba(138,98,230,0.12);color:#6f4bd6;">点击展开详情</span>
             </div>
           </summary>
           <div class="field-grid study-readable" style="margin-top:14px;">
@@ -4050,35 +4748,50 @@
             <button class="ghost-btn" data-switch-exam="错题本">看相关错题</button>
           </div>
           ${teacherCompareTable(item)}
-          ${studyTools(`act-${key}`, "记录行测知识点、错因、老师讲法取舍；可手绘公式或解题路径。")}
-          <textarea class="note-box" data-act-note="${key}" placeholder="旧版个人笔记仍保留在这里，可继续使用...">${note}</textarea>
         </details>
       `;
     }
 
     function teacherCompareTable(item) {
       const visibleTeachers = actTeachers;
+      const teacherPointView = {
+        "花生十三": (point) => `套模型识别法：本题先用"${point}"定位题型，再套模板秒杀。`,
+        "刘文超": (point) => `从底层逻辑切入：本题关键是理解"${point}"背后的原理，搞懂为什么。`,
+        "刘文波": (point) => `实战操作步骤：本题按"${point}"分步执行，先标记再排除最后验证。`,
+        "粉笔": (point) => `系统解法：本题属于"${point}"类，按标准方法+题库练习稳定拿分。`
+      };
+      const teacherAvoidView = {
+        "花生十三": (point) => `不要硬套模板，先确认题型边界再下笔。${point}`,
+        "刘文超": (point) => `不要过度推理，先排除再深入。${point}`,
+        "刘文波": (point) => `不要跳过标记步骤，标记错了后面全错。${point}`,
+        "粉笔": (point) => `不要只听课不练，本题必须配套刷题巩固。${point}`
+      };
       const rows = [
-        ["核心思路", t => `${teacherProfiles[t].style} 本考点重点：${item.core}`],
-        ["适配题型", t => `${item.type}、${item.title}及相邻易混题。${t === "粉笔" ? "适合系统刷题巩固。" : ""}`],
-        ["提速技巧", t => teacherProfiles[t].speed + ` 本题型可用：${item.formula}`],
-        ["短板", t => teacherProfiles[t].weakness],
-        ["避坑点", t => teacherProfiles[t].avoid + ` ${item.avoid}`]
+        ["核心思路", t => `${teacherProfiles[t].style}<br><span class="compare-highlight">本考点（${t}视角）：${teacherPointView[t](item.core)}</span>`],
+        ["适用人群", t => teacherProfiles[t].audience],
+        ["适配题型", t => `${item.type}、${item.title}及相邻易混题。${t === "粉笔" ? "适合系统刷题巩固。" : t === "花生十三" ? "模板覆盖范围内效率最高。" : t === "刘文超" ? "理解型方法适配所有题型。" : "实战步骤适配高频题型。"}`],
+        ["提速技巧", t => teacherProfiles[t].speed + `<br><span class="compare-highlight">本题型口诀：${item.formula}</span>`],
+        ["做题顺序", t => teacherProfiles[t].order],
+        ["训练方法", t => teacherProfiles[t].training],
+        ["错题复盘", t => teacherProfiles[t].review],
+        ["核心优势", t => teacherProfiles[t].advantage],
+        ["短板提醒", t => teacherProfiles[t].weakness],
+        ["避坑点", t => teacherProfiles[t].avoid + `<br><span class="compare-highlight">本考点提醒（${t}）：${teacherAvoidView[t](item.avoid)}</span>`]
       ];
 
       return `
         <div class="compare-scroll">
-          <table class="compare-table">
+          <table class="compare-table compare-table-detailed">
             <thead>
               <tr>
-                <th>字段</th>
+                <th>对比维度</th>
                 ${visibleTeachers.map(name => `<th>${name}</th>`).join("")}
               </tr>
             </thead>
             <tbody>
               ${rows.map(([label, getter]) => `
                 <tr>
-                  <td>${label}</td>
+                  <td class="compare-label">${label}</td>
                   ${visibleTeachers.map(name => `<td>${getter(name)}</td>`).join("")}
                 </tr>
               `).join("")}
@@ -4134,10 +4847,19 @@
       const favCount = state.shenlunFavorites.length;
 
       document.getElementById("examContent").innerHTML = `
-        <div class="card" style="grid-column: 1 / -1;">
-          <div class="section-title">
-            <h3>申论素材深度库</h3>
-            <span class="pill">每日轮换 · 共 ${allItems.length} 条 · 收藏 ${favCount} 条</span>
+        <div class="hotnews-wrap">
+          <div class="hotnews-header">
+            <div class="hotnews-date">${new Date().toLocaleDateString("zh-CN", { year: "numeric", month: "long", day: "numeric", weekday: "long" })}</div>
+            <div class="hotnews-countdown">
+              <span class="countdown-tag">📌 每日轮换 · 共${allItems.length}条 · 收藏${favCount}条</span>
+            </div>
+          </div>
+          <div class="hotnews-title-bar">
+            <div class="hotnews-title">
+              <span class="hotnews-title-icon">✍️</span>
+              <h3>申论素材深度库</h3>
+            </div>
+            <div class="hotnews-progress">${showFav ? "仅看收藏" : sub + " · " + timeliness}</div>
           </div>
           <div class="sub-tabs">
             ${subTabs.map(tab => `
@@ -4154,13 +4876,14 @@
             <button class="ghost-btn" data-switch-exam="每日题库">联动题库</button>
             <button class="primary-btn" id="exportShenlunPack">每日一键导出学习包</button>
           </div>
-          <div class="empty">当前分类：${sub} · 时效：${timeliness}${showFav ? ' · <strong style="color:var(--purple);">仅显示收藏</strong>' : ''}。每天会把不同申论素材排到前面，卡片支持收藏、记笔记、联动题库。</div>
+          <div class="hotnews-list">
+            ${
+              filteredItems.length
+                ? filteredItems.map(shenlunCard).join("")
+                : `<div class="empty">没有搜到对应素材。试试换个关键词或分类。</div>`
+            }
+          </div>
         </div>
-        ${
-          filteredItems.length
-            ? filteredItems.map(shenlunCard).join("")
-            : `<div class="card" style="grid-column: 1 / -1;"><div class="empty">没有搜到对应素材。试试换个关键词或分类。</div></div>`
-        }
       `;
       setTimeout(initStudyCanvases, 0);
     }
@@ -4180,19 +4903,22 @@
         'style="background:#e8f5e9;color:#2e7d32;border-color:#c8e6c9;"' : '';
 
       return `
-        <details class="card knowledge-card" ${expanded ? "open" : ""} data-shenlun-card="${id}">
+        <details class="hotnews-card knowledge-card" ${expanded ? "open" : ""} data-shenlun-card="${id}">
           <summary>
-            <div class="row-main">
-              <strong style="flex:1;min-width:0;">${item.title}</strong>
-              <span class="coin">+10</span>
+            <div class="hotnews-card-head">
+              <div class="hotnews-card-title">${item.title}</div>
+              <span class="hotnews-time-tag">${item.timeliness}</span>
             </div>
-            <div class="row-sub" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">${item.summary}</div>
-            <div class="card-tags">
-              <span class="${timelinessClass}" ${timelinessStyle}>${item.timeliness}</span>
-              ${(item.tags || []).map(t => `<span class="pill">${t}</span>`).join("")}
-              <button class="ghost-btn" data-shenlun-fav="${id}" style="margin-left:auto;padding:4px 10px;font-size:12px;">
-                ${isFav ? "⭐ 已收藏" : "☆ 收藏"}
-              </button>
+            <div class="hotnews-summary" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">${item.summary}</div>
+            <div class="hotnews-card-foot">
+              <div class="hotnews-tags">
+                ${(item.tags || []).map(t => `<span class="hotnews-pill">${t}</span>`).join("")}
+                <span class="hotnews-pill">${getShenlunSubCategory(item)}</span>
+              </div>
+              <div style="display:flex;gap:8px;align-items:center;">
+                <button class="hotnews-learn-btn ${isFav ? "done" : ""}" data-shenlun-fav="${id}">${isFav ? "⭐ 已收藏" : "☆ 收藏"}</button>
+                <span class="hotnews-time-tag" style="background:rgba(138,98,230,0.12);color:#6f4bd6;">点击展开</span>
+              </div>
             </div>
           </summary>
 
@@ -4270,8 +4996,6 @@
             <button class="ghost-btn" data-shenlun-copy="${id}">复制金句</button>
           </div>
 
-          ${studyTools(`shenlun-${id}`, "记录申论素材适用场景、改写金句、搭配真题；可手绘作文结构。")}
-          <textarea class="note-box" data-shenlun-note="${id}" placeholder="旧版个人笔记仍保留在这里，可继续使用...">${note}</textarea>
         </details>
       `;
     }
@@ -4309,10 +5033,26 @@
 
     function renderQuestionBank() {
       const importedQuestions = state.trueQuestions || [];
-      const questions = getDailyQuestions(20);
+      const questions = getDailyQuestions();
       const answered = Object.keys(state.examAnswers).length;
       const wrongCount = Object.values(state.examAnswers).filter(item => item && !item.correct).length;
       const correctCount = Object.values(state.examAnswers).filter(item => item && item.correct).length;
+
+      // 按模块分组
+      const sections = {};
+      questions.forEach(q => {
+        const sec = q.section || q.module;
+        if (!sections[sec]) sections[sec] = [];
+        sections[sec].push(q);
+      });
+      const sectionOrder = ["言语理解", "判断推理", "图形推理", "数量关系", "资料分析"];
+      const sectionLabels = {
+        "言语理解": "📖 言语理解（40题）",
+        "判断推理": "🧩 判断推理（30题）",
+        "图形推理": "🔲 图形推理（20题）",
+        "数量关系": "🔢 数量关系（10题）",
+        "资料分析": "📊 资料分析（2套·10题）"
+      };
 
       document.getElementById("examContent").innerHTML = `
         <div class="card" style="grid-column: 1 / -1;">
@@ -4326,16 +5066,23 @@
             <div class="analysis-box"><span>答对</span><strong>${correctCount}题</strong></div>
             <div class="analysis-box"><span>答错</span><strong>${wrongCount}题</strong></div>
           </div>
-          <div class="empty">更新日期：${todayKey}。如果已导入真题，每天优先轮换真题；未导入时显示内置题库。每日展示 20 题，题干、选项、解析都会完整换行显示。</div>
+          <div class="empty">更新日期：${todayKey}。每天按模块轮换：言语40题 + 判断推理30题 + 图形推理20题 + 数量10题 + 资料分析2套(10题) = 共${questions.length}题。题干、选项、解析完整显示。</div>
           <div class="true-question-import">
-            <textarea class="note-box" id="trueQuestionInput" placeholder="每行一题，用 | 分隔：年份|来源|模块|考点|题干|A选项|B选项|C选项|D选项|答案|详细解析|易错点\n例：2023|云南省联考|判断推理|定义判断|题干...|A...|B...|C...|D...|B|第一步看定义关键词...|容易只看生活常识"></textarea>
+            <textarea class="note-box" id="trueQuestionInput" placeholder="每行一题，用 | 分隔：年份|来源|模块|考点|题干|A选项|B选项|C选项|D选项|答案|详细解析|易错点
+例：2023|云南省联考|判断推理|定义判断|题干...|A...|B...|C...|D...|B|第一步看定义关键词...|容易只看生活常识"></textarea>
             <div style="display:flex;gap:12px;flex-wrap:wrap;">
               <button class="primary-btn" id="importTrueQuestions">导入真题</button>
               <button class="primary-btn" id="loadBuiltInQuestions" style="background:var(--green);">📋 加载内置题库（2016-2025精选）</button>
             </div>
           </div>
         </div>
-        ${questions.length ? questions.map(questionTemplate).join("") : `<div class="card" style="grid-column:1/-1;"><div class="empty">还没有可用题目。请导入真题或加载内置题库。</div></div>`}
+        ${questions.length ? sectionOrder.filter(s => sections[s]).map(sec => `
+          <div class="quiz-section-divider">
+            <h3>${sectionLabels[sec] || sec}</h3>
+            <span class="pill">${sections[sec].length}题</span>
+          </div>
+          ${sections[sec].map(questionTemplate).join("")}
+        `).join("") : `<div class="card" style="grid-column:1/-1;"><div class="empty">还没有可用题目。请导入真题或加载内置题库。</div></div>`}
       `;
     }
 
