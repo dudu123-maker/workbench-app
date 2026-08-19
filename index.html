@@ -3374,23 +3374,36 @@
       return Array.from({ length: Math.min(count, items.length) }, (_, i) => items[(start + i) % items.length]);
     }
 
+    // 日期种子洗牌：每天产生不同的随机排列，确保每日内容真正不同
+    function dailyShuffle(items, count, offset = 0) {
+      if (!Array.isArray(items) || !items.length) return [];
+      const shuffled = [...items];
+      let rng = (todaySeed + offset) * 2654435761 >>> 0;
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        rng = (rng * 9301 + 49297) % 233280;
+        const j = Math.floor((rng / 233280) * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+      }
+      return shuffled.slice(0, Math.min(count, shuffled.length));
+    }
+
     function dailyOrder(items, offset = 0) {
       return dailyWindow(items, Array.isArray(items) ? items.length : 0, offset);
     }
 
     function getDailyActItems(count = 15) {
       return actModules.flatMap((module, moduleIndex) =>
-        dailyWindow(actKnowledge[module] || [], Math.ceil(count / actModules.length), moduleIndex)
+        dailyShuffle(actKnowledge[module] || [], Math.ceil(count / actModules.length), moduleIndex * 3 + 1)
           .map(item => ({ module, ...item }))
       ).slice(0, count);
     }
 
     function getDailyShenlunItems(count = 10) {
-      return dailyWindow(examData["申论素材"].list || [], count, 3);
+      return dailyShuffle(examData["申论素材"].list || [], count, 3);
     }
 
     function getDailyIdiomItems(count = 5) {
-      return dailyWindow(examData["易错成语积累"] || [], count, 6);
+      return dailyShuffle(examData["易错成语积累"] || [], count, 6);
     }
 
     function getDailyQuestions(count = 5) {
@@ -3415,7 +3428,7 @@
           pool = source.filter(q => q.module === plan.module || (plan.module === "图形推理" && q.module === "判断推理" && q.point === "图形推理"));
         }
         if (pool.length === 0) return;
-        const items = dailyWindow(pool, plan.count, plan.step);
+        const items = dailyShuffle(pool, plan.count, plan.step);
         items.forEach(q => {
           allQuestions.push({
             ...q,
@@ -3432,22 +3445,16 @@
     }
 
     function getDailyMuscles(count = 5) {
-      return dailyWindow(muscles, count, 12);
+      return dailyShuffle(muscles, count, 12);
     }
 
     function getDailyEditingTips(count = 5) {
-      return editingTips
-        .map((tip, index) => {
-          const dailyBoost = ((todaySeed + index * 7) % 13) / 10;
-          const score = tip.hot * 0.52 + tip.practical * 0.43 + dailyBoost;
-          return { ...tip, score: Math.round(score * 10) / 10 };
-        })
-        .sort((a, b) => b.score - a.score || b.practical - a.practical)
-        .slice(0, count);
+      const shuffled = dailyShuffle(editingTips, editingTips.length, 8);
+      return shuffled.slice(0, count);
     }
 
     function getDailyJobs(count = 10) {
-      return dailyWindow(jobs, count, 15);
+      return dailyShuffle(jobs, count, 15);
     }
 
     const defaultTasks = [
@@ -4372,7 +4379,7 @@
         return;
       }
 
-      const list = dailyOrder(examData[state.examTab] || [], 6);
+      const list = dailyShuffle(examData[state.examTab] || [], 6, 6);
       document.getElementById("examContent").innerHTML = list.map((item, index) => `
         <div class="card">
           <div class="row-main">
@@ -4398,7 +4405,7 @@
 
     function renderHotNews() {
       const pool = examData["热点新闻"] || [];
-      const items = dailyWindow(pool, 5, 18);
+      const items = dailyShuffle(pool, 5, 18);
       const learnedKey = "workbench_hotnews_learned_" + todayKey;
       const learned = JSON.parse(localStorage.getItem(learnedKey) || "[]");
       const learnedCount = items.filter((_, i) => learned.includes(i)).length;
@@ -4468,7 +4475,7 @@
 
     function renderIdioms() {
       const pool = examData["易错成语积累"] || [];
-      const items = dailyWindow(pool, 6, 6);
+      const items = dailyShuffle(pool, 6, 6);
       const learnedKey = "workbench_idioms_learned_" + todayKey;
       const learned = JSON.parse(localStorage.getItem(learnedKey) || "[]");
       const learnedCount = items.filter((_, i) => learned.includes(i)).length;
@@ -4542,7 +4549,7 @@
 
     function renderActFocus() {
       const keyword = document.getElementById("globalSearch").value.trim();
-      const moduleCards = dailyOrder(actKnowledge[state.actModule] || [], actModules.indexOf(state.actModule));
+      const moduleCards = dailyShuffle(actKnowledge[state.actModule] || [], (actKnowledge[state.actModule] || []).length, actModules.indexOf(state.actModule) * 5 + 2);
       const cards = moduleCards.filter(item => {
         const haystack = [
           state.actModule,
@@ -4595,8 +4602,8 @@
     }
 
     function renderDailyYanyanPractice() {
-      const idiomItems = dailyWindow(dailyIdiomPool, 20, 10);
-      const wordItems = dailyWindow(dailyWordPool, 20, 10);
+      const idiomItems = dailyShuffle(dailyIdiomPool, 20, 10);
+      const wordItems = dailyShuffle(dailyWordPool, 20, 14);
       const idiomLearnedKey = "workbench_yanyan_idiom_learned_" + todayKey;
       const wordLearnedKey = "workbench_yanyan_word_learned_" + todayKey;
       const idiomLearned = JSON.parse(localStorage.getItem(idiomLearnedKey) || "[]");
@@ -4822,7 +4829,7 @@
       const showFav = state.shenlunShowFav;
       const data = examData["申论素材"];
       const subTabs = data.subTabs || ["全部", "人物素材", "政策素材", "民生案例", "时代热点"];
-      const allItems = dailyOrder(data.list || [], 3);
+      const allItems = dailyShuffle(data.list || [], (data.list || []).length, 3);
 
       const filteredItems = allItems.filter(item => {
         if (showFav && !state.shenlunFavorites.includes(item.id)) return false;
@@ -6284,7 +6291,7 @@
       }
 
       if (event.target.id === "exportActPack") {
-        const list = dailyOrder(actKnowledge[state.actModule] || [], actModules.indexOf(state.actModule));
+        const list = dailyShuffle(actKnowledge[state.actModule] || [], (actKnowledge[state.actModule] || []).length, actModules.indexOf(state.actModule) * 5 + 2);
         const content = [
           `【${state.actModule}】每日学习包`,
           `日期：${todayKey}`,
@@ -6373,7 +6380,7 @@
       if (event.target.id === "exportShenlunPack") {
         const data = examData["申论素材"];
         const sub = state.shenlunSub;
-        const items = dailyOrder(data.list || [], 3).filter(item => {
+        const items = dailyShuffle(data.list || [], (data.list || []).length, 3).filter(item => {
           if (sub !== "全部") {
             const category = getShenlunSubCategory(item);
             if (category !== sub) return false;
