@@ -15,7 +15,7 @@
   <link rel="icon" type="image/svg+xml" href="icon.svg" />
   <title>我的个人工作台 APP</title>
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-  <script src="questions.js?v=2.5"></script>
+  <script src="questions.js?v=2.6"></script>
   <style>
     :root {
       --bg: #f4f1ff;
@@ -896,10 +896,7 @@
       white-space: normal;
       overflow-wrap: anywhere;
       -webkit-tap-highlight-color: transparent;
-      -webkit-touch-callout: none;
       touch-action: manipulation;
-      -webkit-user-select: none;
-      user-select: none;
       min-height: 44px;
     }
 
@@ -2234,7 +2231,7 @@
         <div class="profile">
           <div class="avatar">🐱</div>
           <div>
-            <strong>今日工作台 · v2.5 (移动端修复)</strong><br />
+            <strong>今日工作台 · v2.6</strong><br />
             <small id="todayText"></small>
           </div>
         </div>
@@ -2469,40 +2466,21 @@
     </div>
   </div>
 
-  <script src="yanyu-questions.js?v=2.5"></script>
-  <script src="panduan-questions.js?v=2.5"></script>
-  <script src="shuliang-ziliao-questions.js?v=2.5"></script>
+  <script src="yanyu-questions.js?v=2.6"></script>
+  <script src="panduan-questions.js?v=2.6"></script>
+  <script src="shuliang-ziliao-questions.js?v=2.6"></script>
   <script>
-    /* ===== 移动端缓存强制清理 + 版本检测 ===== */
-    (function() {
-      var CURRENT_VERSION = "2.5";
-      var storedVersion = localStorage.getItem("__app_version__");
-
-      if ("serviceWorker" in navigator) {
-        navigator.serviceWorker.getRegistrations().then(function(regs) {
-          regs.forEach(function(reg) { reg.unregister(); });
-          // 注册新的无缓存 Service Worker，立即接管
-          navigator.serviceWorker.register("sw.js?v=2.5").then(function(reg) {
-            reg.update();
-          }).catch(function() {});
-        }).catch(function() {});
-      }
-      if ("caches" in window) {
-        caches.keys().then(function(keys) {
-          keys.forEach(function(key) { caches.delete(key); });
-        }).catch(function() {});
-      }
-
-      if (storedVersion && storedVersion !== CURRENT_VERSION) {
-        localStorage.setItem("__app_version__", CURRENT_VERSION);
-        if (window.location.search.indexOf("nocache") === -1) {
-          var freshUrl = window.location.href.split("?")[0] + "?nocache=" + Date.now();
-          setTimeout(function() { window.location.replace(freshUrl); }, 300);
-          return;
-        }
-      }
-      localStorage.setItem("__app_version__", CURRENT_VERSION);
-    })();
+    /* 简化版：仅清理旧 Service Worker，不做版本重定向 */
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.getRegistrations().then(function(regs) {
+        regs.forEach(function(reg) { reg.unregister(); });
+      }).catch(function() {});
+    }
+    if ("caches" in window) {
+      caches.keys().then(function(keys) {
+        keys.forEach(function(key) { caches.delete(key); });
+      }).catch(function() {});
+    }
 
     const money = (value) => "¥" + Number(value || 0).toLocaleString("zh-CN");
 
@@ -3506,7 +3484,7 @@
 
     // 版本检查：如果 localStorage 中的题库版本过期，自动清除旧题库数据
     (function checkQuestionVersion() {
-      const CURRENT_VERSION = "v2.5";
+      const CURRENT_VERSION = "v2.3";
       const storedVersion = localStorage.getItem("workbench_question_version") || "";
       if (storedVersion !== CURRENT_VERSION) {
         // 清除旧题库数据，强制使用新题库
@@ -6277,10 +6255,6 @@
       const answerButton = event.target.closest("[data-question-id][data-choice]");
       if (answerButton) {
         const qid = answerButton.dataset.questionId;
-        const choice = answerButton.dataset.choice;
-        if (typeof __touchHandledTime !== "undefined" && __touchHandledQid === qid && __touchHandledChoice === choice && (Date.now() - __touchHandledTime) < 800) {
-          return;
-        }
         const dailyQuestions = getDailyQuestions();
         const question = state.trueQuestions.find(item => item.id === qid)
           || dailyQuestions.find(item => item.id === qid)
@@ -6328,61 +6302,6 @@
         return;
       }
     });
-
-    /* ===== 移动端触摸事件：确保选项按钮可点击 ===== */
-    let __touchHandledQid = null;
-    let __touchHandledChoice = null;
-    let __touchHandledTime = 0;
-    document.body.addEventListener("touchend", function(event) {
-      const answerButton = event.target.closest("[data-question-id][data-choice]");
-      if (!answerButton) return;
-
-      const qid = answerButton.dataset.questionId;
-      const choice = answerButton.dataset.choice;
-      const now = Date.now();
-
-      if (__touchHandledQid === qid && __touchHandledChoice === choice && (now - __touchHandledTime) < 800) {
-        return;
-      }
-
-      __touchHandledQid = qid;
-      __touchHandledChoice = choice;
-      __touchHandledTime = now;
-
-      const dailyQuestions = getDailyQuestions();
-      const question = state.trueQuestions.find(item => item.id === qid)
-        || dailyQuestions.find(item => item.id === qid)
-        || questionSeeds.find(item => item.id === qid);
-      if (!question) return;
-
-      const correct = choice === question.answer;
-      state.examAnswers[question.id] = {
-        choice,
-        correct,
-        answeredAt: new Date().toISOString()
-      };
-
-      if (!correct) {
-        const old = state.wrongBook[question.id];
-        state.wrongBook[question.id] = {
-          id: question.id,
-          stem: question.stem,
-          module: question.module,
-          point: question.point,
-          errorType: question.errorType,
-          answer: question.answer,
-          lastChoice: choice,
-          explanation: question.explanation,
-          trap: question.trap,
-          count: old ? old.count + 1 : 1,
-          updatedAt: new Date().toISOString()
-        };
-      }
-
-      saveExamPractice();
-      renderExam();
-      event.preventDefault();
-    }, { passive: false });
 
     document.body.addEventListener("click", (event) => {
       if (event.target.id === "addPayment") {
@@ -6961,7 +6880,7 @@
     renderAll();
 
     // 显示当前版本号，方便确认是否更新成功
-    console.log("[版本] v2.5 - 移动端缓存修复 (" + new Date().toISOString().slice(0,10) + ")");
+    console.log("[版本] v2.6 (" + new Date().toISOString().slice(0,10) + ")");
   </script>
 </body>
 </html>
