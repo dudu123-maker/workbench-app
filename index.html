@@ -5109,6 +5109,37 @@
     function questionTemplate(question) {
       const answerRecord = state.examAnswers[question.id];
       const letters = ["A", "B", "C", "D"];
+      const correctLetter = question.answer;
+
+      // 生成逐选项分析
+      const optionAnalysis = question.options.map((option, index) => {
+        const choice = letters[index];
+        const isCorrectOpt = choice === correctLetter;
+        let whyText = "";
+        if (isCorrectOpt) {
+          whyText = "正确选项。" + (question.explanation || "符合题意要求。");
+        } else {
+          // 根据题型和易错点分析错误选项
+          const wrongReasons = {
+            "A": question.trap && question.trap.includes("误选" + choice) ? question.trap : "",
+            "B": question.trap && question.trap.includes("误选" + choice) ? question.trap : "",
+            "C": question.trap && question.trap.includes("误选" + choice) ? question.trap : "",
+            "D": question.trap && question.trap.includes("误选" + choice) ? question.trap : ""
+          };
+          whyText = wrongReasons[choice] || "不符合题意。" + (question.explanation ? "解析中提到：" + question.explanation.slice(0, 60) + "..." : "");
+        }
+        return { choice, option, isCorrectOpt, whyText };
+      });
+
+      // 生成考察角度
+      const examAngle = generateExamAngle(question);
+
+      // 生成易错思维
+      const errorThinking = question.errorType ? "本题典型易错思维：" + question.errorType + "。" + (question.trap || "") : (question.trap || "暂无");
+
+      // 生成同类题思路
+      const transferStrategy = generateTransferStrategy(question);
+
       return `
         <div class="card question-card">
           <div class="question-meta">
@@ -5138,19 +5169,78 @@
           ${
             answerRecord
               ? `<div class="answer-box">
-                   <strong>${answerRecord.correct ? "答对了" : "做错了，已自动加入错题本"}</strong><br />
-                   正确答案：${question.answer}<br />
-                   <div class="analysis-block">
-                     <strong>通俗解析：</strong>${question.explanation || "暂无解析"}<br />
-                     <strong>怎么想：</strong>${question.method || "先看题目问法，再找关键词，最后逐项排除。"}<br />
-                     <strong>易错点：</strong>${question.trap || "暂无"}<br />
-                     <strong>同类题提醒：</strong>${question.tip || "下次遇到同类题，先确定考点，再按固定步骤做。"}
+                   <div style="font-size:1.1em;margin-bottom:10px;">
+                     <strong style="color:${answerRecord.correct ? 'var(--green)' : 'var(--red)'};">${answerRecord.correct ? "✅ 答对了" : "❌ 做错了，已自动加入错题本"}</strong>
+                     &nbsp;&nbsp;正确答案：<strong>${correctLetter}</strong>
+                   </div>
+
+                   <div class="analysis-block" style="margin-bottom:12px;">
+                     <strong>📋 逐项分析：</strong>
+                     ${optionAnalysis.map(oa => `
+                       <div style="margin:6px 0;padding:6px 8px;border-radius:6px;background:${oa.isCorrectOpt ? 'rgba(34,197,94,0.1)' : 'rgba(239,68,68,0.06)'};border-left:3px solid ${oa.isCorrectOpt ? 'var(--green)' : 'var(--red)'};">
+                         <strong>${oa.choice}. ${oa.isCorrectOpt ? "✓" : "✗"}</strong> ${oa.option}
+                         <div style="font-size:0.85em;color:var(--gray);margin-top:3px;">${oa.whyText}</div>
+                       </div>
+                     `).join("")}
+                   </div>
+
+                   <div class="analysis-block" style="margin-bottom:10px;">
+                     <strong>🎯 出题人考察角度：</strong>${examAngle}
+                   </div>
+
+                   <div class="analysis-block" style="margin-bottom:10px;">
+                     <strong>⚠️ 做题人易错思维：</strong>${errorThinking}
+                   </div>
+
+                   <div class="analysis-block" style="margin-bottom:10px;">
+                     <strong>📖 详细解析：</strong>${question.explanation || "暂无解析"}
+                   </div>
+
+                   <div class="analysis-block" style="border-left-color:var(--purple);background:rgba(139,92,246,0.06);">
+                     <strong>🔑 同类题通用思路：</strong>${transferStrategy}
                    </div>
                  </div>`
               : ""
           }
         </div>
       `;
+    }
+
+    function generateExamAngle(question) {
+      const angles = {
+        "言语理解": "考查对文段核心内容的理解和概括能力，关键在于区分『背景铺垫』与『核心观点』，抓住转折词、总结词等关键标志。",
+        "判断推理": "考查逻辑分析能力，要求准确把握定义要点或逻辑关系，避免主观臆断，严格依据题干条件推理。",
+        "图形推理": "考查观察力和规律识别能力，需要从位置、样式、数量、属性等维度系统分析图形特征。",
+        "数量关系": "考查数学思维和计算能力，重点在于识别题型、选择合适方法、避免计算陷阱。",
+        "资料分析": "考查数据读取和计算能力，关键在于快速定位数据、准确列式、合理估算。"
+      };
+      let base = angles[question.module] || "考查综合分析能力。";
+      if (question.point) base += "本题具体考点：" + question.point + "。";
+      return base;
+    }
+
+    function generateTransferStrategy(question) {
+      const strategies = {
+        "主旨概括": "①先读题干找标志词（因此、但是、唯有、这说明等）；②区分背景、问题、对策三类信息；③对策/结论句通常就是主旨；④选项与主旨对比，排除偷换概念、以偏概全的干扰项。",
+        "意图判断": "①先判断作者是在提问题还是给对策；②如果有对策优先选对策；③如果没有对策，选最接近作者意图的概括；④排除只描述现象、没有观点的选项。",
+        "细节理解": "①先看题干问『正确』还是『不正确』；②回原文逐项比对；③重点检查偷换概念、无中生有、时态错误、范围扩大/缩小等常见陷阱。",
+        "语句排序": "①先找首句（背景句、概念句优先）；②找捆绑词（代词要找指代对象、关联词要配对）；③确定尾句（总结句、对策句优先）；④通读验证逻辑通顺。",
+        "逻辑填空": "①先分析空缺处的语境（递进、转折、因果、并列）；②根据语境判断需要什么含义的词；③辨析近义词差异（轻重、范围、感情色彩）；④代入验证。",
+        "定义判断": "①提取定义核心要件（主体、客体、条件、方式、目的）；②逐个要件对照选项；③有一个要件不符就排除；④注意『不属于』的问法。",
+        "类比推理": "①先判断词间关系（全同、包含、交叉、并列等）；②再判断词性、感情色彩；③多组关系一致时，用造句法验证；④注意前后顺序。",
+        "逻辑判断": "①先读题干找论点和论据；②加强题找『搭桥』或补充论据；③削弱题找『断桥』或否定论据；④排除无关选项和过度推断。",
+        "图形推理": "①先看整体特征（对称、旋转、平移）；②再看数量变化（点、线、面、素）；③最后看样式规律（叠加、去同存异）；④每道题从这3个维度系统排查。",
+        "加强削弱": "①找准论点（通常在首句或尾句）；②分析论据与论点的逻辑链；③加强=补充论据/建立联系；削弱=否定论据/切断联系；④排除无关和过度推断。",
+        "工程问题": "①设工作总量为1或最小公倍数；②算出各自效率；③根据合作/交替关系列方程；④注意『先做几天再合作』的先后顺序。",
+        "行程问题": "①画线段图理清路程关系；②区分相遇（路程和）和追击（路程差）；③注意往返平均速度用调和平均；④单位统一后再计算。",
+        "排列组合": "①先判断是排列（有顺序）还是组合（无顺序）；②分类用加法，分步用乘法；③特殊元素优先处理；④正难则反用间接法。",
+        "概率问题": "①确定总事件数和目标事件数；②古典概率=目标数/总数；③注意『至少』『至多』用对立事件简化；④独立事件用乘法，互斥事件用加法。",
+        "经济利润": "①理清进价、标价、售价、利润的关系；②利润率=利润/进价（不是售价）；③打折后售价=标价×折扣；④注意『获利xx%』是指相对于进价。",
+        "年龄问题": "①抓住年龄差不变这一核心；②设过去/未来x年列方程；③两人年龄同步变化；④验证答案是否符合常理。",
+        "增长率": "①增长率=（现期-基期）/基期；②区分同比增长和环比增长；③注意『增长了』和『增长到』的区别；④计算时先化简再算。",
+        "比重": "①比重=部分/整体；②比重变化看部分增长率与整体增长率的大小关系；③部分增长率>整体增长率→比重上升；④估算时注意量级。"
+      };
+      return strategies[question.point] || "①先确定题型和考点；②回忆该题型的固定解题步骤；③按步骤逐一分析排除；④总结本题的易错点，下次遇到同类题先避开。";
     }
 
     function renderWrongBook() {
@@ -6149,7 +6239,11 @@
 
       const answerButton = event.target.closest("[data-question-id][data-choice]");
       if (answerButton) {
-        const question = state.trueQuestions.find(item => item.id === answerButton.dataset.questionId);
+        const qid = answerButton.dataset.questionId;
+        const dailyQuestions = getDailyQuestions();
+        const question = state.trueQuestions.find(item => item.id === qid)
+          || dailyQuestions.find(item => item.id === qid)
+          || questionSeeds.find(item => item.id === qid);
         if (!question) return;
 
         const choice = answerButton.dataset.choice;
