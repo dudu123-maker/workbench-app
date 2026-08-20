@@ -1,0 +1,18 @@
+{
+  "name": "我的个人工作台",
+  "short_name": "工作台",
+  "description": "康复 · 公考 · 招聘 · 学习 一站式个人工作台",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f4f1ff",
+  "theme_color": "#9b76ea",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
